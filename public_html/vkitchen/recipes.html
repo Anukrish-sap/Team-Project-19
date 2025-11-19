@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Collection | YOcook</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="img/home.png" type="image/x-icon">
+</head>
+<body>
+    <header id="main-header">
+        <div class="header-container">
+            <a href="index.html" class="logo-link">
+                <img src="img/ChatGPT Image Apr 20, 2025, 07_39_37 PM.png" alt="YOcook Logo" class="logo">
+            </a>
+            
+            <h1>YOcook Recipes</h1>
+            
+            <nav aria-label="Main navigation">
+                <ul>
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="recipes.html" class="nav-link active">Recipes</a></li>
+                    <li><a href="login.html" class="nav-link">Login</a></li>
+                    <li><a href="register.html" class="nav-link">Register</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="recipes-main">
+        <section class="recipe-filters">
+            <h2>Filter Recipes</h2>
+            <div class="filter-options">
+                <button class="filter-btn active" data-filter="all">All Recipes</button>
+                <button class="filter-btn" data-filter="vegetarian">Vegetarian</button>
+                <button class="filter-btn" data-filter="vegan">Vegan</button>
+                <button class="filter-btn" data-filter="gluten-free">Gluten-Free</button>
+                <button class="filter-btn" data-filter="quick">Quick Meals</button>
+            </div>
+        </section>
+
+        <section class="recipe-grid">
+            <!-- Recipe Card 1 -->
+            <article class="recipe-card vegetarian" data-categories="vegetarian quick">
+                <img src="img/photo-1551504734-5ee1c4a1479b.avif" alt="Avocado Toast">
+                <div class="recipe-info">
+                    <div class="recipe-category">Vegetarian • Quick</div>
+                    <h3>Avocado Toast</h3>
+                    <p>Creamy avocado on crispy sourdough with chili flakes.</p>
+                    <div class="recipe-meta">
+                        <span>15 mins</span>
+                        <span>Easy</span>
+                    </div>
+                    <a href="avocado-toast.html" class="btn btn-recipe">View Recipe</a>
+                </div>
+            </article>
+
+            <!-- Recipe Card 2 -->
+            <article class="recipe-card vegan" data-categories="vegan gluten-free">
+                <img src="img/vegan-curry.jpg" alt="Vegan Curry">
+                <div class="recipe-info">
+                    <div class="recipe-category">Vegan • Gluten-Free</div>
+                    <h3>Coconut Chickpea Curry</h3>
+                    <p>Rich and creamy curry with coconut milk and spices.</p>
+                    <div class="recipe-meta">
+                        <span>30 mins</span>
+                        <span>Medium</span>
+                    </div>
+                    <a href="vegan-curry-recipe.html" class="btn btn-recipe">View Recipe</a>
+                </div>
+            </article>
+
+            <!-- Recipe Card 3 -->
+            <article class="recipe-card vegetarian" data-categories="vegetarian">
+                <img src="img/mushroom-risotto.jpg" alt="Mushroom Risotto">
+                <div class="recipe-info">
+                    <div class="recipe-category">Vegetarian</div>
+                    <h3>Creamy Mushroom Risotto</h3>
+                    <p>Italian classic with wild mushrooms and Parmesan.</p>
+                    <div class="recipe-meta">
+                        <span>45 mins</span>
+                        <span>Medium</span>
+                    </div>
+                    <a href="risotto-recipe.html" class="btn btn-recipe">View Recipe</a>
+                </div>
+            </article>
+
+            <!-- Recipe Card 4 -->
+            <article class="recipe-card vegan" data-categories="vegan quick">
+                <img src="img/garlic-butter-pasta-2-750x750.jpg" alt="garlic pasta">
+                <div class="recipe-info">
+                    <div class="recipe-category">Vegan • Quick</div>
+                    <h3>garlic pasta butter</h3>
+                    <p>A quick, creamy pasta dish with garlic, butter, and Parmesan—ready in 15 minutes!</p>
+                    <div class="recipe-meta">
+                        <span>15 mins</span>
+                        <span>Easy</span>
+                    </div>
+                    <a href="garlic-pasta.html" class="btn btn-recipe">View Recipe</a>
+                </div>
+            </article>
+
+            <!-- Recipe Card 5 -->
+            <article class="recipe-card gluten-free" data-categories="gluten-free quick">
+                <img src="img/gluten-free-pasta.jpg" alt="Gluten Free Pasta">
+                <div class="recipe-info">
+                    <div class="recipe-category">Gluten-Free • Quick</div>
+                    <h3>Garlic Shrimp Pasta</h3>
+                    <p>Zucchini noodles with garlic butter shrimp.</p>
+                    <div class="recipe-meta">
+                        <span>25 mins</span>
+                        <span>Easy</span>
+                    </div>
+                    <a href="shrimp-pasta-recipe.html" class="btn btn-recipe">View Recipe</a>
+                </div>
+            </article>
+
+            <!-- Recipe Card 6 -->
+            <article class="recipe-card vegetarian" data-categories="vegetarian gluten-free">
+                <img src="img/vegetable-stirfry.jpg" alt="Vegetable Stir Fry">
+                <div class="recipe-info">
+                    <div class="recipe-category">Vegetarian • Gluten-Free</div>
+                    <h3>Asian Vegetable Stir Fry</h3>
+                    <p>Crispy veggies in a savory sauce with rice.</p>
+                    <div class="recipe-meta">
+                        <span>20 mins</span>
+                        <span>Easy</span>
+                    </div>
+                    <a href="stirfry-recipe.html" class="btn btn-recipe">View Recipe</a>
+                </div>
+            </article>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section about">
+                <h2>About YOcook</h2>
+                <p>YOcook is your go-to virtual kitchen for exploring rich and easy recipes. Join us for a culinary journey and discover our signature dishes.</p>
+            </div>
+            
+            <div class="footer-section links">
+                <h2>Quick Links</h2>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="recipes.html">Recipes</a></li>
+                    <li><a href="login.html">Login</a></li>
+                    <li><a href="register.html">Register</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section social">
+                <h2>Follow Us</h2>
+                <div class="social-icons">
+                    <a href="#" aria-label="Facebook"><img src="img/Facebook_Logo_2023.png" alt="Facebook" class="social-icon"></a>
+                    <a href="https://x.com/abdelalibl43829?s=21" aria-label="Twitter"><img src="img/Logo_of_Twitter.svg.png" alt="Twitter" class="social-icon"></a>
+                    <a href="https://www.instagram.com/aliloouuu__" aria-label="Instagram"><img src="img/Instagram_icon.png" alt="Instagram" class="social-icon"></a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>Contact us at <a href="mailto:240203191@aston.ac.uk">240203191@aston.ac.uk</a></p>
+            <p>Made by: Abdelali Blikaz</p>
+            <p>&copy; <span id="year"></span> YOcook. All rights reserved.</p>
+        </div>
+    </footer>
+    <script src="js/app.js"></script>
+</body>
+</html>
