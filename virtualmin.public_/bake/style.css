@@ -1,0 +1,178 @@
+/* Logo Size */
+.logo {
+    width: 120px;
+    height: auto;
+}
+
+/* Light Mode (default bakery theme) */
+body {
+    background-color: #fff6ec !important;
+    color: #222;
+}
+
+/* Bakery Form Container */
+.form-container {
+    background: #ffffff;
+    border-radius: 14px;
+    border: 2px solid #e9b88f;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+    padding: 30px;
+    max-width: 480px;
+    margin: 40px auto;
+}
+
+/* Bakery Titles */
+.form-container h1 {
+    color: #c97b4a !important;
+    font-family: "Georgia", serif;
+}
+
+.form-container p {
+    color: #8c6f57 !important;
+    margin-bottom: 15px;
+}
+
+/* Bakery Input Labels */
+.form-group label {
+    color: #3b271d !important;
+    font-family: "Georgia", serif;
+    font-weight: bold;
+}
+
+/* Bakery Inputs */
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e6dacd !important;
+    border-radius: 8px;
+    background-color: #fffaf4 !important;
+    font-size: 16px;
+}
+
+/* Input Focus */
+.form-group input:focus {
+    border-color: #3b271d !important;
+    box-shadow: 0 0 6px rgba(201, 123, 74, 0.25);
+    outline: none;
+}
+
+/* Forgot password link */
+.forgot-password a {
+    color: #3b271d !important;
+    font-size: 14px;
+}
+
+.forgot-password a:hover {
+    text-decoration: underline;
+}
+
+/* Bakery Submit Button */
+.submit-btn {
+    background-color: #3b271d !important;
+    color: white !important;
+    font-size: 18px;
+    padding: 12px;
+    width: 100%;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.submit-btn:hover {
+    background-color: #ce7934 !important;
+    transform: translateY(-2px);
+}
+
+/* Register Link Styling */
+.register-link {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.register-link a {
+    color: #3b271d !important;
+    font-weight: bold;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}
+
+/* Footer Bakery Theme */
+footer {
+    background-color: #c7934e !important;
+}
+
+.footer-section h2,
+.footer-bottom a {
+    color: #fff6ec !important;
+}
+
+.social-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.theme-toggle {
+    display: flex;
+    justify-content: flex-end;
+    margin: 10px 20px;
+}
+
+/* Hide the checkbox */
+.theme-toggle input {
+    display: none;
+}
+
+/* Slider background */
+.toggle-container {
+    width: 70px;
+    height: 34px;
+    background: #c7934e; /* caramel bakery color */
+    border-radius: 30px;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 5px;
+    font-size: 14px;
+    user-select: none;
+}
+
+/* Circle */
+.toggle-circle {
+    width: 28px;
+    height: 28px;
+    background: #fff6ec;
+    border-radius: 50%;
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    transition: transform 0.3s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+/* Icons inside toggle */
+.toggle-icons {
+    position: relative;
+    width: 100%;
+    text-align: center;
+    pointer-events: none;
+}
+
+/* When checked (dark mode) */
+.theme-toggle input:checked + .toggle-container {
+    background: #3b271d; /* dark chocolate */
+}
+
+.theme-toggle input:checked + .toggle-container .toggle-circle {
+    transform: translateX(36px);
+    background: #e0a675; /* lighter chocolate */
+}

@@ -1,15 +1,18 @@
 <?php
-//db details:
-$dbname = "cs2team19_db";
-$dbhost = "localhost";
-$username = "u-240078164";
-$password = "Bdpa2M03Yu0aBlO";
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 
-//and connect. Use a 'try' command just in case.
-try{
-$db = new PDO("mysql:host=$dbhost;dbname=$dbname", $username, $password);
-}catch (PDOException $e) {
-    echo "Connection failed: " . $e->getMessage();
-    exit;
+// match phpMyAdmin settings
+$dbname   = "cs2team19_db";
+$dbhost   = "127.0.0.1";
+$dbport   = "3307";   // IMPORTANT: same as in config.inc.php
+$username = "root";
+$password = "";
+
+try {
+    $dsn = "mysql:host=$dbhost;port=$dbport;dbname=$dbname;charset=utf8mb4";
+    $db  = new PDO($dsn, $username, $password);
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Connection failed: " . $e->getMessage());
 }
-?>

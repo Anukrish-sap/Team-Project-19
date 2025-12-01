@@ -25,7 +25,7 @@ session_start();
     <nav class="main-nav">
         <ul>
             <li><a href="index.php" class="active">Home</a></li>
-            <li><a href="products.php">Products</a></li>
+            <li><a href="bake/bakes.php">Products</a></li>
             <li class="has-dropdown">
                 <a href="categories.php">Categories</a>
                 <ul class="dropdown">

@@ -1,0 +1,21 @@
+<script>
+const checkbox = document.getElementById("darkSwitch");
+const body = document.body;
+
+// Load saved theme
+if (localStorage.getItem("theme") === "dark") {
+    body.classList.replace("light", "dark");
+    checkbox.checked = true;
+}
+
+// Toggle mode on change
+checkbox.addEventListener("change", () => {
+    if (checkbox.checked) {
+        body.classList.replace("light", "dark");
+        localStorage.setItem("theme", "dark");
+    } else {
+        body.classList.replace("dark", "light");
+        localStorage.setItem("theme", "light");
+    }
+});
+</script>
