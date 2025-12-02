@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Place Order</title>
+    <style>
+        body { font-family: Arial; margin: 20px; }
+        form { max-width: 400px; }
+        input, button { width: 100%; padding: 10px; margin: 10px 0; }
+        .success { color: green; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+
+    <h2>Place an Order</h2>
+
+    <form id="orderForm">
+        <input type="text" id="name" placeholder="Your Name" required>
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="text" id="address" placeholder="Address" required>
+        <input type="text" id="product" placeholder="Product Name" required>
+        <input type="number" id="quantity" placeholder="Quantity" min="1" required>
+
+        <button type="submit">Place Order</button>
+    </form>
+
+    <p id="message"></p>
+
+    <script>
+        document.getElementById("orderForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+
+            const order = {
+                customer: {
+                    name: document.getElementById("name").value,
+                    email: document.getElementById("email").value,
+                    address: document.getElementById("address").value
+                },
+                item: {
+                    product: document.getElementById("product").value,
+                    quantity: parseInt(document.getElementById("quantity").value)
+                }
+            };
+
+
+            console.log("Order placed:", order);
+
+            document.getElementById("message").textContent = "Order placed successfully!";
+            document.getElementById("message").className = "success";
+
+            document.getElementById("orderForm").reset();
+        });
+    </script>
+
+</body>
+</html>
