@@ -44,8 +44,8 @@ if (!empty($basket)) {
 
 <header class="site-header">
     <div class="logo-area">
-        <!-- header logo: public_/images/logo.png -->
-        <img src="images/logo.png" alt="Bakes & Cakes logo" class="logo">
+      
+        <img src="bake/img/logo.png" alt="Bakes & Cakes logo" class="logo">
         <div class="brand-text">
             <h1>Bakes & Cakes</h1>
             <p class="tagline">Your home for all your bakes and cakes</p>
@@ -114,9 +114,9 @@ if (!empty($basket)) {
 
                     <div>
                         <?php if (!empty($item['imageFileName'])): ?>
-                            <!-- basket item images: public_/bake/img/... -->
+                            
                             <img
-                                src="bake/img/<?= htmlspecialchars($item['imageFileName'], ENT_QUOTES, 'UTF-8') ?>"
+                                src="bake/img/uploads/<?= htmlspecialchars($item['imageFileName'], ENT_QUOTES, 'UTF-8') ?>"
                                 alt="<?= htmlspecialchars($item['bakeName'], ENT_QUOTES, 'UTF-8') ?>"
                                 style="width:80px;height:80px;object-fit:cover;border-radius:0.6rem;"
                             >
