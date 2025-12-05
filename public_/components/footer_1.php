@@ -19,6 +19,7 @@
  
                
                 <li><a href="contact.php">Contact</a></li>
+              <li><a href="helppage.php">help</a></li>
                 <li><a href="about.php">About</a></li>
 
             </ul>
