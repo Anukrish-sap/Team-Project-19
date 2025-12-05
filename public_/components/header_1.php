@@ -31,6 +31,7 @@ $current = basename($_SERVER['PHP_SELF']);
             
             <li><a href="contact.php" class="<?= $current == 'contact.php' ? 'active' : '' ?>">Contact</a></li>
             <li><a href="about.php" class="<?= $current == 'about.php' ? 'active' : '' ?>">About</a></li>
+          <li><a href="helppage.php" class="<?= $current == 'helppage.php' ? 'active' : '' ?>">help</a></li>
          <li><a href="accdetails.php" class="<?= $current == 'accdetails.php' ? 'active' : '' ?>">Account Details</a></li>
           <li><a href="logout.php" class="<?= $current == 'logout.php' ? 'active' : '' ?>">Logout</a></li>
         </ul>
