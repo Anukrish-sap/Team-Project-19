@@ -1,0 +1,30 @@
+<script>
+// light or dark mode toggle
+const toggleButton = document.getElementById('theme-toggle');
+const body = document.body;
+
+// Load saved 
+const savedTheme = localStorage.getItem('theme');
+
+if (savedTheme) {
+    body.classList.add(savedTheme);
+    toggleButton.textContent = savedTheme === 'dark' ? 'Light mode' : 'Dark mode';
+} else {
+    // Set default 
+    body.classList.add('light');
+}
+
+toggleButton.addEventListener('click', function () {
+    if (body.classList.contains('light')) {
+        body.classList.remove('light');
+        body.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+        toggleButton.textContent = 'Light mode';
+    } else {
+        body.classList.remove('dark');
+        body.classList.add('light');
+        localStorage.setItem('theme', 'light');
+        toggleButton.textContent = 'Dark mode';
+    }
+});
+</script>
