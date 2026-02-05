@@ -1,7 +1,0 @@
-Font : Fredoka
-Font size: 15.4px
-Font Colour : White
-Font Effect : Outline
-Outline size : 58
-Outline Colour : Black
-Button size : 150 x 50 px
