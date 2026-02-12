@@ -59,7 +59,7 @@ try {
                 <br><br>
 
                 <h3>Billing Address:</h3>
-                <input type="text" id="BAdd" name="BAdd" placeholder="Billing Address" pattern="[a-zA-Z0-9_]{1,50}" required>
+                <input type="text" id="BAdd" name="BAdd" placeholder="Billing Address" pattern="[a-zA-Z0-9_ ]{1,50}" required>
                 <br><br>
 
                 <h3>Country:</h3>
