@@ -1,0 +1,160 @@
+/* LOGO */
+.logo {
+    width: 120px;
+    height: auto;
+}
+
+
+
+body.light {
+    background-color: #fff7ef;
+    color: #3b271d;
+}
+
+/* FORM CONTAINER */
+.form-container {
+    background: #ffffff;
+    border-radius: 14px;
+    border: 2px solid #e9b88f;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+    padding: 30px;
+    max-width: 480px;
+    margin: 40px auto;
+}
+
+.form-container h1 {
+    color: #c97b4a;
+    font-family: "Georgia", serif;
+}
+
+.form-container p {
+    color: #8c6f57;
+    margin-bottom: 15px;
+}
+
+/* Form Inputs */
+.form-group label {
+    color: #3b271d;
+    font-family: "Georgia", serif;
+    font-weight: bold;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e6dacd;
+    border-radius: 8px;
+    background-color: #fffaf4;
+    font-size: 16px;
+}
+
+/* Submit Button */
+.submit-btn {
+    background-color: #3b271d;
+    color: white;
+    font-size: 18px;
+    padding: 12px;
+    width: 100%;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.submit-btn:hover {
+    background-color: #ce7934;
+    transform: translateY(-2px);
+}
+
+/* Footer */
+footer {
+    background-color: #c7934e;
+}
+
+.footer-section h2,
+.footer-bottom a {
+    color: #fff6ec;
+}
+
+.social-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+
+
+.theme-toggle {
+    display: flex;
+    justify-content: flex-end;
+    margin: 10px 20px;
+}
+
+/* Hide checkbox */
+.theme-toggle input {
+    display: none;
+}
+
+/* Toggle background */
+.toggle-container {
+    width: 70px;
+    height: 34px;
+    background: #c7934e;
+    border-radius: 30px;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+/* Toggle circle */
+.toggle-circle {
+    width: 28px;
+    height: 28px;
+    background: #fff6ec;
+    border-radius: 50%;
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    transition: transform 0.3s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+/* When checked */
+#darkSwitch:checked + .toggle-container {
+    background: #3b271d;
+}
+
+#darkSwitch:checked + .toggle-container .toggle-circle {
+    transform: translateX(36px);
+    background: #e0a675;
+}
+
+/*dark mode*/
+
+body.dark {
+    background: #1e1a18;
+    color: #f5d7b8;
+}
+
+body.dark .form-container {
+    background: #2b2420;
+    border-color: #555;
+}
+
+body.dark input {
+    background: #3b2e29;
+    color: #fff;
+    border-color: #666;
+}
+
+body.dark .submit-btn {
+    background: #e0a675;
+    color: #1e1a18;
+}
+
+body.dark footer {
+    background-color: #2a1f1c;
+}
+
+
+

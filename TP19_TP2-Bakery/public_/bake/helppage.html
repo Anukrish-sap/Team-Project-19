@@ -1,0 +1,384 @@
+<?php 
+session_start();
+ if (isset($_SESSION['userID'])) {
+    include '../components/header_l.php';
+} else {
+    include '../components/header.php';
+}?>
+    
+    <div class="form-container">
+        <h1>Help & Frequently Asked Questions</h1>
+        <p>Find answers to common questions about ordering, delivery, allergies, and more.</p>
+    </div>
+
+    <section class="help-section">
+        <h2>Ordering & Payment</h2>
+        <div class="faq-grid">
+            <div class="faq-item">
+                <h3>How do I place an order?</h3>
+                <p>
+                    Browse our products, add items to your basket, and proceed to checkout. 
+                    You'll need to create an account or log in to complete your purchase.
+                </p>
+            </div>
+
+            <div class="faq-item">
+                <h3>What payment methods do you accept?</h3>
+                <p>
+                    We accept all major credit and debit cards.
+                </p>
+            </div>
+
+            <div class="faq-item">
+                <h3>Can I modify or cancel my order?</h3>
+                <p>
+                    Orders can be modified or cancelled within 2 hours of placing them. 
+                    Please contact us immediately if you need to make changes.
+                </p>
+            </div>
+  <div class="faq-item">
+                <h3>Do you offer gift cards?</h3>
+                <p>
+                    Yes! Gift cards are available in various denominations. Contact us to purchase a gift card for your loved ones.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="help-section">
+        <h2>Delivery & Collection</h2>
+        <div class="faq-grid">
+            <div class="faq-item">
+                <h3>What are your delivery areas?</h3>
+                <p>
+                    We currently deliver within a 10-mile radius of Birmingham city centre. 
+                    Enter your postcode at checkout to check if we deliver to your area.
+                </p>
+            </div>
+
+            <div class="faq-item">
+                <h3>How much is delivery?</h3>
+                <p>
+                    Delivery costs £3.99 for orders under £25, and is free for orders over £25.
+                </p>
+            </div>
+
+            <div class="faq-item">
+                <h3>When will my order arrive?</h3>
+                <p>
+                    Standard delivery takes 1-2 business days. You can choose a specific delivery date at checkout. 
+                    Same-day delivery is available for orders placed before 10am.
+                </p>
+            </div</div>
+        </div>
+    </section>
+
+    <section class="help-section">
+        <h2>Allergies & Dietary Requirements</h2>
+        <div class="faq-grid">
+            <div class="faq-item">
+                <h3>Do you offer gluten-free products?</h3>
+                <p>
+                    Yes! Look for the gluten-free badge on product pages. 
+                    You can also filter products by dietary requirements.
+                </p>
+            </div>
+
+            <div class="faq-item">
+                <h3>How do you prevent cross-contamination?</h3>
+                <p>
+                    Our gluten-free products are prepared in a dedicated area with separate equipment. 
+                    However, our kitchen does handle allergens, so please contact us if you have severe allergies.
+                </p>
+            </div>
+            
+            <div class="faq-item">
+                <h3>Can I request custom allergen-free items?</h3>
+                <p>
+                    We're happy to discuss custom orders! Use our Contact form 
+                    to tell us about your requirements, and we'll see what we can do.
+                </p>
+            </div>
+        </div>
+    </section>
+     <section class="help-section">
+        <h2>Product Information</h2>
+        <div class="faq-grid">
+            <div class="faq-item">
+                <h3>How long do your products stay fresh?</h3>
+                <p>
+                    Most items stay fresh for 3-5 days when stored properly. 
+                    Specific storage instructions are included with your order.
+                </p>
+            </div>
+
+            <div class="faq-item">
+                <h3>Can I freeze your baked goods?</h3>
+                <p>
+                    Yes! Most of our products freeze well for up to 3 months. 
+                    We recommend defrosting at room temperature before enjoying.
+                </p>
+            </div>
+
+            <div class="faq-item">
+                <h3>Do you use organic ingredients?</h3>
+                <p>
+                    We use locally sourced ingredients where possible and are committed to quality. 
+                    Specific ingredient information is available on each product page.
+                </p>
+            </div>
+
+            <div class="faq-item">
+                <h3>Can I see the nutritional information?</h3>
+                <p>
+                    Nutritional information is available on request. 
+                    Please contact us with the specific product names you're interested in.
+                </p>
+            </div>
+        </div>
+    </section>
+     <section class="help-section">
+        <h2>Account & Registration</h2>
+        <div class="faq-grid">
+            <div class="faq-item">
+                <h3>Do I need an account to order?</h3>
+                <p>
+                    Yes, you need to <a href="register.html">create an account</a> to place orders. 
+                    This helps us track your order history and save your preferences.
+                </p>
+            </div>
+
+            <div class="faq-item">
+                <h3>I forgot my password. What should I do?</h3>
+                <p>
+                    Click the "Forgot your password?" link on the <a href="loginpage.html">login page</a>. 
+                    You'll receive an email with instructions to reset your password.
+                </p>
+            </div>
+
+            <div class="faq-item">
+                <h3>How do I update my account details?</h3>
+                <p>
+                    Log in to your account and visit your account settings page to update your email, 
+                    password, or delivery address.
+                </p>
+            </div>
+
+             <div class="faq-item">
+                <h3>Is my information secure?</h3>
+                <p>
+                    Yes! We use industry-standard security measures to protect your personal information 
+                    and payment details. We never share your data with third parties.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="help-section">
+        <h2>Custom Orders & Special Occasions</h2>
+        <div class="faq-grid">
+            <div class="faq-item">
+                <h3>Can you add personalized messages?</h3>
+                <p>
+                    Absolutely! You can add a personalized message to most cakes at checkout, 
+                    or contact us for more elaborate custom text and decorations.
+                </p>
+            </div>
+
+            <div class="faq-item">
+                <h3>What about large orders for events?</h3>
+                <p>
+                    We can handle bulk orders for corporate events, parties, and weddings. 
+                    Please contact us to discuss your requirements.
+                </p>
+            </div>
+
+            <div class="faq-item">
+                <h3>How much notice do you need for custom orders?</h3>
+                <p>
+                    We recommend at least 1 week for standard custom orders and 2-3 weeks for 
+                    elaborate celebration cakes or large events.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="help-section">
+        <h2>Returns & Quality</h2>
+        <div class="faq-grid">
+            <div class="faq-item">
+                <h3>What if I'm not satisfied with my order?</h3>
+                <p>
+                    Customer satisfaction is our priority. If you're not happy with your order, 
+                    please contact us within 24 hours and we'll make it right.
+                </p>
+            </div>
+
+            <div class="faq-item">
+                <h3>Can I return or exchange items?</h3>
+                <p>
+                    Due to the nature of fresh food, we cannot accept returns. However, 
+                    if there's an issue with quality or your order, we'll offer a refund or replacement.
+                </p>
+            </div>
+
+            <div class="faq-item">
+                <h3>What if my delivery arrives damaged?</h3>
+                <p>
+                    Please take photos and contact us immediately. We'll arrange a replacement 
+                    or full refund for any damaged items.
+                </p>
+            </div>
+
+            <div class="faq-item">
+                <h3>How can I provide feedback?</h3>
+                <p>
+                    We love hearing from our customers! You can leave reviews on product pages 
+                    or contact us directly.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="help-section">
+        <div class="help-contact">
+            <h2>Still need help?</h2>
+            <p>
+                If you couldn't find the answer to your question, we're here to help! 
+                Get in touch with our friendly team.
+            </p>
+            <p class="contact-info">
+                Email: <a href="mailto:info@group19.com">info@group19.com</a><br>
+            </p>
+        </div>
+    </section>
+      <footer>
+        <div class="footer-container">
+
+            <div class="footer-section about">
+                <h2>About Bakes&Cakes</h2>
+                <p>
+                    Bakes&Cakes brings you freshly baked breads, pastries, and desserts daily.
+                    Discover new recipes and indulge in the warmth of home-baked goodness.
+                </p>
+            </div>
+
+            <div class="footer-section links">
+                <h2>Quick Links</h2>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="recipes.html">Our Bakes</a></li>
+                    <li><a href="loginpage.html">Login</a></li>
+                    <li><a href="register.html">Register</a></li>
+                    <li><a href="help.html">Help</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section social">
+                <h2>Follow Us</h2>
+                <div class="social-icons">
+                    <a href="#" aria-label="Facebook">
+                        <img src="img/Facebook_Logo_2023.png" alt="Facebook" class="social-icon">
+                    </a>
+                    <a href="#" aria-label="Twitter">
+                        <img src="img/Logo_of_Twitter.svg.png" alt="Twitter" class="social-icon">
+                    </a>
+                    <a href="#" aria-label="Instagram">
+                        <img src="img/Instagram_icon.png" alt="Instagram" class="social-icon">
+                    </a>
+                </div>
+            </div>
+
+        </div>
+        
+ <?php include '../components/footer.php'; ?>
+<?php include '../components/script.html'; ?>
+
+     <script src="js/app.js"></script>
+
+    <style>
+        .help-section {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .help-section h2 {
+            color: #c97b4a;
+            font-family: "Georgia", serif;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .faq-item {
+            background: #ffffff;
+            border: 2px solid #e9b88f;
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .faq-item h3 {
+            color: #c97b4a;
+            font-family: "Georgia", serif;
+            font-size: 1.1em;
+            margin-bottom: 12px;
+        }
+
+        .faq-item p {
+            color: #555;
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+
+        .faq-item a {
+            color: #3b271d;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .faq-item a:hover {
+            text-decoration: underline;
+        }
+
+            .help-contact {
+            text-align: center;
+            background: #ffffff;
+            border: 2px solid #e9b88f;
+            border-radius: 14px;
+            padding: 30px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .help-contact h2 {
+            color: #c97b4a;
+            font-family: "Georgia", serif;
+            margin-bottom: 15px;
+        }
+
+        .contact-info {
+            margin-top: 20px;
+            color: #555;
+            line-height: 1.8;
+        }
+
+        .contact-info a {
+            color: #3b271d;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</body>
+</html>
