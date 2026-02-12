@@ -2,6 +2,12 @@
 session_start();
 include "dbconnect.php";
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    unset($_SESSION['basket']);
+    header("Location: checkout_success.php");
+    exit();
+}
+
 if (isset($_SESSION['logout'])) {
     echo "<p style='color: red;'>" . $_SESSION['logout'] . "</p>";
     unset($_SESSION['logout']);
@@ -47,7 +53,7 @@ try {
 
     <section class="hero">
         <div class="hero-content">
-            <form id="paymentForm">
+            <form id="paymentForm" method="post" action="checkout.php">
                 <h1>Please enter your details for payment:</h1>
 
                 <h3>Card Number:</h3>
@@ -83,15 +89,7 @@ try {
         </div>
     </section>
 
-    <script>
-    document.getElementById('paymentForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        if (this.checkValidity()) {
-            this.reset();
-            location.reload();
-        }
-    });
-    </script>
+    
 </main>
 
 <?php include '../components/footer.php'; ?>
