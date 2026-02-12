@@ -195,8 +195,8 @@ try {
     <section class="section">
         <h3> Log in to order</h3> 
         <p>To add items to your basket, please 
-            <a href="../login.php">log in</a> or 
-            <a href="../register.php">register</a>.
+            <a href="../bake/loginpage.php">log in</a> or 
+            <a href="../bake/register.php">register</a>.
         </p> 
     </section> 
         <?php endif; ?>
