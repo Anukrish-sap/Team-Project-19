@@ -191,6 +191,25 @@ try {
         </div>
     </section>
 
+<?php if (!isset($_SESSION['userID'])): ?>
+    <section class="section">
+        <h3> Log in to order</h3> 
+        <p>To add items to your basket, please 
+            <a href="../login.php">log in</a> or 
+            <a href="../register.php">register</a>.
+        </p> 
+    </section> 
+        <?php endif; ?>
+
+<?php if (isset($_SESSION['userID'])): ?>
+      <section class="section"> 
+        <h3> Welcome, 
+            <?= htmlspecialchars($_SESSION['name'], ENT_QUOTES, 'UTF-8') ?>
+        !</h3> 
+            <p>Browse our delicious selection of bakes and add your favourites to your basket.</p> 
+        </section> 
+            <?php endif; ?>
+
        <!-- Products grid -->
     <section class="section">
         <?php if (empty($bakes)): ?>
@@ -217,7 +236,7 @@ try {
                         <?php endif; ?>
 
                         <p class="price">£<?= number_format($row['price'], 2) ?></p>
-
+                    <?php if (isset($_SESSION['userID'])): ?>
                         <form action="../basket_add.php" method="post" class="add-to-basket-form">
                             <input type="hidden" name="bakeID" value="<?= (int)$row['bakeID'] ?>">
 
@@ -230,6 +249,7 @@ try {
 
                                <button type="submit" class="btn small">Add to basket</button>
                            </form>
+<?php endif; ?>
                     </article>
                 <?php endforeach; ?>
             </div>
