@@ -1,10 +1,6 @@
 <?php 
 session_start();
- if (isset($_SESSION['userID'])) {
-    include '../components/header_l.php';
-} else {
-    include '../components/header.php';
-}
+include '../components/header_unified.php';
 ?>
 <main class="about-container">
 
