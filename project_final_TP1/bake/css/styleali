@@ -4,14 +4,27 @@
     height: auto;
 }
 
-
-
 body.light {
     background-color: #fff7ef;
     color: #3b271d;
 }
+html {
+    height: 100%;
+}
 
-/* FORM CONTAINER */
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+body > *:not(footer) {
+    flex-shrink: 0;
+}
+
+footer {
+    margin-top: auto;
+}
 .form-container {
     background: #ffffff;
     border-radius: 14px;
@@ -66,24 +79,7 @@ body.light {
     transform: translateY(-2px);
 }
 
-/* Footer */
-footer {
-    background-color: #c7934e;
-}
-
-.footer-section h2,
-.footer-bottom a {
-    color: #fff6ec;
-}
-
-.social-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-}
-
-
-
+/* Theme toggle */
 .theme-toggle {
     display: flex;
     justify-content: flex-end;
@@ -129,8 +125,7 @@ footer {
     background: #e0a675;
 }
 
-/*dark mode*/
-
+/* Dark mode */
 body.dark {
     background: #1e1a18;
     color: #f5d7b8;
@@ -157,4 +152,136 @@ body.dark footer {
 }
 
 
+footer {
+    background-color: #c7934e;
+    padding: 2rem 5vw;
+    text-align: center;
+    margin-top: auto;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
 
+/* Top navigation bar */
+.footer-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(255, 246, 236, 0.3);
+    margin-bottom: 2rem;
+}
+
+.footer-nav a {
+    color: #fff6ec;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.2s ease;
+}
+
+.footer-nav a:hover {
+    color: #3b271d;
+}
+
+/* Social icons centered */
+.social-icons-centered {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.social-icons-centered a {
+    display: inline-block;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.social-icons-centered a:hover {
+    transform: translateY(-4px);
+    opacity: 0.8;
+}
+
+.social-icons-centered img {
+    width: 40px;
+    height: 40px;
+    display: block;
+    object-fit: contain;
+    border-radius: 0;
+}
+
+.social-icons-centered img[alt="Twitter"] {
+    object-fit: cover;
+}
+
+/* Bottom text */
+.footer-bottom {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 246, 236, 0.3);
+}
+
+.footer-bottom p {
+    margin: 0.5rem 0;
+    color: #fff6ec;
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.footer-bottom a {
+    color: #fff6ec;
+    text-decoration: none;
+}
+
+.footer-bottom a:hover {
+    text-decoration: underline;
+}
+
+/* Dark mode footer */
+body.dark footer {
+    background-color: #2a1f1c;
+}
+
+body.dark .footer-nav a,
+body.dark .footer-bottom p,
+body.dark .footer-bottom a {
+    color: #f5d7b8;
+}
+
+body.dark .footer-nav a:hover {
+    color: #e0a675;
+}
+
+/* Responsive footer */
+@media (max-width: 768px) {
+    .footer-nav {
+        gap: 1rem;
+    }
+    
+    .footer-nav a {
+        font-size: 0.85rem;
+    }
+    
+    .social-icons-centered img {
+        width: 36px;
+        height: 36px;
+    }
+}
+
+@media (max-width: 500px) {
+    .footer-nav {
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+    
+    .social-icons-centered {
+        gap: 1rem;
+    }
+    
+    .social-icons-centered img {
+        width: 32px;
+        height: 32px;
+    }
+}
