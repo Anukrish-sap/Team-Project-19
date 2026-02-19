@@ -8,9 +8,8 @@ if (isset($_SESSION['logout'])) {
     unset($_SESSION['logout']);
 }
 if (isset($_SESSION['userID'])) {
-    include '../components/header_l.php';
-} else {
-    include '../components/header.php';
+  include '../components/header_unified.php';
+
 }
 
 
@@ -18,49 +17,59 @@ if (isset($_SESSION['userID'])) {
 
 
 
-<body>
-    <section class="hero">
-        <div class="hero-content">
-<div class="contact-container">
-    <h1>Contact Us</h1>
-</div>
+
+<link rel="stylesheet" href="css/styles.css">
+
+
+
+
+<section class="hero">
+    <div class="hero-content">
+        <div class="contact-container">
+            <h1>Contact Us</h1>
+        </div>
+    </div>
 </section>
 
+<div class="contact-wrapper">
 
+    <form action="reviewadd.php" method="POST" class="contact-form">
 
-    <div>
-   <form action="reviewadd.php" method="POST">
-    <section class="section">
-        <label for="fullname">Full Name:</label>
-        <input type="text" id="fullname" name="fullname" placeholder="Enter your full name">
-    </section>
+        <div class="form-group">
+            <label for="fullname">Full Name</label>
+            <input type="text" id="fullname" name="fullname" placeholder="Enter your full name" required>
+        </div>
 
-    <section class="section section-alt">
-        <label for="email">Email Address:</label>
-        <input type="email" id="email" name="email" placeholder="Enter your email address">
-    </section>
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email address" required>
+        </div>
 
-    <section class="section">
-        <label for="subject">Subject:</label>
-        <input type="text" id="subject" name="subject" placeholder="Enter the subject">
-    </section>
+        <div class="form-group">
+            <label for="subject">Subject</label>
+            <input type="text" id="subject" name="subject" placeholder="Enter the subject" required>
+        </div>
 
-    <section class="section section-alt">
-        <label for="message">Message:</label>
-        <textarea id="message" name="message" rows="5" placeholder="Enter your message"></textarea>
-    </section>
+        <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="5" placeholder="Enter your message" required></textarea>
+        </div>
 
-    <section class="section">
-        <button type="submit">Submit</button>
-    </section>
-</form>
-        <section class="section section-alt">
+        <div class="form-group">
+            <button type="submit">Send Message</button>
+        </div>
+
+    </form>
+
     <div class="info-box">
-        <h2>Contact</h2>
+        <h2>Contact Information</h2>
         <p>Email: <strong>info@group19.com</strong></p>
     </div>
-        </section>
+
 </div>
+
+  
+
 
 </body>
 </html>

@@ -382,3 +382,124 @@ body {
 }
 
 }
+/* =========================
+   Contact Page Styles
+========================= */
+
+.contact-wrapper {
+    max-width: 800px;
+    margin: 0 auto 3rem;
+    padding: 0 1rem;
+}
+
+.contact-container {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.contact-container h1 {
+    font-size: 2.3rem;
+    color: var(--accent);
+    margin: 0;
+}
+
+/* Form Card Style */
+.contact-form {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+}
+
+/* Form Groups */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-color);
+}
+
+/* Inputs */
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 0.7rem;
+    background-color: var(--card-alt-bg);
+    color: var(--text-color);
+    font-size: 0.95rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+/* Focus state */
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+    background-color: var(--card-bg);
+}
+
+/* Textarea */
+.form-group textarea {
+    resize: vertical;
+    min-height: 140px;
+}
+
+/* Submit Button */
+.form-group button {
+    width: 100%;
+    background-color: var(--accent);
+    color: white;
+    border: none;
+    padding: 0.9rem;
+    border-radius: 999px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+}
+
+.form-group button:hover {
+    background-color: var(--accent-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+}
+
+/* Info Box */
+.info-box {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    padding: 1.8rem;
+    margin-top: 2rem;
+    text-align: center;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+}
+
+.info-box h2 {
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+}
+
+.info-box strong {
+    color: var(--accent-dark);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .contact-form {
+        padding: 1.5rem;
+    }
+
+    .contact-container h1 {
+        font-size: 1.9rem;
+    }
+}
