@@ -61,4 +61,4 @@ $isLoggedIn = isset($_SESSION['userID']);
     </div>
 </div>
 
-<script src="bake/js/support_chat.js"></script>
+<script src="js/support_chat.js"></script>
