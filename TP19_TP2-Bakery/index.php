@@ -1,28 +1,32 @@
 <?php
-// You can remove these 3 lines once everything works
+// Debug (remove later)
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 session_start();
 
-// ✅ dbconnect.php is in: public_/bake/dbconnect.php
-require __DIR__ . '/public_/bake/dbconnect.php';
+// Web base for browser URLs (links/images/css)
+define('BASE_URL', '/public_/bake');
+
+// File base for includes on disk (index.php is in /public_html)
+define('BASE_PATH', __DIR__ . '/public_');
+
+// DB connect is inside: public_html/public_/bake/dbconnect.php
+require BASE_PATH . '/bake/dbconnect.php';
+
+// Header is inside: public_html/public_/components/header_unified.php
+include BASE_PATH . '/components/header_unified.php';
 
 if (isset($_SESSION['logout'])) {
     echo "<p style='color: red;'>" . $_SESSION['logout'] . "</p>";
     unset($_SESSION['logout']);
 }
 
-// ✅ headers are in: public_/components/
-if (isset($_SESSION['userID'])) {
-    require __DIR__ . '/public_/components/header_l.php';
-} else {
-    require __DIR__ . '/public_/components/header.php';
-}
-
 try {
-    $category = isset($_GET['category']) ? htmlspecialchars($_GET['category'], ENT_QUOTES, 'UTF-8') : null;
+    $category = isset($_GET['category'])
+        ? htmlspecialchars($_GET['category'], ENT_QUOTES, 'UTF-8')
+        : null;
 
     $categoryMap = [
         'cakes'    => 1,
@@ -50,7 +54,7 @@ try {
     $bakes = $query->fetchAll(PDO::FETCH_ASSOC);
 
 } catch (PDOException $e) {
-    echo "Error: " . $e->getMessage();
+    echo "Error: " . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
     exit();
 }
 ?>
@@ -65,9 +69,8 @@ try {
                 Bakes & Cakes brings fresh bakery goodness to your door.
             </p>
             <div class="hero-buttons">
-                <!-- ✅ note /public_/bake/ here -->
-                <a href="/public_/bake/bakes.php" class="btn primary">Shop all products</a>
-                <a href="/public_/bake/products.php?tag=gluten-free" class="btn secondary">View gluten free range</a>
+                <a href="<?= BASE_URL ?>/bakes.php" class="btn primary">Shop all products</a>
+                <a href="<?= BASE_URL ?>/products.php?tag=gluten-free" class="btn secondary">View gluten free range</a>
             </div>
         </div>
     </section>
@@ -81,14 +84,13 @@ try {
             <?php
             if (!empty($bakes)) {
                 foreach ($bakes as $bake) {
-                    if (in_array($bake['bakeID'], [1, 2, 3])) {
+                    if (in_array((int)$bake['bakeID'], [1, 2, 3], true)) {
                         echo "<article class='card product-card'>";
                         echo "<div class='product-image placeholder-image'>";
 
                         if (!empty($bake['imageFileName'])) {
-                            // ✅ images under public_/bake/img/uploads
-                            $imagePath = "/public_/bake/img/uploads/" . htmlspecialchars($bake['imageFileName'], ENT_QUOTES, 'UTF-8');
-                            echo "<img src='" . $imagePath . "' alt='Bake Image' style='max-width: 300px; height: auto;'><br>";
+                            $imagePath = BASE_URL . "/img/uploads/" . htmlspecialchars($bake['imageFileName'], ENT_QUOTES, 'UTF-8');
+                            echo "<img src='{$imagePath}' alt='Bake Image' style='max-width: 300px; height: auto;'><br>";
                         }
 
                         echo "</div>";
@@ -110,22 +112,22 @@ try {
         <h3>Browse by category</h3>
 
         <div class="card-grid categories-grid">
-            <a href="/public_/bake/products.php?category=cakes" class="card category-card">
+            <a href="<?= BASE_URL ?>/products.php?category=cakes" class="card category-card">
                 <h4>Cakes</h4>
                 <p>Celebration cakes, layer cakes, and loaf cakes for every event.</p>
             </a>
 
-            <a href="/public_/bake/products.php?category=cookies" class="card category-card">
+            <a href="<?= BASE_URL ?>/products.php?category=cookies" class="card category-card">
                 <h4>Cookies</h4>
                 <p>Soft, chewy, or crunchy cookies baked fresh daily.</p>
             </a>
 
-            <a href="/public_/bake/products.php?category=pastries" class="card category-card">
+            <a href="<?= BASE_URL ?>/products.php?category=pastries" class="card category-card">
                 <h4>Pastries</h4>
                 <p>Buttery croissants, danishes, and puff pastry delights.</p>
             </a>
 
-            <a href="/public_/bake/products.php?category=bread" class="card category-card">
+            <a href="<?= BASE_URL ?>/products.php?category=bread" class="card category-card">
                 <h4>Bread</h4>
                 <p>Fresh loaves, rolls, and specialty breads.</p>
             </a>
@@ -169,7 +171,7 @@ try {
                     Our goal is to offer a professional bakery experience that lets customers browse,
                     filter, and order their favourite treats from home.
                 </p>
-                <a href="/public_/bake/about.php" class="btn secondary">Learn more about us</a>
+                <a href="<?= BASE_URL ?>/about.php" class="btn secondary">Learn more about us</a>
             </div>
         </div>
     </section>
@@ -180,7 +182,7 @@ try {
         <p class="section-intro">
             Use our Contact form to get in touch about custom cakes, large orders, or allergy questions.
         </p>
-        <a href="/public_/bake/contact.php" class="btn primary">Contact us</a>
+        <a href="<?= BASE_URL ?>/contact.php" class="btn primary">Contact us</a>
     </section>
 
     <!-- Newsletter -->
@@ -188,4 +190,17 @@ try {
         <h3>Stay updated</h3>
         <p class="section-intro">
             Sign up to hear about new bakes, seasonal specials, and discounts.
-        <
+        </p>
+        <form class="newsletter-form" action="#" method="post">
+            <label for="newsletter-email" class="visually-hidden">Email address</label>
+            <input type="email" id="newsletter-email" name="newsletter_email" placeholder="Enter your email" required>
+            <button type="submit" class="btn primary small">Sign up</button>
+        </form>
+    </section>
+</main>
+
+<?php include BASE_PATH . '/components/footer.php'; ?>
+<?php include BASE_PATH . '/components/script.html'; ?>
+
+</body>
+</html>
