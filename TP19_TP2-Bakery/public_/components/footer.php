@@ -48,3 +48,17 @@ $isLoggedIn = isset($_SESSION['userID']);
         </p>
     </div>
 </footer>
+<div id="support-chat">
+    <div id="chat-header" onclick="toggleChat()">Support</div>
+
+    <div id="chat-body">
+        <div id="chat-messages"></div>
+
+        <form id="chat-form" onsubmit="sendMessage(event)">
+            <input type="text" id="chat-input" placeholder="Ask a question..." required>
+            <button type="submit">Send</button>
+        </form>
+    </div>
+</div>
+
+<script src="bake/js/support_chat.js"></script>
