@@ -12,7 +12,7 @@ function sendMessage(event) {
     addMessage(message, "user");
     input.value = "";
 
-    fetch("faq_response.php", {
+    fetch("/public_/bake/faq_response.php", {
         method: "POST",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded"
