@@ -1,96 +1,99 @@
 <?php
 session_start();
+header('Content-Type: application/json');
 
 $message = strtolower(trim($_POST['message'] ?? ''));
 
 if (!$message) {
-    echo "How can I help you today?";
+    echo json_encode([
+        "reply" => "Hello. I can help with orders, delivery times, product information, payments, or account support.",
+        "buttons" => ["How to Order", "Delivery Times", "View Products"]
+    ]);
     exit;
 }
 
-// Store last message in session for context
-$_SESSION['last_message'] = $message;
-
-// Intent keyword groups
-$intents = [
-    "order" => ["order", "buy", "purchase", "place order"],
-    "availability" => ["available", "availability", "stock", "in stock"],
-    "delivery" => ["delivery", "shipping", "postage"],
-    "payment" => ["payment", "pay", "card", "checkout"],
-    "account" => ["login", "register", "account", "sign in", "sign up"],
-    "basket" => ["basket", "cart"],
-    "help" => ["help", "support", "problem", "issue"],
-    "contact" => ["contact", "email", "phone"],
-    "about" => ["about", "company", "who are you"]
-];
-
-// Score each intent
-$scores = [];
-
-foreach ($intents as $intent => $keywords) {
-    $scores[$intent] = 0;
+function scoreIntent($message, $keywords) {
+    $score = 0;
     foreach ($keywords as $word) {
         if (strpos($message, $word) !== false) {
-            $scores[$intent]++;
+            $score++;
         }
     }
+    return $score;
 }
 
-// Find best match
-$bestIntent = array_keys($scores, max($scores))[0];
+$intents = [
 
-$response = "";
+    "order" => [
+        "keywords" => ["order", "buy", "purchase", "how can i order", "how do i order", "place order"],
+        "response" => "Ordering is simple. Visit our Products page, select your items, add them to your basket, and proceed to checkout.",
+        "buttons" => ["View Products", "View Basket"]
+    ],
 
-// Only respond if at least 1 keyword matched
-if (max($scores) > 0) {
+    "products" => [
+        "keywords" => ["what products", "what do you sell", "what have you got", "items available", "products available"],
+        "response" => "We offer a range of freshly prepared baked goods including cakes, pastries, and specialty treats. You can browse the full selection on our Products page.",
+        "buttons" => ["View Products"]
+    ],
 
-    switch ($bestIntent) {
+    "delivery" => [
+        "keywords" => ["delivery", "shipping", "how long", "when will", "delivery time"],
+        "response" => "Our standard delivery time is 2 to 3 working days. You will receive confirmation once your order has been dispatched.",
+        "buttons" => ["Track an Order", "Place an Order"]
+    ],
 
-        case "order":
-            $response = "You can place an order through our Products page by adding items to your basket and proceeding to checkout. Are you looking for a specific product?";
-            break;
+    "availability" => [
+        "keywords" => ["available", "in stock", "availability"],
+        "response" => "If a product appears on our Products page, it is currently in stock. Availability updates automatically.",
+        "buttons" => ["View Products"]
+    ],
 
-        case "availability":
-            $response = "If a product appears on our Products page, it is currently in stock. Would you like help checking a specific item?";
-            break;
+    "payment" => [
+        "keywords" => ["payment", "pay", "card", "checkout problem", "card declined"],
+        "response" => "Payments are processed securely during checkout. If your card was declined, please check your details or contact your bank.",
+        "buttons" => ["Go to Basket"]
+    ],
 
-        case "delivery":
-            $response = "We offer delivery on all orders. Delivery options and estimated times are shown at checkout. Would you like more information about delivery costs?";
-            break;
+    "account" => [
+        "keywords" => ["login", "register", "account", "sign in", "sign up"],
+        "response" => "You can log in or create an account using the navigation menu. Let me know if you are experiencing access issues.",
+        "buttons" => ["Login", "Register"]
+    ],
 
-        case "payment":
-            $response = "We accept secure online payments during checkout. If you are experiencing an issue, please let me know what stage you are stuck at.";
-            break;
+    "help" => [
+        "keywords" => ["help", "support", "problem", "issue"],
+        "response" => "I am here to assist. Could you describe your issue in a little more detail?",
+        "buttons" => []
+    ],
 
-        case "account":
-            $response = "You can register or log in using the links at the top of the page. Are you having trouble signing in?";
-            break;
+    "greeting" => [
+        "keywords" => ["hi", "hello", "hey"],
+        "response" => "Hello. How can I assist you today?",
+        "buttons" => ["How to Order", "Delivery Times", "View Products"]
+    ]
 
-        case "basket":
-            $response = "You can manage your basket from the Basket page where you can update quantities or proceed to checkout.";
-            break;
+];
 
-        case "help":
-            $response = "I am here to help. Could you describe the issue in a little more detail?";
-            break;
+$bestIntent = null;
+$highestScore = 0;
 
-        case "contact":
-            $response = "You can reach us through the Contact page. Would you like me to direct you there?";
-            break;
-
-        case "about":
-            $response = "You can learn more about us on the About Us page. Is there something specific you would like to know?";
-            break;
+foreach ($intents as $intent => $data) {
+    $score = scoreIntent($message, $data["keywords"]);
+    if ($score > $highestScore) {
+        $highestScore = $score;
+        $bestIntent = $intent;
     }
+}
 
+if ($highestScore > 0 && $bestIntent !== null) {
+    $response = $intents[$bestIntent]["response"];
+    $buttons = $intents[$bestIntent]["buttons"];
 } else {
-
-    // Context awareness example
-    if (isset($_SESSION['last_message'])) {
-        $response = "I want to make sure I help correctly. Could you give a bit more detail about what you need assistance with?";
-    } else {
-        $response = "How can I assist you today?";
-    }
+    $response = "I can help with ordering, delivery times, product details, payments, or account access. What would you like assistance with?";
+    $buttons = ["How to Order", "Delivery Times", "View Products"];
 }
 
-echo $response;
+echo json_encode([
+    "reply" => $response,
+    "buttons" => $buttons
+]);
