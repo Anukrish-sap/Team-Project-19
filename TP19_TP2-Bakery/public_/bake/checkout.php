@@ -2,14 +2,10 @@
 session_start();
 require_once "dbconnect.php";
 
-// If basket is empty, redirect back
 if (empty($_SESSION['basket'])) {
     header("Location: basket.php");
     exit();
 }
-
-
-// PROCESS CHECKOUT (POST REQUEST)
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cardnumber'])) {
 
@@ -43,60 +39,80 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cardnumber'])) {
     exit();
 }
 
-// -------------------------------
-// SHOW PAYMENT FORM (GET REQUEST)
-// -------------------------------
-
-if (isset($_SESSION['logout'])) {
-    echo "<p style='color: red;'>" . $_SESSION['logout'] . "</p>";
-    unset($_SESSION['logout']);
-}
-
 include '../components/header_unified.php';
 ?>
-
+<link rel="stylesheet" href="css/styles.css">
 <main>
-    <section class="hero">
-        <div class="hero-content">
-            <form id="paymentForm" method="post" action="checkout.php">
-                <h1>Please enter your details for payment:</h1>
 
-                <h3>Card Number:</h3>
-                <input type="text" id="cardnumber" name="cardnumber" placeholder="Card Number" pattern="[0-9]{16}" required>
-                <br><br>
+<section class="hero">
+    <div class="hero-content">
+        <h1>Secure Checkout</h1>
+        <p>Please enter your payment details below.</p>
+    </div>
+</section>
 
-                <h3>Full Name:</h3>
-                <input type="text" id="Name" name="Name" placeholder="Full Name" pattern="[a-zA-Z ]{1,50}" required>
-                <br><br>
+<div class="checkout-wrapper">
 
-                <h3>Billing Address:</h3>
-                <input type="text" id="BAdd" name="BAdd" placeholder="Billing Address" pattern="[a-zA-Z0-9_ ]{1,50}" required>
-                <<br><br>
+    <form method="post" action="checkout.php" class="checkout-form">
 
-                <h3>Country:</h3>
-                <input type="text" id="Country" name="Country" placeholder="Country" pattern="[a-zA-Z ]{1,50}" required>
-                <br><br>
-
-                <h3>City:</h3>
-                <input type="text" id="City" name="City" placeholder="City" pattern="[a-zA-Z ]{1,50}" required>
-                <br><br>
-
-                <h3>Postcode:</h3>
-                <input type="text" id="postcode" name="postcode" placeholder="Postcode" pattern="[A-Za-z0-9\s]{3,10}" required>
-                <br><br>
-
-                <h3>Phone Number:</h3>
-                <input type="tel" id="phone" name="phone" placeholder="Phone Number" pattern="\d{11}" maxlength="11" required>
-                <br><br><br>
-
-                <button type="submit" class="btn">Submit</button>
-            </form>
+        <div class="form-group">
+            <label for="cardnumber">Card Number</label>
+            <input type="text" id="cardnumber" name="cardnumber"
+                placeholder="1234567812345678"
+                pattern="[0-9]{16}" maxlength="16" required>
         </div>
-    </section>
+
+        <div class="form-group">
+            <label for="Name">Full Name</label>
+            <input type="text" id="Name" name="Name"
+                placeholder="Full Name"
+                pattern="[a-zA-Z ]{1,50}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="BAdd">Billing Address</label>
+            <input type="text" id="BAdd" name="BAdd"
+                placeholder="Billing Address"
+                required>
+        </div>
+
+        <div class="form-group">
+            <label for="Country">Country</label>
+            <input type="text" id="Country" name="Country"
+                placeholder="Country"
+                required>
+        </div>
+
+        <div class="form-group">
+            <label for="City">City</label>
+            <input type="text" id="City" name="City"
+                placeholder="City"
+                required>
+        </div>
+
+        <div class="form-group">
+            <label for="postcode">Postcode</label>
+            <input type="text" id="postcode" name="postcode"
+                placeholder="Postcode"
+                required>
+        </div>
+
+        <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone"
+                placeholder="Phone Number"
+                pattern="\d{11}" maxlength="11" required>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="checkout-btn">Complete Payment</button>
+        </div>
+
+    </form>
+
+</div>
+
 </main>
 
 <?php include '../components/footer.php'; ?>
 <?php include '../components/script.html'; ?>
-
-</body>
-</html>
