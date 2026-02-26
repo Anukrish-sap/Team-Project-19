@@ -1,56 +1,61 @@
 <?php
 session_start();
-include "dbconnect.php";
+require_once "dbconnect.php";
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+// If basket is empty, redirect back
+if (empty($_SESSION['basket'])) {
+    header("Location: basket.php");
+    exit();
+}
+
+
+// PROCESS CHECKOUT (POST REQUEST)
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cardnumber'])) {
+
+    try {
+        $db->beginTransaction();
+
+        foreach ($_SESSION['basket'] as $bakeID => $quantity) {
+
+            $stmt = $db->prepare("SELECT amount FROM inventory WHERE bakeID = ?");
+            $stmt->execute([$bakeID]);
+            $currentstock = $stmt->fetchColumn();
+
+            if ($currentstock === false) continue;
+
+            $newStock = max(0, $currentstock - $quantity);
+
+            $update = $db->prepare("UPDATE inventory SET amount = ? WHERE bakeID = ?");
+            $update->execute([$newStock, $bakeID]);
+        }
+
+        $db->commit();
+
+    } catch (PDOException $e) {
+        $db->rollBack();
+        echo "Error: " . $e->getMessage();
+        exit();
+    }
+
     unset($_SESSION['basket']);
     header("Location: checkout_success.php");
     exit();
 }
 
+// -------------------------------
+// SHOW PAYMENT FORM (GET REQUEST)
+// -------------------------------
+
 if (isset($_SESSION['logout'])) {
     echo "<p style='color: red;'>" . $_SESSION['logout'] . "</p>";
     unset($_SESSION['logout']);
 }
-if (isset($_SESSION['userID'])) {
-    include '../components/header_l.php';
-} else {
-    include '../components/header.php';
-}
 
-try {
-    $category = isset($_GET['category']) ? htmlspecialchars($_GET['category'], ENT_QUOTES, 'UTF-8') : null;
-
-    $categoryMap = [
-        'cakes' => 1,
-        'cookies' => 2,
-        'pastries' => 3,
-        'bread' => 4
-    ];
-
-    $sql = "select bakes.bakeID, bakes.bakeName, bakes.description, bakes.price, bakes.bakeTypeID, bakes.imageFileName from bakes where 1=1";
-
-    if ($category && isset($categoryMap[$category])) {
-        $sql .= " AND bakes.bakeTypeID = :bakeTypeID";
-    }
-
-    $query = $db->prepare($sql);
-
-    if ($category && isset($categoryMap[$category])) {
-        $query->bindValue(':bakeTypeID', $categoryMap[$category], PDO::PARAM_INT);
-    }
-    $query->execute();
-    $bakes = $query->fetchAll(PDO::FETCH_ASSOC);
-
-} catch (PDOException $e) {
-    echo "Error: " . $e->getMessage();
-    exit();
-}
+include '../components/header_unified.php';
 ?>
 
-
 <main>
-
     <section class="hero">
         <div class="hero-content">
             <form id="paymentForm" method="post" action="checkout.php">
@@ -61,19 +66,19 @@ try {
                 <br><br>
 
                 <h3>Full Name:</h3>
-                <input type="text" id="Name" name="Name" placeholder="Full Name" pattern="[a-zA-Z]{1,50}" required>
+                <input type="text" id="Name" name="Name" placeholder="Full Name" pattern="[a-zA-Z ]{1,50}" required>
                 <br><br>
 
                 <h3>Billing Address:</h3>
                 <input type="text" id="BAdd" name="BAdd" placeholder="Billing Address" pattern="[a-zA-Z0-9_ ]{1,50}" required>
-                <br><br>
+                <<br><br>
 
                 <h3>Country:</h3>
-                <input type="text" id="Country" name="Country" placeholder="Country" pattern="[a-zA-Z]{1,50}" required>
+                <input type="text" id="Country" name="Country" placeholder="Country" pattern="[a-zA-Z ]{1,50}" required>
                 <br><br>
 
                 <h3>City:</h3>
-                <input type="text" id="City" name="City" placeholder="City" pattern="[a-zA-Z]{1,50}" required>
+                <input type="text" id="City" name="City" placeholder="City" pattern="[a-zA-Z ]{1,50}" required>
                 <br><br>
 
                 <h3>Postcode:</h3>
@@ -88,12 +93,9 @@ try {
             </form>
         </div>
     </section>
-
-    
 </main>
 
 <?php include '../components/footer.php'; ?>
-
 <?php include '../components/script.html'; ?>
 
 </body>
