@@ -63,6 +63,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     
     try {
         if ($nameAdd->execute()) {
+            $userID = $db->lastInsertID(); // gets the ID of the new user to put in adminStatus
+            $adminInsert = $db->prepare("INSERT INTO adminStatus (userID, adminStatus) VALUES (:userID, 0)"); // Set adminStatus to 0, false, for regular users
+            $adminInsert->bindParam(':userID', $userID);
+            $adminInsert->execute();
             $_SESSION['success'] = "Account created successfully!";
             header("Location: loginpage.php");
             exit();
