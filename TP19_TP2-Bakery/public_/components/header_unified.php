@@ -9,6 +9,22 @@ if (!defined('APP_URL'))  define('APP_URL', '/public_/bake');
 $current = basename($_SERVER['PHP_SELF']);
 $isLoggedIn = isset($_SESSION['userID']);
 $userName = $isLoggedIn ? $_SESSION['name'] : 'Guest';
+$isAdmin = false;
+if ($isLoggedIn) {
+    $stmt = $db->prepare("
+    SELECT adminStatus
+    from adminStatus
+    WHERE userID = :userID
+");
+$stmt-> bindValue (':userID', $_SESSION['userID'], PDO::PARAM_INT);
+$stmt->execute();
+
+$row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if ($row && (int)$row['adminStatus'] === 1) {
+    $isAdmin = true; //Boolean for admin status
+}
+}
 ?>
 
 <!DOCTYPE html>
@@ -55,11 +71,19 @@ $userName = $isLoggedIn ? $_SESSION['name'] : 'Guest';
                     Basket
                 </a>
             </li>
-            <li>
-                <a href="<?= APP_URL ?>/contact.php" class="<?= $current === 'contact.php' ? 'active' : '' ?>">
-                    Contact
-                </a>
-            </li>
+            <?php if ($isAdmin): ?>
+    <li>
+        <a href="<?= APP_URL ?>/stock.php" class="<?= $current === 'stock.php' ? 'active' : '' ?>">
+            Inventory
+        </a>
+    </li>
+<?php else: ?>
+    <li>
+        <a href="<?= APP_URL ?>/contact.php" class="<?= $current === 'contact.php' ? 'active' : '' ?>">
+            Contact
+        </a>
+    </li>
+<?php endif; ?>
             <li>
                 <a href="<?= APP_URL ?>/helppage.php" class="<?= $current === 'helppage.php' ? 'active' : '' ?>">
                     Help
