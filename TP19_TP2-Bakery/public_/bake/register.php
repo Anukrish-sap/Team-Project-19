@@ -1,13 +1,31 @@
 <?php
-
+include "dbconnect.php";
 session_start();
+
+if (isset($_SESSION['success'])) {
+    echo "<p style='color: green;'>" . $_SESSION['success'] . "</p>";
+    unset($_SESSION['success']); // Clear the success message after displaying
+}
+
+if (isset($_SESSION['error'])) {
+    echo "<p style='color: red;'>" . $_SESSION['error'] . "</p>";
+    unset($_SESSION['error']); // Clear the error message after displaying
+}
+if(isset($_SESSION['login1'])){
+    echo "<p style='color: red;'>".$_SESSION['login1']."</p>"; //if there is an error, show this message
+    unset($_SESSION['login1']); //unset the error message so it doesn't show again
+}
+
+unset ($_SESSION['uid']);
+unset ($_SESSION['username']);
+
 ?>
 
 
 <link rel="stylesheet" href="css/styleali.css">
 <link rel="stylesheet" href="css/styles.css">
 
-<?php include '../components/header.php'; ?>
+<?php include '../components/header_unified.php'; ?>
             
             
     </div>
