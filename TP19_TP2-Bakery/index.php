@@ -86,7 +86,7 @@ try {
                 foreach ($bakes as $bake) {
                     if (in_array((int)$bake['bakeID'], [1, 2, 3], true)) {
                         echo "<article class='card product-card'>";
-                        echo "<div class='product-image placeholder-image'>";
+                        echo "<div class='product-image'>";
 
                         if (!empty($bake['imageFileName'])) {
                             $imagePath = BASE_URL . "/img/uploads/" . htmlspecialchars($bake['imageFileName'], ENT_QUOTES, 'UTF-8');
