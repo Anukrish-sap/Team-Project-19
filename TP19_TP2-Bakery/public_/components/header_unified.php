@@ -67,6 +67,12 @@ if ($row && (int)$row['adminStatus'] === 1) {
                 </a>
             </li>
             <li>
+                 <a href="<?= APP_URL ?>/quiz.php" class="<?= $current === 'quiz.php' ? 'active' : '' ?>">
+                     Find Your Bake
+                 </a>
+            </li>
+            
+            <li>
                 <a href="<?= APP_URL ?>/basket.php" class="<?= $current === 'basket.php' ? 'active' : '' ?>">
                     Basket
                 </a>
