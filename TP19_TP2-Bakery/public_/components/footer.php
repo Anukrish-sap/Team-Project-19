@@ -49,8 +49,8 @@ $isLoggedIn = isset($_SESSION['userID']);
     </div>
 </footer>
 <div id="support-chat">
-    <div id="chat-header" onclick="toggleChat()">Support</div>
-
+<div id="chat-icon" onclick="toggleChat()">💬</div>
+    
     <div id="chat-body">
         <div id="chat-messages"></div>
 
