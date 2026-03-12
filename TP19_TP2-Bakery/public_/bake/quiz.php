@@ -7,58 +7,50 @@ if (!defined('APP_URL'))  define('APP_URL', '/public_/bake');
 
 include '../components/header_unified.php';
 
-// ─── Map quiz answers → bakeTypeID ───────────────────────────────────────────
-// bakeTypeID: 1=cakes, 2=cookies, 3=pastries, 4=bread
-$matchedBakes   = [];
-$quizSubmitted  = false;
-$resultHeading  = '';
-$resultSubtext  = '';
+$matchedBakes  = [];
+$quizSubmitted = false;
+$resultHeading = '';
+$resultSubtext = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['q_taste'])) {
     $quizSubmitted = true;
 
-    $taste    = $_POST['q_taste']   ?? '';   // sweet | savoury | both
-    $calorie  = $_POST['q_calorie'] ?? '';   // light | indulgent | dontmind
-    $texture  = $_POST['q_texture'] ?? '';   // soft | crunchy | flaky | hearty
-    $occasion = $_POST['q_occasion'] ?? '';  // everyday | special | breakfast | snack
+    $taste    = $_POST['q_taste']    ?? '';
+    $calorie  = $_POST['q_calorie']  ?? '';
+    $texture  = $_POST['q_texture']  ?? '';
+    $occasion = $_POST['q_occasion'] ?? '';
 
-    // Decide which category (bakeTypeID) fits best
     if ($taste === 'savoury') {
-        $targetType = 4; // bread
+        $targetType    = 4;
         $resultHeading = 'Savoury Lover';
-        $resultSubtext = 'You\'re all about bold, satisfying flavours. We\'ve matched you with our best bread and savoury bakes.';
+        $resultSubtext = 'You\'re all about bold, satisfying flavours. We\'ve matched you with our best savoury bakes.';
     } elseif ($taste === 'sweet' && $texture === 'crunchy') {
-        $targetType = 2; // cookies
+        $targetType    = 2;
         $resultHeading = 'The Cookie Monster';
         $resultSubtext = 'Crisp edges, chewy centres — you know what you want. Here are your perfect cookies.';
     } elseif ($taste === 'sweet' && $texture === 'flaky') {
-        $targetType = 3; // pastries
+        $targetType    = 3;
         $resultHeading = 'Pastry Perfectionist';
         $resultSubtext = 'Buttery layers and delicate bakes are your thing. These pastries were made for you.';
     } elseif ($taste === 'both' || $occasion === 'breakfast') {
-        $targetType = 3; // pastries — good for both sweet/savoury and breakfast
+        $targetType    = 3;
         $resultHeading = 'The Balanced Baker';
         $resultSubtext = 'Sweet or savoury, you want it all. Our pastries hit that perfect middle ground.';
     } elseif ($calorie === 'light') {
-        $targetType = 2; // cookies — portioned treats
+        $targetType    = 2;
         $resultHeading = 'Mindful Muncher';
         $resultSubtext = 'Treating yourself doesn\'t mean going overboard. These perfectly-sized bakes are just right.';
     } else {
-        $targetType = 1; // cakes — default indulgent sweet
+        $targetType    = 1;
         $resultHeading = 'Cake Connoisseur';
         $resultSubtext = 'Go big or go home. Life\'s too short for anything less than a proper cake.';
     }
 
-    // Query real products from the database
     try {
         $stmt = $db->prepare("
-            SELECT
-                bakes.bakeID,
-                bakes.bakeName,
-                bakes.description,
-                bakes.price,
-                bakes.imageFileName,
-                COALESCE(inventory.amount, 0) AS stockAmount
+            SELECT bakes.bakeID, bakes.bakeName, bakes.description,
+                   bakes.price, bakes.imageFileName,
+                   COALESCE(inventory.amount, 0) AS stockAmount
             FROM bakes
             LEFT JOIN inventory ON inventory.bakeID = bakes.bakeID
             WHERE bakes.bakeTypeID = :typeID
@@ -75,159 +67,134 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['q_taste'])) {
 ?>
 
 <style>
-/* ── Quiz page styles ─────────────────────────────── */
-.quiz-hero {
+/* All variables match styles.css exactly:
+   --bg-color, --card-bg, --card-alt-bg, --text-color,
+   --accent, --accent-soft, --accent-dark, --border-color */
+
+.quiz-page {
+    max-width: 680px;
+    margin: 2.5rem auto 4rem;
+    padding: 0 1rem;
+}
+
+.quiz-page-hero {
     text-align: center;
-    padding: 3rem 1rem 1.5rem;
+    margin-bottom: 2rem;
 }
-.quiz-hero .eyebrow {
-    font-size: 0.78rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--accent, #8b2a7a);
-    font-weight: 600;
-    margin-bottom: 0.6rem;
-}
-.quiz-hero h2 {
-    font-size: clamp(1.8rem, 5vw, 2.6rem);
-    margin-bottom: 0.75rem;
-}
-.quiz-hero p {
-    color: var(--text-muted, #666);
-    max-width: 480px;
-    margin: 0 auto;
-    line-height: 1.7;
-}
-
-/* Steps */
-.quiz-steps {
-    display: flex;
-    justify-content: center;
-    gap: 0.4rem;
-    margin: 1.5rem 0 0;
-}
-.quiz-step-dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: var(--border-color, #ddd);
-    transition: background 0.3s;
-}
-.quiz-step-dot.active { background: var(--accent, #8b2a7a); }
-.quiz-step-dot.done   { background: var(--accent, #8b2a7a); opacity: 0.4; }
-
-/* Quiz wrapper */
-.quiz-wrapper {
-    max-width: 640px;
-    margin: 0 auto;
-    padding: 0 1rem 3rem;
-}
-
-/* Question slide */
-.quiz-slide {
-    display: none;
-    animation: qFadeIn 0.35s ease both;
-}
-.quiz-slide.active { display: block; }
-
-@keyframes qFadeIn {
-    from { opacity: 0; transform: translateY(12px); }
-    to   { opacity: 1; transform: translateY(0); }
-}
-
-.quiz-question-label {
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    color: var(--accent, #8b2a7a);
-    font-weight: 600;
+.quiz-page-hero h2 {
+    font-size: clamp(1.6rem, 4vw, 2.2rem);
     margin-bottom: 0.5rem;
+    color: var(--text-color);
 }
-.quiz-question-text {
-    font-size: clamp(1.1rem, 3vw, 1.35rem);
-    font-weight: 700;
-    margin-bottom: 1.4rem;
-    color: var(--heading-color, #1a1a1a);
+.quiz-page-hero p {
+    color: var(--text-color);
+    opacity: 0.7;
+    font-size: 0.97rem;
+    line-height: 1.65;
 }
 
-/* Option buttons */
-.quiz-options {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.75rem;
-    margin-bottom: 1.5rem;
+.quiz-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 1.1rem;
+    padding: 2rem 2rem 2.2rem;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06);
 }
-.quiz-option {
+
+.quiz-question-block {
+    margin-bottom: 2rem;
+}
+
+.quiz-q-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.13em;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+}
+.quiz-q-text {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin-bottom: 1rem;
+}
+
+.quiz-tiles {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.65rem;
+}
+.quiz-tile {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    padding: 0.9rem 1rem;
-    background: var(--card-bg, #fff);
-    border: 1.5px solid var(--border-color, #e0e0e0);
-    border-radius: 0.85rem;
+    gap: 0.7rem;
+    padding: 0.8rem 1rem;
+    background: var(--card-alt-bg);
+    border: 1.5px solid var(--border-color);
+    border-radius: 0.75rem;
     cursor: pointer;
     transition: all 0.18s ease;
-    text-align: left;
     font-family: inherit;
-    font-size: 0.92rem;
-    color: var(--text-color, #333);
+    font-size: 0.91rem;
+    font-weight: 500;
+    color: var(--text-color);
+    text-align: left;
     width: 100%;
 }
-.quiz-option:hover {
-    border-color: var(--accent, #8b2a7a);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+.quiz-tile:hover {
+    border-color: var(--accent);
+    background: var(--card-bg);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
-.quiz-option.selected {
-    border-color: var(--accent, #8b2a7a);
-    background: color-mix(in srgb, var(--accent, #8b2a7a) 8%, var(--card-bg, #fff));
-    box-shadow: 0 2px 12px rgba(139,42,122,0.15);
+.quiz-tile.selected {
+    border-color: var(--accent);
+    background: var(--card-bg);
+    box-shadow: 0 0 0 2px var(--accent-soft);
 }
-.quiz-option-emoji { font-size: 1.4rem; flex-shrink: 0; }
-.quiz-option-text  { font-weight: 500; }
+.quiz-tile-emoji { font-size: 1.3rem; flex-shrink: 0; }
 
-/* Nav */
-.quiz-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 0.5rem;
-}
-.btn-quiz-back {
-    background: none;
-    border: 1.5px solid var(--border-color, #ddd);
-    color: var(--text-muted, #888);
-    border-radius: 0.6rem;
-    padding: 0.55rem 1.2rem;
-    font-size: 0.88rem;
-    cursor: pointer;
-    font-family: inherit;
-    transition: all 0.18s;
-}
-.btn-quiz-back:hover { border-color: var(--accent, #8b2a7a); color: var(--accent, #8b2a7a); }
-.btn-quiz-next {
-    background: var(--accent, #8b2a7a);
-    color: #fff;
+.quiz-divider {
     border: none;
-    border-radius: 0.6rem;
-    padding: 0.65rem 1.6rem;
-    font-size: 0.92rem;
-    font-weight: 600;
-    cursor: pointer;
-    font-family: inherit;
-    transition: all 0.2s;
-    box-shadow: 0 3px 12px rgba(139,42,122,0.25);
+    border-top: 1px solid var(--border-color);
+    margin: 1.8rem 0;
 }
-.btn-quiz-next:hover   { opacity: 0.88; transform: translateY(-1px); }
-.btn-quiz-next:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
 
-/* ── Results ───────────────────────────────────────── */
-.quiz-result-hero {
+.quiz-submit-wrap { margin-top: 2rem; }
+.quiz-submit-btn {
+    width: 100%;
+    padding: 0.9rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    border: none;
+    background: var(--accent);
+    color: #fff;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    font-family: inherit;
+}
+.quiz-submit-btn:hover {
+    background: var(--accent-dark);
+    transform: translateY(-1px);
+}
+.quiz-error {
+    color: #b00020;
+    font-size: 0.85rem;
+    margin-top: 0.6rem;
+    display: none;
+    text-align: center;
+}
+
+/* Results */
+.result-hero {
     text-align: center;
     padding: 2.5rem 1rem 1.5rem;
 }
 .result-badge {
     display: inline-block;
-    background: var(--accent, #8b2a7a);
+    background: var(--accent);
     color: #fff;
     font-size: 0.72rem;
     letter-spacing: 0.15em;
@@ -237,56 +204,75 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['q_taste'])) {
     font-weight: 600;
     margin-bottom: 0.75rem;
 }
-.quiz-result-hero h2 { margin-bottom: 0.6rem; }
-.quiz-result-hero p  { color: var(--text-muted, #666); max-width: 480px; margin: 0 auto; line-height: 1.7; }
+.result-hero h2 {
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+.result-hero p {
+    color: var(--text-color);
+    opacity: 0.7;
+    max-width: 460px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
 
-.result-products-section {
+.result-products {
     max-width: 900px;
     margin: 0 auto;
     padding: 0 1rem 3rem;
 }
-.result-products-section h3 { margin-bottom: 1.2rem; }
-
-.retake-wrap {
-    text-align: center;
-    margin-top: 2rem;
+.result-products h3 {
+    margin-bottom: 1.2rem;
+    color: var(--text-color);
 }
+
+.retake-wrap { text-align: center; margin-top: 2rem; }
 .btn-retake {
+    display: inline-block;
     background: none;
-    border: 1.5px solid var(--accent, #8b2a7a);
-    color: var(--accent, #8b2a7a);
-    border-radius: 0.6rem;
+    border: 1.5px solid var(--accent);
+    color: var(--accent);
+    border-radius: 999px;
     padding: 0.65rem 1.8rem;
     font-size: 0.92rem;
     font-weight: 600;
-    cursor: pointer;
-    font-family: inherit;
     text-decoration: none;
-    display: inline-block;
     transition: all 0.2s;
 }
-.btn-retake:hover { background: var(--accent, #8b2a7a); color: #fff; }
+.btn-retake:hover {
+    background: var(--accent);
+    color: #fff;
+}
 
-@media (max-width: 500px) {
-    .quiz-options { grid-template-columns: 1fr; }
+/* Reuse existing card styles */
+.product-link { display:block; text-decoration:none; color:inherit; height:100%; }
+.product-card { cursor:pointer; transition:transform 0.12s ease; }
+.product-card:hover { transform:translateY(-2px); }
+.view-desc { margin-top:0.6rem; display:inline-block; font-weight:600; font-size:0.95rem; text-decoration:underline; opacity:0.9; }
+.stock-line { margin-top:0.35rem; font-size:0.9rem; opacity:0.9; }
+.out-stock  { margin-top:0.35rem; color:#b00020; font-weight:700; }
+
+@media (max-width: 480px) {
+    .quiz-tiles { grid-template-columns: 1fr; }
+    .quiz-card  { padding: 1.4rem 1.1rem; }
 }
 </style>
 
 <main>
 
 <?php if ($quizSubmitted): ?>
-<!-- ════════════════ RESULTS ════════════════ -->
-<section class="quiz-result-hero">
+
+<div class="result-hero">
     <div class="result-badge">✦ Your Match</div>
     <h2><?= htmlspecialchars($resultHeading, ENT_QUOTES, 'UTF-8') ?></h2>
     <p><?= htmlspecialchars($resultSubtext, ENT_QUOTES, 'UTF-8') ?></p>
-</section>
+</div>
 
-<div class="result-products-section">
+<div class="result-products">
     <h3>We think you'll love these</h3>
 
     <?php if (empty($matchedBakes)): ?>
-        <p>We couldn't find any matching bakes right now — check back soon!</p>
+        <p>No matching bakes found right now — check back soon!</p>
     <?php else: ?>
         <div class="card-grid">
             <?php foreach ($matchedBakes as $row): ?>
@@ -294,12 +280,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['q_taste'])) {
                    href="<?= APP_URL ?>/bake_details.php?bakeID=<?= (int)$row['bakeID'] ?>">
 
                     <?php if (!empty($row['imageFileName'])): ?>
-                        <img
-                            src="<?= APP_URL ?>/img/uploads/<?= htmlspecialchars($row['imageFileName'], ENT_QUOTES, 'UTF-8') ?>"
-                            alt="<?= htmlspecialchars($row['bakeName'], ENT_QUOTES, 'UTF-8') ?>"
-                            class="product-image"
-                            style="height:140px;width:100%;object-fit:cover;border-radius:0.7rem;"
-                        >
+                        <img src="<?= APP_URL ?>/img/uploads/<?= htmlspecialchars($row['imageFileName'], ENT_QUOTES, 'UTF-8') ?>"
+                             alt="<?= htmlspecialchars($row['bakeName'], ENT_QUOTES, 'UTF-8') ?>"
+                             class="product-image"
+                             style="height:140px;width:100%;object-fit:cover;border-radius:0.7rem;">
                     <?php else: ?>
                         <div class="product-image placeholder-image">Bake</div>
                     <?php endif; ?>
@@ -311,7 +295,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['q_taste'])) {
                     <?php endif; ?>
 
                     <p class="price">From £<?= number_format((float)$row['price'], 2) ?></p>
-
                     <span class="view-desc">View details</span>
 
                     <?php if ((int)$row['stockAmount'] > 0): ?>
@@ -330,200 +313,140 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['q_taste'])) {
 </div>
 
 <?php else: ?>
-<!-- ════════════════ QUIZ ════════════════ -->
-<div class="quiz-hero">
-    <p class="eyebrow">✦ Personalised for you ✦</p>
-    <h2>Find Your Perfect Bake</h2>
-    <p>Answer 4 quick questions and we'll match you with treats you'll actually love.</p>
-    <div class="quiz-steps">
-        <div class="quiz-step-dot active" id="dot-0"></div>
-        <div class="quiz-step-dot" id="dot-1"></div>
-        <div class="quiz-step-dot" id="dot-2"></div>
-        <div class="quiz-step-dot" id="dot-3"></div>
+
+<div class="quiz-page">
+    <div class="quiz-page-hero">
+        <h2>Find Your Perfect Bake</h2>
+        <p>Answer 4 quick questions and we'll match you with treats you'll love.</p>
     </div>
-</div>
 
-<div class="quiz-wrapper">
-    <form method="POST" action="<?= APP_URL ?>/quiz.php" id="quizForm">
+    <div class="quiz-card">
+        <form method="POST" action="<?= APP_URL ?>/quiz.php" id="quizForm">
 
-        <!-- Q1: Sweet or Savoury -->
-        <div class="quiz-slide active" id="slide-0">
-            <div class="quiz-question-label">Question 1 of 4</div>
-            <div class="quiz-question-text">Sweet or savoury — where does your heart lie?</div>
-            <div class="quiz-options">
-                <button type="button" class="quiz-option" data-q="q_taste" data-val="sweet">
-                    <span class="quiz-option-emoji">🍰</span>
-                    <span class="quiz-option-text">Definitely sweet</span>
-                </button>
-                <button type="button" class="quiz-option" data-q="q_taste" data-val="savoury">
-                    <span class="quiz-option-emoji">🧀</span>
-                    <span class="quiz-option-text">Savoury all the way</span>
-                </button>
-                <button type="button" class="quiz-option" data-q="q_taste" data-val="both">
-                    <span class="quiz-option-emoji">⚖️</span>
-                    <span class="quiz-option-text">I love both!</span>
-                </button>
-                <button type="button" class="quiz-option" data-q="q_taste" data-val="sweet">
-                    <span class="quiz-option-emoji">🍫</span>
-                    <span class="quiz-option-text">Chocolate. Always.</span>
-                </button>
+            <!-- Q1 -->
+            <div class="quiz-question-block">
+                <div class="quiz-q-label">Question 1</div>
+                <div class="quiz-q-text">Sweet or savoury — where does your heart lie?</div>
+                <div class="quiz-tiles">
+                    <button type="button" class="quiz-tile" data-q="q_taste" data-val="sweet">
+                        <span class="quiz-tile-emoji">🍰</span> Definitely sweet
+                    </button>
+                    <button type="button" class="quiz-tile" data-q="q_taste" data-val="savoury">
+                        <span class="quiz-tile-emoji">🧀</span> Savoury all the way
+                    </button>
+                    <button type="button" class="quiz-tile" data-q="q_taste" data-val="both">
+                        <span class="quiz-tile-emoji">⚖️</span> I love both!
+                    </button>
+                    <button type="button" class="quiz-tile" data-q="q_taste" data-val="sweet">
+                        <span class="quiz-tile-emoji">🍫</span> Chocolate. Always.
+                    </button>
+                </div>
+                <input type="hidden" name="q_taste" id="input_q_taste">
             </div>
-            <input type="hidden" name="q_taste" id="input_q_taste">
-            <div class="quiz-nav">
-                <span></span>
-                <button type="button" class="btn-quiz-next" id="next-0" disabled onclick="nextSlide(0)">Continue →</button>
-            </div>
-        </div>
 
-        <!-- Q2: Calorie conscious -->
-        <div class="quiz-slide" id="slide-1">
-            <div class="quiz-question-label">Question 2 of 4</div>
-            <div class="quiz-question-text">How do you feel about calories?</div>
-            <div class="quiz-options">
-                <button type="button" class="quiz-option" data-q="q_calorie" data-val="light">
-                    <span class="quiz-option-emoji">🥗</span>
-                    <span class="quiz-option-text">Keeping it light</span>
-                </button>
-                <button type="button" class="quiz-option" data-q="q_calorie" data-val="indulgent">
-                    <span class="quiz-option-emoji">🎉</span>
-                    <span class="quiz-option-text">Treat yourself!</span>
-                </button>
-                <button type="button" class="quiz-option" data-q="q_calorie" data-val="dontmind">
-                    <span class="quiz-option-emoji">🤷</span>
-                    <span class="quiz-option-text">I don't really mind</span>
-                </button>
-                <button type="button" class="quiz-option" data-q="q_calorie" data-val="light">
-                    <span class="quiz-option-emoji">🌿</span>
-                    <span class="quiz-option-text">Clean &amp; wholesome</span>
-                </button>
-            </div>
-            <input type="hidden" name="q_calorie" id="input_q_calorie">
-            <div class="quiz-nav">
-                <button type="button" class="btn-quiz-back" onclick="prevSlide(1)">← Back</button>
-                <button type="button" class="btn-quiz-next" id="next-1" disabled onclick="nextSlide(1)">Continue →</button>
-            </div>
-        </div>
+            <hr class="quiz-divider">
 
-        <!-- Q3: Texture -->
-        <div class="quiz-slide" id="slide-2">
-            <div class="quiz-question-label">Question 3 of 4</div>
-            <div class="quiz-question-text">What texture do you go for?</div>
-            <div class="quiz-options">
-                <button type="button" class="quiz-option" data-q="q_texture" data-val="soft">
-                    <span class="quiz-option-emoji">🍞</span>
-                    <span class="quiz-option-text">Soft &amp; fluffy</span>
-                </button>
-                <button type="button" class="quiz-option" data-q="q_texture" data-val="crunchy">
-                    <span class="quiz-option-emoji">🍪</span>
-                    <span class="quiz-option-text">Crunchy &amp; crisp</span>
-                </button>
-                <button type="button" class="quiz-option" data-q="q_texture" data-val="flaky">
-                    <span class="quiz-option-emoji">🥐</span>
-                    <span class="quiz-option-text">Flaky &amp; buttery</span>
-                </button>
-                <button type="button" class="quiz-option" data-q="q_texture" data-val="hearty">
-                    <span class="quiz-option-emoji">🫓</span>
-                    <span class="quiz-option-text">Dense &amp; hearty</span>
-                </button>
+            <!-- Q2 -->
+            <div class="quiz-question-block">
+                <div class="quiz-q-label">Question 2</div>
+                <div class="quiz-q-text">How do you feel about calories?</div>
+                <div class="quiz-tiles">
+                    <button type="button" class="quiz-tile" data-q="q_calorie" data-val="light">
+                        <span class="quiz-tile-emoji">🥗</span> Keeping it light
+                    </button>
+                    <button type="button" class="quiz-tile" data-q="q_calorie" data-val="indulgent">
+                        <span class="quiz-tile-emoji">🎉</span> Treat yourself!
+                    </button>
+                    <button type="button" class="quiz-tile" data-q="q_calorie" data-val="dontmind">
+                        <span class="quiz-tile-emoji">🤷</span> I don't really mind
+                    </button>
+                    <button type="button" class="quiz-tile" data-q="q_calorie" data-val="light">
+                        <span class="quiz-tile-emoji">🌿</span> Clean &amp; wholesome
+                    </button>
+                </div>
+                <input type="hidden" name="q_calorie" id="input_q_calorie">
             </div>
-            <input type="hidden" name="q_texture" id="input_q_texture">
-            <div class="quiz-nav">
-                <button type="button" class="btn-quiz-back" onclick="prevSlide(2)">← Back</button>
-                <button type="button" class="btn-quiz-next" id="next-2" disabled onclick="nextSlide(2)">Continue →</button>
-            </div>
-        </div>
 
-        <!-- Q4: Occasion -->
-        <div class="quiz-slide" id="slide-3">
-            <div class="quiz-question-label">Question 4 of 4</div>
-            <div class="quiz-question-text">What's the occasion?</div>
-            <div class="quiz-options">
-                <button type="button" class="quiz-option" data-q="q_occasion" data-val="everyday">
-                    <span class="quiz-option-emoji">☕</span>
-                    <span class="quiz-option-text">Everyday treat</span>
-                </button>
-                <button type="button" class="quiz-option" data-q="q_occasion" data-val="special">
-                    <span class="quiz-option-emoji">🎂</span>
-                    <span class="quiz-option-text">Special occasion</span>
-                </button>
-                <button type="button" class="quiz-option" data-q="q_occasion" data-val="breakfast">
-                    <span class="quiz-option-emoji">🌅</span>
-                    <span class="quiz-option-text">Weekend breakfast</span>
-                </button>
-                <button type="button" class="quiz-option" data-q="q_occasion" data-val="snack">
-                    <span class="quiz-option-emoji">⚡</span>
-                    <span class="quiz-option-text">Quick snack</span>
-                </button>
-            </div>
-            <input type="hidden" name="q_occasion" id="input_q_occasion">
-            <div class="quiz-nav">
-                <button type="button" class="btn-quiz-back" onclick="prevSlide(3)">← Back</button>
-                <button type="button" class="btn-quiz-next" id="next-3" disabled onclick="submitQuiz()">See my results 🎉</button>
-            </div>
-        </div>
+            <hr class="quiz-divider">
 
-    </form>
+            <!-- Q3 -->
+            <div class="quiz-question-block">
+                <div class="quiz-q-label">Question 3</div>
+                <div class="quiz-q-text">What texture do you go for?</div>
+                <div class="quiz-tiles">
+                    <button type="button" class="quiz-tile" data-q="q_texture" data-val="soft">
+                        <span class="quiz-tile-emoji">🍞</span> Soft &amp; fluffy
+                    </button>
+                    <button type="button" class="quiz-tile" data-q="q_texture" data-val="crunchy">
+                        <span class="quiz-tile-emoji">🍪</span> Crunchy &amp; crisp
+                    </button>
+                    <button type="button" class="quiz-tile" data-q="q_texture" data-val="flaky">
+                        <span class="quiz-tile-emoji">🥐</span> Flaky &amp; buttery
+                    </button>
+                    <button type="button" class="quiz-tile" data-q="q_texture" data-val="hearty">
+                        <span class="quiz-tile-emoji">🫓</span> Dense &amp; hearty
+                    </button>
+                </div>
+                <input type="hidden" name="q_texture" id="input_q_texture">
+            </div>
+
+            <hr class="quiz-divider">
+
+            <!-- Q4 -->
+            <div class="quiz-question-block">
+                <div class="quiz-q-label">Question 4</div>
+                <div class="quiz-q-text">What's the occasion?</div>
+                <div class="quiz-tiles">
+                    <button type="button" class="quiz-tile" data-q="q_occasion" data-val="everyday">
+                        <span class="quiz-tile-emoji">☕</span> Everyday treat
+                    </button>
+                    <button type="button" class="quiz-tile" data-q="q_occasion" data-val="special">
+                        <span class="quiz-tile-emoji">🎂</span> Special occasion
+                    </button>
+                    <button type="button" class="quiz-tile" data-q="q_occasion" data-val="breakfast">
+                        <span class="quiz-tile-emoji">🌅</span> Weekend breakfast
+                    </button>
+                    <button type="button" class="quiz-tile" data-q="q_occasion" data-val="snack">
+                        <span class="quiz-tile-emoji">⚡</span> Quick snack
+                    </button>
+                </div>
+                <input type="hidden" name="q_occasion" id="input_q_occasion">
+            </div>
+
+            <div class="quiz-submit-wrap">
+                <button type="button" class="quiz-submit-btn" onclick="submitQuiz()">
+                    Find My Perfect Bake 🎉
+                </button>
+                <div class="quiz-error" id="quizError">
+                    Please answer all questions before continuing.
+                </div>
+            </div>
+
+        </form>
+    </div>
 </div>
 
 <?php endif; ?>
 </main>
 
 <script>
-const totalSlides = 4;
-const answers = {};
-
-// Handle option selection
-document.querySelectorAll('.quiz-option').forEach(btn => {
+document.querySelectorAll('.quiz-tile').forEach(btn => {
     btn.addEventListener('click', function () {
-        const q   = this.dataset.q;
-        const val = this.dataset.val;
-        answers[q] = val;
-
-        // Update hidden input
-        const input = document.getElementById('input_' + q);
-        if (input) input.value = val;
-
-        // Highlight selected option in this group
-        document.querySelectorAll(`.quiz-option[data-q="${q}"]`).forEach(b => b.classList.remove('selected'));
+        const q = this.dataset.q;
+        document.querySelectorAll(`.quiz-tile[data-q="${q}"]`).forEach(b => b.classList.remove('selected'));
         this.classList.add('selected');
-
-        // Enable the next button for this slide
-        const slideIndex = parseInt(this.closest('.quiz-slide').id.replace('slide-', ''));
-        const nextBtn = document.getElementById('next-' + slideIndex);
-        if (nextBtn) nextBtn.disabled = false;
+        document.getElementById('input_' + q).value = this.dataset.val;
+        document.getElementById('quizError').style.display = 'none';
     });
 });
 
-function nextSlide(current) {
-    const currentSlide = document.getElementById('slide-' + current);
-    const nextSlide    = document.getElementById('slide-' + (current + 1));
-    if (!nextSlide) return;
-
-    currentSlide.classList.remove('active');
-    nextSlide.classList.add('active');
-    updateDots(current + 1);
-}
-
-function prevSlide(current) {
-    const currentSlide = document.getElementById('slide-' + current);
-    const prevSlide    = document.getElementById('slide-' + (current - 1));
-    if (!prevSlide) return;
-
-    currentSlide.classList.remove('active');
-    prevSlide.classList.add('active');
-    updateDots(current - 1);
-}
-
-function updateDots(activeIndex) {
-    for (let i = 0; i < totalSlides; i++) {
-        const dot = document.getElementById('dot-' + i);
-        dot.classList.remove('active', 'done');
-        if (i < activeIndex)       dot.classList.add('done');
-        else if (i === activeIndex) dot.classList.add('active');
-    }
-}
-
 function submitQuiz() {
+    const required = ['q_taste', 'q_calorie', 'q_texture', 'q_occasion'];
+    const allAnswered = required.every(q => document.getElementById('input_' + q).value !== '');
+    if (!allAnswered) {
+        document.getElementById('quizError').style.display = 'block';
+        return;
+    }
     document.getElementById('quizForm').submit();
 }
 </script>
