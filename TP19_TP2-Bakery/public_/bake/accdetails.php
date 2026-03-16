@@ -15,7 +15,7 @@ if (isset($_SESSION['userID'])) {
     exit();
 }
 try {
-    $acc = $db->prepare("SELECT email, name FROM users WHERE userID = :userID");
+    $acc = $db->prepare("SELECT email, name, points FROM users WHERE userID = :userID");
     $acc->bindParam(':userID', $_SESSION['userID']);
     $acc->execute();
     $user = $acc->fetch(PDO::FETCH_ASSOC);
