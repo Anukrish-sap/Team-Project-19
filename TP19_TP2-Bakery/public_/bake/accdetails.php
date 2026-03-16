@@ -174,6 +174,16 @@ try {
     <p class="acc-section-title">Other Options</p>
     <div class="acc-cards">
 
+        <div class="acc-card">
+    <div class="acc-card-left">
+      <div class="acc-card-icon">★</div>
+      <div class="acc-card-text">
+        <strong>Reward Points</strong>
+        <span><?php echo $points; ?> points available</span>
+      </div>
+    </div>
+  </div>
+
       <a href="logout.php" class="acc-card">
         <div class="acc-card-left">
           <div class="acc-card-icon">
