@@ -19,6 +19,7 @@ try {
     $acc->bindParam(':userID', $_SESSION['userID']);
     $acc->execute();
     $user = $acc->fetch(PDO::FETCH_ASSOC);
+    $points = $user['points']; // added points
 
     if (!$acc) {
         $_SESSION['error'] = "Error fetching account details: " . $db->errorInfo()[2];
