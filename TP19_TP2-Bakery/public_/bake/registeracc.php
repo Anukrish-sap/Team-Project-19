@@ -56,7 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     // Insert new user into the database
-    $nameAdd = $db->prepare("INSERT INTO users (name, email, password) VALUES (:name, :email, :password)"); // ADDED name column
+    $nameAdd = $db->prepare("INSERT INTO users (name, email, password, points) VALUES (:name, :email, :password, 0)"); // additional insert points
     $nameAdd->bindParam(':name', $name);
     $nameAdd->bindParam(':email', $email);
     $nameAdd->bindParam(':password', $password);
