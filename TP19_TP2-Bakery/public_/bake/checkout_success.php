@@ -1,6 +1,20 @@
 <?php
 session_start();
 
+include "dbconnect.php";
+
+// Reward points system
+if (isset($_SESSION['userID'])) {
+
+    $userID = $_SESSION['userID'];
+    $rewardPoints = 10;
+
+    $stmt = $db->prepare("UPDATE users SET points = points + :points WHERE userID = :userID");
+    $stmt->bindParam(':points', $rewardPoints);
+    $stmt->bindParam(':userID', $userID);
+    $stmt->execute();
+}
+
 // Clear the basket if it still exists
 unset($_SESSION['basket']);
 
