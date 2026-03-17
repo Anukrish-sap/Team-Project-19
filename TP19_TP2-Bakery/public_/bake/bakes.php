@@ -43,7 +43,7 @@ try {
             bakes.price,
             bakes.bakeTypeID,
             bakes.imageFileName,
-            inventory.amount AS stockAmount
+            COALESCE(inventory.amount, 0) AS stockAmount
         FROM bakes
         LEFT JOIN inventory ON inventory.bakeID = bakes.bakeID
         WHERE 1 = 1
@@ -82,6 +82,52 @@ try {
     exit();
 }
 ?>
+
+<style>
+/* Make entire card clickable without blue link styles */
+.product-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    height: 100%;
+}
+
+/* Make the card feel clickable */
+.product-card {
+    cursor: pointer;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.product-card:hover {
+    transform: translateY(-2px);
+}
+.product-card:focus-within {
+    outline: 2px solid var(--accent, #8b2a7a);
+    outline-offset: 4px;
+    border-radius: 0.9rem;
+}
+
+/* Small CTA */
+.view-desc {
+    margin-top: 0.6rem;
+    display: inline-block;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: underline;
+    opacity: 0.9;
+}
+
+/* Stock text */
+.stock-line {
+    margin-top: 0.35rem;
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+.out-stock {
+    margin-top: 0.35rem;
+    color: #b00020;
+    font-weight: 700;
+}
+</style>
 
 <main>
     <section class="section">
@@ -123,7 +169,7 @@ try {
                 <a href="<?= APP_URL ?>/bakes.php"
                    class="btn secondary small"
                    style="padding:0.65rem 1.2rem;font-size:0.9rem;">
-                   Clear
+                    Clear
                 </a>
             <?php endif; ?>
         </form>
@@ -159,7 +205,7 @@ try {
         <section class="section">
             <h3>Log in to order</h3>
             <p>
-                To add items to your basket, please
+                To place an order, please
                 <a href="<?= APP_URL ?>/loginpage.php">log in</a> or
                 <a href="<?= APP_URL ?>/register.php">register</a>.
             </p>
@@ -167,7 +213,7 @@ try {
     <?php else: ?>
         <section class="section">
             <h3>Welcome, <?= htmlspecialchars($_SESSION['name'], ENT_QUOTES, 'UTF-8') ?>!</h3>
-            <p>Browse our delicious selection of bakes and add your favourites to your basket.</p>
+            <p>Click any bake to view sizes, servings, ingredients and reviews.</p>
         </section>
     <?php endif; ?>
 
@@ -177,7 +223,9 @@ try {
         <?php else: ?>
             <div class="card-grid">
                 <?php foreach ($bakes as $row): ?>
-                    <article class="card product-card">
+                    <a class="card product-card product-link"
+                       href="<?= APP_URL ?>/bake_details.php?bakeID=<?= (int)$row['bakeID'] ?>">
+
                         <?php if (!empty($row['imageFileName'])): ?>
                             <img
                                 src="<?= APP_URL ?>/img/uploads/<?= htmlspecialchars($row['imageFileName'], ENT_QUOTES, 'UTF-8') ?>"
@@ -195,32 +243,21 @@ try {
                             <p><?= htmlspecialchars($row['description'], ENT_QUOTES, 'UTF-8') ?></p>
                         <?php endif; ?>
 
-                        <p class="price">£<?= number_format((float)$row['price'], 2) ?></p>
+                        <p class="price">
+                            From £<?= number_format((float)$row['price'], 2) ?>
+                        </p>
 
-                        <?php if (isset($_SESSION['userID'])): ?>
-                            <form action="<?= APP_URL ?>/../basket_add.php" method="post" class="add-to-basket-form">
-                                <input type="hidden" name="bakeID" value="<?= (int)$row['bakeID'] ?>">
+                        <span class="view-desc">View details</span>
 
-                                <label>
-                                    Qty:
-                                    <input
-                                        type="number"
-                                        name="qty"
-                                        value="1"
-                                        min="1"
-                                        max="<?= (int)$row['stockAmount'] ?>"
-                                        class="qty-input"
-                                        oninvalid="this.setCustomValidity('The quantity must be equal to or less than the amount in stock')"
-                                        oninput="this.setCustomValidity('')"
-                                    >
-                                </label>
-
-                                <p>Amount in stock: <strong><?= (int)$row['stockAmount'] ?></strong></p>
-
-                                <button type="submit" class="btn small">Add to basket</button>
-                            </form>
+                        <?php if ((int)$row['stockAmount'] > 0): ?>
+                            <div class="stock-line">
+                                In stock: <strong><?= (int)$row['stockAmount'] ?></strong>
+                            </div>
+                        <?php else: ?>
+                            <div class="out-stock">Out of stock</div>
                         <?php endif; ?>
-                    </article>
+
+                    </a>
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
