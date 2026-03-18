@@ -1453,7 +1453,7 @@ body {
 
 .featured-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 1.25rem;
 }
 
@@ -1485,12 +1485,15 @@ body {
     color: var(--accent);
     font-size: 2.5rem;
     overflow: hidden;
+    flex-shrink: 0;
 }
 
 .featured-card-img img {
     width: 100%;
     height: 260px;
     object-fit: cover;
+    display: block;
+    flex-shrink: 0;
 }
 
 .featured-card-body {
