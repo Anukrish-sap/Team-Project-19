@@ -48,7 +48,7 @@ body {
     background-color: var(--card-bg);
     position: sticky;
     top: 0;
-    z-index: 10;
+    z-index: 9999;
     gap: 0.75rem;
     flex-wrap: wrap;
 }
@@ -130,6 +130,16 @@ body {
 .dropdown li {
     padding: 0;
 }
+.header-icons,
+.user-menu,
+.user-menu-btn,
+#theme-toggle,
+.basket-icon-btn,
+.mob-trigger {
+    position: relative;
+    z-index: 10000;
+    pointer-events: auto;
+}
 
 /* =========================================
    Theme Toggle
@@ -197,15 +207,20 @@ body {
     background-color: var(--card-alt-bg);
 }
 
+
 .section h3 {
     font-size: 1.5rem;
     margin-bottom: 0.75rem;
 }
 
+
+
 .section-intro {
     max-width: 600px;
     margin-bottom: 1.5rem;
 }
+
+
 
 /* =========================================
    Cards and Grids
@@ -637,6 +652,7 @@ body {
 #chat-header:hover {
     transform: translateY(-2px);
 }
+
 #chat-body {
     display: none;
     flex-direction: column;
@@ -1731,16 +1747,19 @@ body {
 /* =========================================
    Mobile Menu Drawer
 ========================================= */
-
 .mob-overlay {
     display: none;
     position: fixed;
     inset: 0;
-    z-index: 998;
+    z-index: 9998;
     background: rgba(0,0,0,0.4);
     backdrop-filter: blur(2px);
+    pointer-events: none;
 }
-.mob-overlay.open { display: block; }
+.mob-overlay.open {
+    display: block;
+    pointer-events: auto;
+}
 
 .mob-drawer {
     position: fixed;
@@ -1750,15 +1769,19 @@ body {
     width: 82%;
     max-width: 320px;
     background: var(--card-bg);
-    z-index: 999;
+    z-index: 9999;
     transform: translateX(-100%);
     transition: transform 0.28s ease;
     display: flex;
     flex-direction: column;
     overflow-y: auto;
     box-shadow: 4px 0 24px rgba(0,0,0,0.12);
+    pointer-events: none;
 }
-.mob-drawer.open { transform: translateX(0); }
+.mob-drawer.open {
+    transform: translateX(0);
+    pointer-events: auto;
+}
 
 .mob-drawer-top {
     display: flex;
@@ -1913,20 +1936,20 @@ body {
         display: none;
     }
 
-    .site-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0.45rem 3vw;
-        border-bottom: 1px solid var(--border-color);
-        background-color: var(--card-bg);
-        position: sticky;
-        top: 0;
-        z-index: 10;
-        gap: 0.45rem;
-        flex-wrap: nowrap;
-        min-height: 48px;
-    }
+.site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.45rem 3vw;
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--card-bg);
+    position: sticky;
+    top: 0;
+    z-index: 9999;
+    gap: 0.45rem;
+    flex-wrap: nowrap;
+    min-height: 48px;
+}
 
     .logo-area {
         display: flex;
@@ -2100,4 +2123,70 @@ body {
     border-radius: 6px;
     width: 100%;
     box-sizing: border-box;
+}
+
+/* bar chart for statistics.php */
+
+
+.bar-chart {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.bar-row {
+    display: grid;
+    grid-template-columns: 80px 1fr 80px;
+    align-items: center;
+    gap: 1rem;
+}
+
+.bar-label {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.bar {
+    height: 22px;
+    background-color: var(--accent-soft);
+    border-radius: 6px;
+    transition: width 0.4s ease;
+}
+
+.bar img {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 1px solid var(--border-color);
+}
+
+.bar-qty {
+    font-weight: 700;
+    text-align: right;
+}
+/* =========================
+   Header click / stacking fix
+========================= */
+
+.site-header * {
+    pointer-events: auto;
+}
+
+main,
+.section,
+.section-alt,
+.card-grid,
+.card,
+.home-section,
+.home-hero,
+.details-layout,
+.about-page,
+.acc-page,
+.contact-wrapper,
+.checkout-wrapper {
+    position: relative;
+    z-index: 1;
 }
