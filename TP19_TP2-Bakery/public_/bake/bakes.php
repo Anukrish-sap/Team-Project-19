@@ -267,6 +267,7 @@ try {
 <?php include '../components/footer.php'; ?>
 <?php include '../components/script.html'; ?>
 <?php include '../js/products.js'; ?>
+<?php include '../js/bakes.js'; ?>
 <div id="bakes-container" class="card-grid" style="display:none;"></div>
 </body>
 </html>
