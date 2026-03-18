@@ -2260,3 +2260,161 @@ main,
     color: white;
     border: none;
 }
+/* =========================================
+   Name Change Page
+========================================= */
+
+.namechange-hero {
+    padding: 3rem 5vw 2.5rem;
+    background: radial-gradient(ellipse at 20% 50%, rgba(192,123,80,0.15) 0%, transparent 60%),
+                var(--bg-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.namechange-hero-inner { max-width: 700px; }
+
+.namechange-hero-label {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(192,123,80,0.1);
+    padding: 0.3rem 0.75rem;
+    border-radius: 999px;
+    margin-bottom: 0.75rem;
+}
+
+.namechange-hero h1 {
+    font-size: clamp(1.6rem, 4vw, 2.2rem);
+    font-weight: 800;
+    margin: 0 0 0.4rem;
+    letter-spacing: -0.02em;
+}
+
+.namechange-hero p {
+    font-size: 0.97rem;
+    opacity: 0.65;
+    margin: 0;
+}
+
+.namechange-wrapper {
+    max-width: 520px;
+    margin: 0 auto;
+}
+
+.namechange-alert {
+    padding: 0.85rem 1.1rem;
+    border-radius: 0.7rem;
+    margin-bottom: 1.25rem;
+    font-size: 0.93rem;
+    font-weight: 600;
+    border: 1.5px solid;
+}
+
+.namechange-alert-success {
+    background: #f0faf4;
+    border-color: #6dbb8a;
+    color: #276843;
+}
+
+.namechange-alert-error {
+    background: #fdf3f3;
+    border-color: #e0a0a0;
+    color: #c0392b;
+}
+
+.namechange-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 1.1rem;
+    padding: 2rem;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.05);
+}
+
+.namechange-card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.75rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.namechange-card-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 0.65rem;
+    background: rgba(192,123,80,0.1);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.namechange-card-header h2 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0 0 0.2rem;
+}
+
+.namechange-card-header p {
+    font-size: 0.85rem;
+    opacity: 0.6;
+    margin: 0;
+}
+
+.namechange-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.namechange-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.namechange-field label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-color);
+    letter-spacing: 0.01em;
+}
+
+.namechange-field input {
+    padding: 0.75rem 1rem;
+    border: 1.5px solid var(--border-color);
+    border-radius: 0.75rem;
+    background: var(--bg-color);
+    color: var(--text-color);
+    font: inherit;
+    font-size: 0.95rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.namechange-field input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(192,123,80,0.13);
+    background: var(--card-bg);
+}
+
+.namechange-btn {
+    width: 100%;
+    padding: 0.85rem;
+    font-size: 0.97rem;
+    font-weight: 700;
+    border-radius: 0.75rem;
+    border: none;
+    cursor: pointer;
+    margin-top: 0.25rem;
+}
+
+@media (max-width: 600px) {
+    .namechange-card { padding: 1.25rem; }
+    .namechange-hero { padding: 2rem 5vw; }
+}
