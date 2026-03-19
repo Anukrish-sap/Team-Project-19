@@ -26,13 +26,13 @@ if (!$admin || (int)$admin['adminStatus'] !== 1) {
     exit();
 }
 
-// Fetch reviews
-try {
-    $stmt = $db->query("SELECT fullname, emailaddress, subject, message FROM reviews");
-    $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    die("Error fetching reviews: " . $e->getMessage());
-}
+$stmt = $db->query("
+SELECT fullname, emailaddress, subject, message, created_at 
+FROM reviews 
+ORDER BY reviewID DESC
+");
+
+$reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 include '../components/header_unified.php';
 
