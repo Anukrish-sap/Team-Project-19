@@ -40,8 +40,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['cardnumber'])) {
             $bakeID   = (int)$item['bakeID'];
             $quantity = (int)$item['qty'];
 
-            $stmt = $db->prepare("INSERT INTO purchaseItems (purchaseID, bakeID, quantity) VALUES (?, ?, ?)");
-            $stmt->execute([$purchaseID, $bakeID, $quantity]);
+           $unitPrice = (float)($item['unitPrice'] ?? 0);
+$stmt = $db->prepare("INSERT INTO purchaseItems (purchaseID, bakeID, quantity, unitPrice) VALUES (?, ?, ?, ?)");
+$stmt->execute([$purchaseID, $bakeID, $quantity, $unitPrice]);
 
             $stmt = $db->prepare("SELECT amount FROM inventory WHERE bakeID = ?");
             $stmt->execute([$bakeID]);
