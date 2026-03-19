@@ -267,7 +267,13 @@ try {
 <?php include '../components/footer.php'; ?>
 <?php include '../components/script.html'; ?>
 <?php include '../js/products.js'; ?>
-<?php include '../js/bakes.js'; ?>
+<div class= "buttons">
+    <button onclick="loadProducts()">All</button>
+    <button onclick="loadProducts('cakes')">Cakes</button>
+    <button onclick="loadProducts('cookies')">Cookies</button>
+    <button onclick="loadProducts('pastries')">Pastries</button>
+    <button onclick="loadProducts('bread')">Bread</button>
+</div>
 <div id="bakes-container" class="card-grid" style="display:none;"></div>
 </body>
 </html>

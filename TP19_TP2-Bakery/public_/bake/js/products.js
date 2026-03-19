@@ -1,7 +1,11 @@
 const container = document.getElementById('bakes-container');
 
-function loadProducts(category ='') {
-    fetch('../api/get_bakes.php${category ? '?category=' + category : ''}')
+function loadProducts(category = null) {
+    let url = '../api/get_bakes.php';
+    if(category) {
+        url += `?category=${encodeURIComponent(category)}`;
+    }
+    fetch(url)
         .then(response => response.json())
         .then(data => {
             container.innerHTML = '';
@@ -19,15 +23,11 @@ function loadProducts(category ='') {
                     <p class="price">£${parseFloat(bake.price).toFixed(2)}</p>
                 `;
                 container.appendChild(card);
+                setTimeout(() => {
+                   card.classList.add('visible'); 
+                }, index * 150);
             });
         });
 }
+
 loadProducts();
-document.querySelectorAll('.category-card').forEach(button => {
-    card.addEventListener('click', e => {
-        e.preventDefault();
-        const url = new URL(card.href);
-        const category = url.searchParams.get('category');
-        loadProducts(category);
-    });
-});
