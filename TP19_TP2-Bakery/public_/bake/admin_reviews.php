@@ -2,7 +2,7 @@
 session_start();
 include "dbconnect.php";
 
-// Check if user is logged in
+
 if (!isset($_SESSION['userID'])) {
     header("Location: home.php");
     exit();
@@ -35,7 +35,9 @@ try {
 }
 
 include '../components/header_unified.php';
+
 ?>
+<link rel="stylesheet" href="<?= APP_URL ?>/css/styles.css">
 
 <main>
     <section class="hero">
@@ -47,6 +49,7 @@ include '../components/header_unified.php';
     </section>
 
     <div class="contact-wrapper">
+    <div class="table-responsive">
         <table class="reviews-table">
             <thead>
                 <tr>
@@ -73,6 +76,7 @@ include '../components/header_unified.php';
                 <?php endif; ?>
             </tbody>
         </table>
+    </div>
     </div>
 </main>
 
