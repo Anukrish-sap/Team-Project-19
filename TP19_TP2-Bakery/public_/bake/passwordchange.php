@@ -18,7 +18,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $newPassword = $_POST['new_password'];
     $confirmPassword = $_POST['confirm_password'];
 
-    // Validate new password
     if (strlen($newPassword) < 8) {
         $_SESSION['error'] = "New password must be at least 8 characters long.";
         header("Location: passwordchange.php");
@@ -32,7 +31,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     try {
-        // Fetch current password hash
         $stmt = $db->prepare("SELECT password FROM users WHERE userID = :userID");
         $stmt->bindParam(':userID', $_SESSION['userID'], PDO::PARAM_INT);
         $stmt->execute();
@@ -44,17 +42,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             exit();
         }
 
-        // Verify old password
         if (!password_verify($currentPassword, $user['password'])) {
             $_SESSION['error'] = "Current password is incorrect.";
             header("Location: passwordchange.php");
             exit();
         }
 
-        // Hash new password
         $newPasswordHash = password_hash($newPassword, PASSWORD_DEFAULT);
 
-        // Update password
         $update = $db->prepare("UPDATE users SET password = :password WHERE userID = :userID");
         $update->bindParam(':password', $newPasswordHash, PDO::PARAM_STR);
         $update->bindParam(':userID', $_SESSION['userID'], PDO::PARAM_INT);
@@ -70,60 +65,83 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         exit();
     }
 }
-?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Change Password</title>
-    <link rel="stylesheet" href="css/styles.css">
-</head>
 
-<?php include '../components/header_l.php'; ?>
+include '../components/header_unified.php';
+?>
 
 <main>
-    <section class="hero">
-        <div class="hero-content">
-            <h2 id="ww">Change Your Password</h2>
+
+    <section class="namechange-hero">
+        <div class="namechange-hero-inner">
+            <span class="namechange-hero-label">Account Settings</span>
+            <h1>Change Your Password</h1>
+            <p>Update your password to keep your account secure.</p>
         </div>
     </section>
 
     <section class="section">
-        <h1>Your Account Settings</h1>
+        <div class="namechange-wrapper">
 
-        <?php if (isset($_SESSION['success'])): ?>
-            <p style="color: green;"><?= htmlspecialchars($_SESSION['success']); ?></p>
-            <?php unset($_SESSION['success']); ?>
-        <?php endif; ?>
+            <?php if (isset($_SESSION['success'])): ?>
+                <div class="namechange-alert namechange-alert-success">
+                    ✔ <?= htmlspecialchars($_SESSION['success']) ?>
+                </div>
+                <?php unset($_SESSION['success']); ?>
+            <?php endif; ?>
 
-        <?php if (isset($_SESSION['error'])): ?>
-            <p style="color: red;"><?= htmlspecialchars($_SESSION['error']); ?></p>
-            <?php unset($_SESSION['error']); ?>
-        <?php endif; ?>
+            <?php if (isset($_SESSION['error'])): ?>
+                <div class="namechange-alert namechange-alert-error">
+                    ✖ <?= htmlspecialchars($_SESSION['error']) ?>
+                </div>
+                <?php unset($_SESSION['error']); ?>
+            <?php endif; ?>
 
-        <form action="passwordchange.php" method="POST" class="card">
+            <div class="namechange-card">
+                <div class="namechange-card-header">
+                    <div class="namechange-card-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h2>Update Password</h2>
+                        <p>Enter your current password and choose a new one.</p>
+                    </div>
+                </div>
 
-            <label for="current_password">Current Password:</label>
-            <input type="password" id="current_password" name="current_password" required>
-            <br><br>
+                <form action="passwordchange.php" method="POST" class="namechange-form">
 
-            <label for="new_password">New Password:</label>
-            <input type="password" id="new_password" name="new_password" required>
-            <br><br>
+                    <div class="namechange-field">
+                        <label for="current_password">Current Password</label>
+                        <input type="password" id="current_password" name="current_password"
+                               placeholder="Enter your current password" required>
+                    </div>
 
-            <label for="confirm_password">Confirm New Password:</label>
-            <input type="password" id="confirm_password" name="confirm_password" required>
-            <br><br>
+                    <div class="namechange-field">
+                        <label for="new_password">New Password</label>
+                        <input type="password" id="new_password" name="new_password"
+                               placeholder="At least 8 characters" minlength="8" required>
+                    </div>
 
-            <button type="submit" class="btn primary">Change Password</button>
+                    <div class="namechange-field">
+                        <label for="confirm_password">Confirm New Password</label>
+                        <input type="password" id="confirm_password" name="confirm_password"
+                               placeholder="Repeat your new password" required>
+                    </div>
 
-        </form>
+                    <button type="submit" class="btn primary namechange-btn">
+                        Change Password
+                    </button>
+
+                </form>
+            </div>
+
+        </div>
     </section>
+
 </main>
 
 <?php include '../components/footer.php'; ?>
-
 <?php include '../components/script.html'; ?>
 
 </body>

@@ -262,12 +262,7 @@ try {
             </div>
         <?php endif; ?>
     </section>
-</main>
-
-<?php include '../components/footer.php'; ?>
-<?php include '../components/script.html'; ?>
-<?php include '../js/products.js'; ?>
-<div class= "buttons">
+    <div class= "buttons">
     <button onclick="loadProducts()">All</button>
     <button onclick="loadProducts('cakes')">Cakes</button>
     <button onclick="loadProducts('cookies')">Cookies</button>
@@ -275,5 +270,11 @@ try {
     <button onclick="loadProducts('bread')">Bread</button>
 </div>
 <div id="bakes-container" class="card-grid" style="display:none;"></div>
+</main>
+
+<?php include '../components/footer.php'; ?>
+<?php include '../components/script.html'; ?>
+<?php include '../js/products.js'; ?>
+
 </body>
 </html>

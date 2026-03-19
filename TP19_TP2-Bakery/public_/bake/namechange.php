@@ -3,7 +3,6 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-
 session_start();
 include "dbconnect.php";
 
@@ -58,60 +57,79 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         exit();
     }
 }
-?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Change Name</title>
-    <link rel="stylesheet" href="css/styles.css">
-</head>
 
-<?php include '../components/header_l.php'; ?>
+include '../components/header_unified.php';
+?>
 
 <main>
-    <section class="hero">
-        <div class="hero-content">
-            <h2 id="ww">Change your account name from:
-                <?= htmlspecialchars($_SESSION['name'], ENT_QUOTES, 'UTF-8'); ?>
-            </h2>
+
+    <section class="namechange-hero">
+        <div class="namechange-hero-inner">
+            <span class="namechange-hero-label">Account Settings</span>
+            <h1>Change Your Name</h1>
+            <p>Currently signed in as <strong><?= htmlspecialchars($_SESSION['name'], ENT_QUOTES, 'UTF-8') ?></strong></p>
         </div>
     </section>
 
     <section class="section">
-        <h1>Your Account Settings</h1>
+        <div class="namechange-wrapper">
 
-        <?php if (isset($_SESSION['success'])): ?>
-            <p style="color: green;"><?= htmlspecialchars($_SESSION['success']); ?></p>
-            <?php unset($_SESSION['success']); ?>
-        <?php endif; ?>
+            <?php if (isset($_SESSION['success'])): ?>
+                <div class="namechange-alert namechange-alert-success">
+                    ✔ <?= htmlspecialchars($_SESSION['success']) ?>
+                </div>
+                <?php unset($_SESSION['success']); ?>
+            <?php endif; ?>
 
-        <?php if (isset($_SESSION['error'])): ?>
-            <p style="color: red;"><?= htmlspecialchars($_SESSION['error']); ?></p>
-            <?php unset($_SESSION['error']); ?>
-        <?php endif; ?>
+            <?php if (isset($_SESSION['error'])): ?>
+                <div class="namechange-alert namechange-alert-error">
+                    ✖ <?= htmlspecialchars($_SESSION['error']) ?>
+                </div>
+                <?php unset($_SESSION['error']); ?>
+            <?php endif; ?>
 
-        <form action="namechange.php" method="POST" class="card">
+            <div class="namechange-card">
+                <div class="namechange-card-header">
+                    <div class="namechange-card-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h2>Update Display Name</h2>
+                        <p>Enter your new name and confirm with your password.</p>
+                    </div>
+                </div>
 
-            <label for="name_change">New Name:</label>
-            <input type="text" id="name_change" name="name_change" required>
+                <form action="namechange.php" method="POST" class="namechange-form">
 
-            <br><br>
+                    <div class="namechange-field">
+                        <label for="name_change">New Name</label>
+                        <input type="text" id="name_change" name="name_change"
+                               placeholder="Enter your new name"
+                               minlength="3" maxlength="50" required>
+                    </div>
 
-            <label for="password">Confirm Password:</label>
-            <input type="password" id="password" name="password" required>
+                    <div class="namechange-field">
+                        <label for="password">Confirm Password</label>
+                        <input type="password" id="password" name="password"
+                               placeholder="Enter your current password" required>
+                    </div>
 
-            <br><br>
+                    <button type="submit" class="btn primary namechange-btn">
+                        Change Name
+                    </button>
 
-            <button type="submit" class="btn primary">Change Name</button>
-        </form>
+                </form>
+            </div>
+
+        </div>
     </section>
+
 </main>
 
 <?php include '../components/footer.php'; ?>
-
 <?php include '../components/script.html'; ?>
 
 </body>
-</html>
+</html>     
