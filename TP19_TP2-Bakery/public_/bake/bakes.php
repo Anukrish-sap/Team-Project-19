@@ -217,7 +217,7 @@ try {
         </section>
     <?php endif; ?>
 
-    <?php/* <section class="section">
+    <?php /* <section class="section">
         <?php if (empty($bakes)): ?>
             <p>No bakes found for this search or category.</p>
         <?php else: ?>
