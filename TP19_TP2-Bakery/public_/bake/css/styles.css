@@ -2941,3 +2941,31 @@ css/* =========================================
     opacity: 0.45;
     cursor: not-allowed;
 }
+
+.reviews-table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:500px;
+    background:var(--card-bg);
+    border-radius:12px;
+}
+
+.reviews-table th,
+.reviews-table td{
+    padding:12px;
+    text-align:left;
+}
+
+@media (max-width:768px){
+
+.reviews-table th,
+.reviews-table td{
+    padding:8px;
+    font-size:14px;
+}
+
+.contact-wrapper{
+    padding:10px;
+}
+
+}
