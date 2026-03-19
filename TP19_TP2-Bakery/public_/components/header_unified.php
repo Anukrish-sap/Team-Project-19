@@ -114,14 +114,12 @@ $pageTitle = $pageTitle ?? 'Bakes & Cakes | Your home for all your bakes and cak
             </a>
         <?php endif; ?>
         <?php if ($isAdmin): ?>
-            <a href="<?= APP_URL ?>/stock.php" class="mob-link <?= $current === 'stock.php' ? 'is-current' : '' ?>">
-                Inventory
+            <a href="<?= APP_URL ?>/admin_dashboard.php" class="mob-link <?= $current === 'admin_dashboard.php' ? 'is-current' : '' ?>">
+             	admin dashboard
                 <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
             </a>
-            <a href="<?= APP_URL ?>/statistics.php" class="mob-link <?= $current === 'statistics.php' ? 'is-current' : '' ?>">
-                Statistics
-                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-            </a>
+           
+          
         <?php endif; ?>
     </div>
 
@@ -135,6 +133,7 @@ $pageTitle = $pageTitle ?? 'Bakes & Cakes | Your home for all your bakes and cak
                     <div class="mob-user-tag">Logged in</div>
                 </div>
             </div>
+            
             <a href="<?= APP_URL ?>/accdetails.php" class="mob-link">
                 Account Details
                 <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
@@ -221,8 +220,9 @@ $pageTitle = $pageTitle ?? 'Bakes & Cakes | Your home for all your bakes and cak
                     </div>
                     <a href="<?= APP_URL ?>/accdetails.php" class="user-dropdown-item">Account Details</a>
                     <?php if ($isAdmin): ?>
-                        <a href="<?= APP_URL ?>/stock.php" class="user-dropdown-item">Inventory</a>
-                        <a href="<?= APP_URL ?>/statistics.php" class="user-dropdown-item">Statistics</a>
+                        <a href="<?= APP_URL ?>/admin_dashboard.php" class="user-dropdown-item">admin dashboard </a>
+                       
+                        
                     <?php else: ?>
                         <a href="<?= APP_URL ?>/contact.php" class="user-dropdown-item">Contact</a>
                     <?php endif; ?>
