@@ -3,8 +3,8 @@ session_start();
 require_once 'dbconnect.php';
 include '../components/header_unified.php';
 
-$basket = isset($_SESSION['basket']) && is_array($_SESSION['basket'])
-    ? $_SESSION['basket']
+$basket = (isset($_SESSION['basket_items']) && is_array($_SESSION['basket_items']))
+    ? $_SESSION['basket_items']
     : [];
 
 $items     = [];
@@ -12,54 +12,84 @@ $totalQty  = 0;
 $totalCost = 0.0;
 
 if (!empty($basket)) {
-    $ids = array_keys($basket);
+    $ids = [];
+    foreach ($basket as $key => $bi) {
+        $ids[] = (int)$bi['bakeID'];
+    }
+    $ids = array_values(array_unique($ids));
+
     $placeholders = implode(',', array_fill(0, count($ids), '?'));
 
-    $sql = "SELECT 
+    $sql = "SELECT
         b.bakeID,
         b.bakeName,
         b.description,
-        b.price,
         b.imageFileName,
-        i.amount AS stockAmount
+        COALESCE(i.amount, 0) AS stockAmount
     FROM bakes b
     LEFT JOIN inventory i ON i.bakeID = b.bakeID
     WHERE b.bakeID IN ($placeholders)";
 
     $stmt = $db->prepare($sql);
     $stmt->execute($ids);
-    $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    foreach ($items as &$item) {
-        $id           = (int)$item['bakeID'];
-        $item['qty']  = $basket[$id] ?? 0;
-        $item['line'] = $item['price'] * $item['qty'];
-
-        $totalQty    += $item['qty'];
-        $totalCost   += $item['line'];
+    $byId = [];
+    foreach ($rows as $r) {
+        $byId[(int)$r['bakeID']] = $r;
     }
-    unset($item);
+
+    foreach ($basket as $key => $bi) {
+        $bakeID = (int)$bi['bakeID'];
+        if (!isset($byId[$bakeID])) continue;
+
+        $p         = $byId[$bakeID];
+        $qty       = (int)($bi['qty'] ?? 0);
+        $size      = (int)($bi['size'] ?? 0);
+        $unitPrice = (float)($bi['unitPrice'] ?? 0);
+
+        if ($qty <= 0) continue;
+
+        $line = $unitPrice * $qty;
+
+        $items[] = [
+            'key'           => $key,
+            'bakeID'        => $bakeID,
+            'bakeName'      => $p['bakeName'],
+            'description'   => $p['description'],
+            'imageFileName' => $p['imageFileName'],
+            'stockAmount'   => (int)$p['stockAmount'],
+            'qty'           => $qty,
+            'size'          => $size,
+            'unitPrice'     => $unitPrice,
+            'line'          => $line,
+        ];
+
+        $totalQty  += $qty;
+        $totalCost += $line;
+    }
 }
 ?>
 
 <main class="section basket-page">
 
-    <div class="basket-header-row" style="display:flex;justify-content:space-between;align-items:center;gap:1rem;">
+    <div class="basket-header-row">
         <h2>Basket</h2>
         <?php if (!empty($items)): ?>
             <a href="basket_clear.php" class="btn secondary small">Remove all</a>
         <?php endif; ?>
     </div>
 
-    <div class="basket-summary-card"
-         style="margin:1rem 0;padding:1rem;border-radius:0.9rem;border:1px solid var(--border-color);background:var(--card-bg);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.75rem;">
+    <div class="basket-summary-card">
         <div>
-            <h3 style="margin:0 0 0.25rem 0;">Summary</h3>
-            <p style="margin:0;">Items: <strong><?= (int)$totalQty ?></strong></p>
+            <h3>Summary</h3>
+            <p>Items: <strong><?= (int)$totalQty ?></strong></p>
         </div>
-        <div style="text-align:right;">
-            <p style="margin:0 0 0.35rem 0;">
-                <strong>Total cost:</strong> £<?= number_format($totalCost, 2) ?>
+        <div class="basket-summary-right">
+            <p class="basket-total-label">Total cost:</p>
+            <p class="basket-total-amount">£<?= number_format($totalCost, 2) ?></p>
+            <p class="basket-selected-total" id="selectedSummary" style="display:none;">
+                Selected: <strong id="selectedAmount">£0.00</strong>
             </p>
         </div>
     </div>
@@ -70,97 +100,148 @@ if (!empty($basket)) {
 
     <?php else: ?>
 
-        <!-- FORM STARTS HERE -->
-        <form action="basket_update.php" method="post" class="basket-items"
-              style="display:flex;flex-direction:column;gap:1rem;">
+        <div class="basket-select-all-row">
+            <label class="basket-checkbox-label">
+                <input type="checkbox" id="selectAll" class="basket-checkbox">
+                <span>Select all</span>
+            </label>
+            <span class="basket-select-hint">Select items to proceed to checkout</span>
+        </div>
+
+        <form action="basket_update.php" method="post" class="basket-items" id="basketForm">
 
             <?php foreach ($items as $item): ?>
                 <div class="basket-item-card"
-                     style="display:grid;grid-template-columns:90px 1fr auto;gap:0.75rem;align-items:flex-start;padding:0.9rem 1rem;border-radius:0.9rem;border:1px solid var(--border-color);background:var(--card-bg);">
+                     data-price="<?= number_format($item['line'], 2, '.', '') ?>"
+                     data-key="<?= htmlspecialchars($item['key'], ENT_QUOTES, 'UTF-8') ?>">
+
+                    <div class="basket-item-check">
+                        <input
+                            type="checkbox"
+                            name="selected_items[]"
+                            value="<?= htmlspecialchars($item['key'], ENT_QUOTES, 'UTF-8') ?>"
+                            class="basket-checkbox item-checkbox"
+                            form="checkoutForm">
+                    </div>
 
                     <div class="basket-item-left">
                         <?php if (!empty($item['imageFileName'])): ?>
                             <img
-                                src="img/uploads/<?= htmlspecialchars($item['imageFileName']) ?>"
-                                alt="<?= htmlspecialchars($item['bakeName']) ?>"
-                                class="basket-img"
-                                style="width:80px;height:80px;object-fit:cover;border-radius:0.6rem;">
+                                src="img/uploads/<?= htmlspecialchars($item['imageFileName'], ENT_QUOTES, 'UTF-8') ?>"
+                                alt="<?= htmlspecialchars($item['bakeName'], ENT_QUOTES, 'UTF-8') ?>"
+                                class="basket-img">
                         <?php else: ?>
-                            <div class="basket-img placeholder-image"
-                                 style="width:80px;height:80px;border-radius:0.6rem;display:flex;align-items:center;justify-content:center;">
-                                Bake
-                            </div>
+                            <div class="basket-img placeholder-image">Bake</div>
                         <?php endif; ?>
                     </div>
 
                     <div class="basket-item-middle">
-                        <h4 style="margin:0 0 0.25rem 0;">
-                            <?= htmlspecialchars($item['bakeName']) ?>
-                        </h4>
-                        <p style="margin:0 0 0.25rem 0;">
-                            £<?= number_format($item['price'], 2) ?>
+                        <h4><?= htmlspecialchars($item['bakeName'], ENT_QUOTES, 'UTF-8') ?></h4>
+                        <p class="basket-item-price">
+                            £<?= number_format((float)$item['unitPrice'], 2) ?>
+                            <?php if ((int)$item['size'] > 0): ?>
+                                <span class="muted">(<?= (int)$item['size'] ?>")</span>
+                            <?php endif; ?>
                         </p>
                         <?php if (!empty($item['description'])): ?>
-                            <p style="margin:0;font-size:0.9rem;">
-                                <?= htmlspecialchars($item['description']) ?>
-                            </p>
+                            <p class="basket-item-desc"><?= htmlspecialchars($item['description'], ENT_QUOTES, 'UTF-8') ?></p>
                         <?php endif; ?>
                     </div>
 
-                    <div class="basket-item-right"
-                         style="text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:0.4rem;">
-
+                    <div class="basket-item-right">
                         <button type="submit" name="remove_single"
-                                value="<?= (int)$item['bakeID'] ?>"
+                                value="<?= htmlspecialchars($item['key'], ENT_QUOTES, 'UTF-8') ?>"
                                 class="btn secondary small">Remove</button>
 
-                        <div style="display:flex;align-items:center;gap:0.35rem;">
-                            <label style="font-size:0.85rem;">
+                        <div class="basket-qty-row">
+                            <label class="basket-qty-label">
                                 Qty:
                                 <input
                                     class="qty-input"
                                     type="number"
-                                    name="qty[<?= (int)$item['bakeID'] ?>]"
+                                    name="qty[<?= htmlspecialchars($item['key'], ENT_QUOTES, 'UTF-8') ?>]"
                                     value="<?= (int)$item['qty'] ?>"
                                     min="0"
                                     max="<?= (int)$item['stockAmount'] ?>"
-                                    required
-                                    oninvalid="this.setCustomValidity('The quantity must be less than the amount in stock')"
-                                    oninput="this.setCustomValidity('')"
-                                    style="width:60px;padding:0.2rem 0.4rem;border-radius:999px;border:1px solid var(--border-color);">
+                                    required>
                             </label>
                         </div>
 
-                        <p style="margin:0;font-size:0.9rem;">
-                            Line total:
-                            <strong>£<?= number_format($item['line'], 2) ?></strong>
+                        <p class="basket-line-total">
+                            Line total: <strong>£<?= number_format((float)$item['line'], 2) ?></strong>
                         </p>
                     </div>
                 </div>
             <?php endforeach; ?>
 
-            <div class="basket-footer-actions"
-                 style="margin-top:0.75rem;display:flex;flex-wrap:wrap;gap:0.5rem;">
-
-                <!-- THIS BUTTON NOW GOES STRAIGHT TO checkout.php -->
-                <button type="submit" formaction="checkout.php"
-                        class="btn primary small">
-                    Proceed to checkout
-                </button>
-
+            <div class="basket-footer-actions">
                 <button type="submit" class="btn primary">Update basket</button>
                 <a href="bakes.php" class="btn secondary">Continue shopping</a>
                 <a href="basket_clear.php" class="btn secondary">Cancel order</a>
             </div>
 
         </form>
-        <!-- FORM ENDS HERE -->
+
+        <form action="checkout.php" method="post" id="checkoutForm"></form>
+
+        <div class="basket-checkout-btn-wrap">
+            <button type="submit" form="checkoutForm" class="btn primary basket-checkout-btn" id="checkoutBtn" disabled>
+                Proceed to checkout (<span id="checkoutCount">0</span> item<span id="checkoutPlural">s</span>)
+            </button>
+        </div>
 
     <?php endif; ?>
 </main>
 
+<script>
+const checkboxes      = document.querySelectorAll('.item-checkbox');
+const selectAll       = document.getElementById('selectAll');
+const checkoutBtn     = document.getElementById('checkoutBtn');
+const countSpan       = document.getElementById('checkoutCount');
+const pluralSpan      = document.getElementById('checkoutPlural');
+const selectedSummary = document.getElementById('selectedSummary');
+const selectedAmount  = document.getElementById('selectedAmount');
+
+function updateCheckout() {
+    let count = 0;
+    let total = 0;
+
+    checkboxes.forEach(cb => {
+        const card = cb.closest('.basket-item-card');
+        if (cb.checked) {
+            count++;
+            total += parseFloat(card.dataset.price || 0);
+            card.classList.add('is-selected');
+        } else {
+            card.classList.remove('is-selected');
+        }
+    });
+
+    countSpan.textContent  = count;
+    pluralSpan.textContent = count === 1 ? '' : 's';
+    checkoutBtn.disabled   = count === 0;
+
+    if (count > 0) {
+        selectedSummary.style.display = 'block';
+        selectedAmount.textContent    = '£' + total.toFixed(2);
+    } else {
+        selectedSummary.style.display = 'none';
+    }
+
+    selectAll.checked       = count === checkboxes.length && count > 0;
+    selectAll.indeterminate = count > 0 && count < checkboxes.length;
+}
+
+checkboxes.forEach(cb => cb.addEventListener('change', updateCheckout));
+selectAll.addEventListener('change', function () {
+    checkboxes.forEach(cb => cb.checked = this.checked);
+    updateCheckout();
+});
+
+updateCheckout();
+</script>
+
 <?php include '../components/footer.php'; ?>
 <?php include '../components/script.html'; ?>
-
 </body>
 </html>
