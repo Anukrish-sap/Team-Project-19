@@ -217,7 +217,7 @@ try {
         </section>
     <?php endif; ?>
 
-    <section class="section">
+    <?php/*<section class="section">
         <?php if (empty($bakes)): ?>
             <p>No bakes found for this search or category.</p>
         <?php else: ?>
@@ -261,7 +261,7 @@ try {
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
-    </section>
+    </section>*/?>
     <div class= "buttons">
     <button onclick="loadProducts()">All</button>
     <button onclick="loadProducts('cakes')">Cakes</button>
@@ -269,7 +269,7 @@ try {
     <button onclick="loadProducts('pastries')">Pastries</button>
     <button onclick="loadProducts('bread')">Bread</button>
 </div>
-<div id="bakes-container" class="card-grid" style="display:none;"></div>
+<div id="bakes-container" class="card-grid"></div>
 </main>
 
 <?php include '../components/footer.php'; ?>
