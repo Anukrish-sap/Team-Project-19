@@ -42,33 +42,29 @@ $pageTitle = $pageTitle ?? 'Bakes & Cakes | Your home for all your bakes and cak
     <title><?= htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8') ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="<?= APP_URL ?>/img/logo.png" type="image/x-icon">
+
     <link rel="stylesheet" href="<?= APP_URL ?>/css/styles.css">
     <link rel="stylesheet" href="<?= APP_URL ?>/css/styleali.css">
-    <script>
-        (function () {
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'dark') {
-                document.documentElement.classList.add('preload-dark');
-            }
-        })();
-    </script>
 </head>
 <body class="light">
 
 <script>
 (function () {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-        document.body.classList.remove('light');
-        document.body.classList.add('dark');
-    } else {
-        document.body.classList.remove('dark');
+    try {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.remove('light');
+            document.body.classList.add('dark');
+        } else {
+            document.body.classList.remove('dark');
+            document.body.classList.add('light');
+        }
+    } catch (e) {
         document.body.classList.add('light');
     }
 })();
 </script>
 
-<!-- ===================== Mobile drawer ===================== -->
 <div class="mob-overlay" id="mobOverlay"></div>
 
 <div class="mob-drawer" id="mobDrawer">
@@ -85,47 +81,61 @@ $pageTitle = $pageTitle ?? 'Bakes & Cakes | Your home for all your bakes and cak
         <button class="mob-tab" id="tabAcc" type="button">Account</button>
     </div>
 
-    <!-- Navigation panel -->
     <div class="mob-panel active" id="panelNav">
         <a href="<?= HOME_URL ?>" class="mob-link <?= $current === 'index.php' ? 'is-current' : '' ?>">
             Home
-            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+            </svg>
         </a>
+
         <a href="<?= APP_URL ?>/bakes.php" class="mob-link <?= $current === 'bakes.php' ? 'is-current' : '' ?>">
             Products
-            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+            </svg>
         </a>
+
         <a href="<?= APP_URL ?>/quiz.php" class="mob-link <?= $current === 'quiz.php' ? 'is-current' : '' ?>">
             Find Your Bake
-            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+            </svg>
         </a>
+
         <a href="<?= APP_URL ?>/about.php" class="mob-link <?= $current === 'about.php' ? 'is-current' : '' ?>">
             About Us
-            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+            </svg>
         </a>
+
         <a href="<?= APP_URL ?>/contact.php" class="mob-link <?= $current === 'contact.php' ? 'is-current' : '' ?>">
             Contact
-            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+            </svg>
         </a>
+
         <?php if ($isLoggedIn): ?>
             <a href="<?= APP_URL ?>/purchase_history.php" class="mob-link <?= $current === 'purchase_history.php' ? 'is-current' : '' ?>">
                 Purchases
-                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                </svg>
             </a>
         <?php endif; ?>
+
         <?php if ($isAdmin): ?>
-            <a href="<?= APP_URL ?>/stock.php" class="mob-link <?= $current === 'stock.php' ? 'is-current' : '' ?>">
-                Inventory
-                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-            </a>
-            <a href="<?= APP_URL ?>/statistics.php" class="mob-link <?= $current === 'statistics.php' ? 'is-current' : '' ?>">
-                Statistics
-                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+            <a href="<?= APP_URL ?>/admin_dashboard.php" class="mob-link <?= $current === 'admin_dashboard.php' ? 'is-current' : '' ?>">
+                Admin Dashboard
+                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                </svg>
             </a>
         <?php endif; ?>
     </div>
 
-    <!-- Account panel -->
     <div class="mob-panel" id="panelAcc">
         <?php if ($isLoggedIn): ?>
             <div class="mob-user-row">
@@ -135,39 +145,56 @@ $pageTitle = $pageTitle ?? 'Bakes & Cakes | Your home for all your bakes and cak
                     <div class="mob-user-tag">Logged in</div>
                 </div>
             </div>
+
             <a href="<?= APP_URL ?>/accdetails.php" class="mob-link">
                 Account Details
-                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                </svg>
             </a>
+
             <a href="<?= APP_URL ?>/basket.php" class="mob-link">
                 Basket
                 <?php if ($basketCount > 0): ?>
                     <span class="mob-basket-count"><?= $basketCount ?></span>
                 <?php endif; ?>
-                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                </svg>
             </a>
+
             <a href="<?= APP_URL ?>/logout.php" class="mob-link mob-link-danger">
                 Logout
-                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                </svg>
             </a>
         <?php else: ?>
             <div class="mob-guest-note">Not logged in</div>
+
             <a href="<?= APP_URL ?>/loginpage.php" class="mob-link">
                 Login
-                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                </svg>
             </a>
+
             <a href="<?= APP_URL ?>/register.php" class="mob-link">
                 Register
-                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                </svg>
             </a>
+
             <a href="<?= APP_URL ?>/contact.php" class="mob-link">
                 Contact
-                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                </svg>
             </a>
         <?php endif; ?>
     </div>
 </div>
-<!-- ===================== End mobile drawer ===================== -->
 
 <header class="site-header">
     <button class="mob-trigger" id="mobTrigger" aria-label="Open menu" type="button">
@@ -221,8 +248,7 @@ $pageTitle = $pageTitle ?? 'Bakes & Cakes | Your home for all your bakes and cak
                     </div>
                     <a href="<?= APP_URL ?>/accdetails.php" class="user-dropdown-item">Account Details</a>
                     <?php if ($isAdmin): ?>
-                        <a href="<?= APP_URL ?>/stock.php" class="user-dropdown-item">Inventory</a>
-                        <a href="<?= APP_URL ?>/statistics.php" class="user-dropdown-item">Statistics</a>
+                        <a href="<?= APP_URL ?>/admin_dashboard.php" class="user-dropdown-item">Admin Dashboard</a>
                     <?php else: ?>
                         <a href="<?= APP_URL ?>/contact.php" class="user-dropdown-item">Contact</a>
                     <?php endif; ?>
@@ -255,21 +281,7 @@ $pageTitle = $pageTitle ?? 'Bakes & Cakes | Your home for all your bakes and cak
         const tabAcc       = document.getElementById('tabAcc');
         const panelNav     = document.getElementById('panelNav');
         const panelAcc     = document.getElementById('panelAcc');
-        const themeToggle  = document.getElementById('theme-toggle');
 
-        // Theme toggle
-        if (themeToggle && !themeToggle.dataset.bound) {
-            themeToggle.dataset.bound = '1';
-            themeToggle.textContent = document.body.classList.contains('dark') ? 'Light mode' : 'Dark mode';
-            themeToggle.addEventListener('click', function () {
-                const isDark = document.body.classList.toggle('dark');
-                document.body.classList.toggle('light', !isDark);
-                localStorage.setItem('theme', isDark ? 'dark' : 'light');
-                themeToggle.textContent = isDark ? 'Light mode' : 'Dark mode';
-            });
-        }
-
-        // Desktop user dropdown
         if (userMenuBtn && userDropdown && !userMenuBtn.dataset.bound) {
             userMenuBtn.dataset.bound = '1';
             userMenuBtn.addEventListener('click', function (e) {
@@ -278,13 +290,13 @@ $pageTitle = $pageTitle ?? 'Bakes & Cakes | Your home for all your bakes and cak
                 userDropdown.classList.toggle('hidden');
                 userMenuBtn.setAttribute('aria-expanded', String(!userDropdown.classList.contains('hidden')));
             });
+
             document.addEventListener('click', function () {
                 userDropdown.classList.add('hidden');
                 userMenuBtn.setAttribute('aria-expanded', 'false');
             });
         }
 
-        // Mobile drawer open/close
         function openMob() {
             if (!mobDrawer || !mobOverlay) return;
             mobDrawer.classList.add('open');
@@ -329,17 +341,22 @@ $pageTitle = $pageTitle ?? 'Bakes & Cakes | Your home for all your bakes and cak
             });
         }
 
-        // Mobile tab switching
         if (tabNav && tabAcc && panelNav && panelAcc && !tabNav.dataset.bound) {
             tabNav.dataset.bound = '1';
             tabAcc.dataset.bound = '1';
+
             tabNav.addEventListener('click', function () {
-                tabNav.classList.add('active');    tabAcc.classList.remove('active');
-                panelNav.classList.add('active');  panelAcc.classList.remove('active');
+                tabNav.classList.add('active');
+                tabAcc.classList.remove('active');
+                panelNav.classList.add('active');
+                panelAcc.classList.remove('active');
             });
+
             tabAcc.addEventListener('click', function () {
-                tabAcc.classList.add('active');    tabNav.classList.remove('active');
-                panelAcc.classList.add('active');  panelNav.classList.remove('active');
+                tabAcc.classList.add('active');
+                tabNav.classList.remove('active');
+                panelAcc.classList.add('active');
+                panelNav.classList.remove('active');
             });
         }
     }
