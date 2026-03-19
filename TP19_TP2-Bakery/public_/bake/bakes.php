@@ -82,7 +82,7 @@ try {
     exit();
 }
 ?>
-
+<?php include '../js/products.js'; ?>
 <style>
 /* Make entire card clickable without blue link styles */
 .product-link {
@@ -275,7 +275,7 @@ try {
 
 <?php include '../components/footer.php'; ?>
 <?php include '../components/script.html'; ?>
-<?php include '../js/products.js'; ?>
+
 
 </body>
 </html>
