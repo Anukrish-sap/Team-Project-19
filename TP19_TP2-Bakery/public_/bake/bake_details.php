@@ -1,5 +1,5 @@
 <?php
-// bakes_detail.php — full file with improved reviews tab
+
 session_start();
 require_once 'dbconnect.php';
 
@@ -265,6 +265,7 @@ $desc  = !empty($bake['description']) ? $bake['description'] : '';
       </div>
     </div>
 
+    <!-- BOTTOM TABS -->
     <div class="tabs-bar">
       <button class="active" data-tab="desc" type="button">Description</button>
       <button data-tab="ingredients" type="button">Ingredients & Allergy Advice</button>
@@ -291,11 +292,13 @@ $desc  = !empty($bake['description']) ? $bake['description'] : '';
       <p class="muted">Nutritional information will be added soon.</p>
     </div>
 
+    <!-- REVIEWS TAB -->
     <div class="tab-panel" id="tab-reviews" style="display:none;">
       <div class="review-tab-wrap">
 
         <h3>Customer Reviews</h3>
 
+        <!-- Flash messages -->
         <?php if (!empty($_SESSION['review_success'])): ?>
           <div class="review-flash review-flash--success">
             <span>✓</span>
@@ -336,6 +339,7 @@ $desc  = !empty($bake['description']) ? $bake['description'] : '';
               </div>
             </div>
 
+            <!-- Review textarea -->
             <div>
               <p class="review-field-label">Your Review</p>
               <textarea
@@ -356,6 +360,7 @@ $desc  = !empty($bake['description']) ? $bake['description'] : '';
           </form>
 
           <script>
+            // Star picker highlight
             document.querySelectorAll('.star-picker input[type=radio]').forEach(radio => {
               radio.addEventListener('change', () => {
                 document.querySelectorAll('.star-label').forEach(lbl => lbl.classList.remove('is-selected'));
@@ -363,6 +368,7 @@ $desc  = !empty($bake['description']) ? $bake['description'] : '';
                 if (chosen) document.querySelector(`label[for="${chosen.id}"]`).classList.add('is-selected');
               });
             });
+            // Char counter
             const ta = document.getElementById('reviewText');
             const cc = document.getElementById('charCount');
             if (ta && cc) {
@@ -451,6 +457,7 @@ $desc  = !empty($bake['description']) ? $bake['description'] : '';
         btn.textContent = 'Remove';
         return;
       }
+     
       const card = document.getElementById('review-' + reviewID);
       if (card) {
         card.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
@@ -462,6 +469,7 @@ $desc  = !empty($bake['description']) ? $bake['description'] : '';
       }, 350);
     })
     .catch(() => {
+      
       window.location.href = window.location.pathname + '?bakeID=<?= (int)$bakeID ?>#tab-reviews';
     });
   }
@@ -555,7 +563,6 @@ $desc  = !empty($bake['description']) ? $bake['description'] : '';
     });
   });
 
-  // Auto-open tab from URL hash (e.g. #tab-reviews after delete redirect)
   const hash = window.location.hash.replace('#', '');
   if (hash && panels[hash]) {
     tabButtons.forEach(b => b.classList.remove("active"));
