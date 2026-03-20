@@ -871,6 +871,8 @@ body {
     background: transparent;
     border: none;
     border-radius: 0;
+	transform: scale(2);
+	margin-right: 0.75rem;
 }
 
 /* Fields */
@@ -3011,4 +3013,205 @@ css/* =========================================
 .buttonE:hover{
     background-color: #a0522d;
     transform: scale(1.05);
+}
+/* =========================================
+   Purchase History Page
+========================================= */
+
+.purchase-wrapper {
+    max-width: 780px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.purchase-empty {
+    text-align: center;
+    padding: 3rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.purchase-empty-icon {
+    font-size: 3rem;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+}
+
+.purchase-empty h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.purchase-empty p {
+    font-size: 0.95rem;
+    opacity: 0.65;
+    margin: 0;
+}
+
+.purchase-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 1.1rem;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    transition: box-shadow 0.2s ease;
+}
+
+.purchase-card:hover {
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+
+.purchase-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.4rem;
+    background: var(--card-alt-bg);
+    border-bottom: 1px solid var(--border-color);
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.purchase-card-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.purchase-order-label {
+    font-size: 0.97rem;
+    font-weight: 700;
+    color: var(--text-color);
+}
+
+.purchase-order-date {
+    font-size: 0.8rem;
+    opacity: 0.55;
+}
+
+.purchase-card-total {
+    text-align: right;
+}
+
+.purchase-total-label {
+    display: block;
+    font-size: 0.78rem;
+    opacity: 0.5;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 600;
+}
+
+.purchase-total-amount {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--accent);
+}
+
+.purchase-items {
+    display: flex;
+    flex-direction: column;
+}
+
+.purchase-item-row {
+    display: grid;
+    grid-template-columns: 64px 1fr auto;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.85rem 1.4rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.purchase-item-row:last-child {
+    border-bottom: none;
+}
+
+.purchase-item-img-wrap {
+    width: 64px;
+    height: 64px;
+    border-radius: 0.6rem;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.purchase-item-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0.6rem;
+}
+
+.purchase-item-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--card-alt-bg);
+    font-size: 1.5rem;
+}
+
+.purchase-item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.purchase-item-info strong {
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+.purchase-item-qty {
+    font-size: 0.82rem;
+    opacity: 0.55;
+}
+
+.purchase-item-price {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.purchase-item-price span {
+    font-size: 0.82rem;
+    opacity: 0.55;
+}
+
+.purchase-item-price strong {
+    font-size: 0.97rem;
+    font-weight: 700;
+    color: var(--text-color);
+}
+
+.purchase-card-footer {
+    padding: 0.85rem 1.4rem;
+    background: var(--card-bg);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: flex-end;
+}
+
+.purchase-reorder-btn {
+    border: none;
+    cursor: pointer;
+}
+
+@media (max-width: 600px) {
+    .purchase-item-row {
+        grid-template-columns: 52px 1fr;
+        grid-template-rows: auto auto;
+    }
+    .purchase-item-price {
+        grid-column: 2;
+        align-items: flex-start;
+        text-align: left;
+    }
+    .purchase-item-img-wrap { width: 52px; height: 52px; }
+    .purchase-card-header { flex-direction: column; align-items: flex-start; }
+    .purchase-card-total { text-align: left; }
 }
