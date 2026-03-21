@@ -37,7 +37,9 @@ $total = 0;
 }
 
 // Clear the basket if it still exists
-unset($_SESSION['basket']);
+if (isset($_SESSION['basket'])) {
+    unset($_SESSION['basket']);
+}
 
 // Load the correct header
 if (isset($_SESSION['userID'])) {
