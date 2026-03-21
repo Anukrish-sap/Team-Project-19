@@ -21,7 +21,7 @@ try {
     $user = $acc->fetch(PDO::FETCH_ASSOC);
     $points = $user['points']; // added points
 
-    if (!$acc) {
+    if (!$user) {
         $_SESSION['error'] = "Error fetching account details: " . $db->errorInfo()[2];
         header("Location: home.php"); 
         exit();
