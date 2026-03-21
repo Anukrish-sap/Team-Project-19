@@ -26,7 +26,11 @@ $total = 0;
     
 //1 point for every pound spent
     $rewardPoints = floor($total);
-//databaase
+
+    // message
+    $_SESSION['success'] = "You earned $rewardPoints points!";
+
+    //databaase
     $stmt = $db->prepare("UPDATE users 
                           SET points = points + :points 
                           WHERE userID = :userID");
