@@ -1,5 +1,6 @@
 <?php
 session_start();
+unset($_SESSION['points_added']);
 require_once "dbconnect.php";
 
 if (empty($_SESSION['basket_items'])) {

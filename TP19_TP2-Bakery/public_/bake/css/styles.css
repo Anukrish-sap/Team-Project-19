@@ -3883,6 +3883,7 @@ main,
         width: 36px;
         height: 36px;
     }
+<<<<<<< HEAD
 }
 /* =========================================
    Price Filter Bar
@@ -4117,3 +4118,16 @@ main,
         text-align: center;
     }
 }
+=======
+
+    .reward-points {
+    margin-left: 8px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: #c07b50;
+    background: rgba(192,123,80,0.1);
+    padding: 0.2rem 0.5rem;
+    border-radius: 999px;
+  }
+}
+>>>>>>> b6c18ca96f0e8a8073879f8baed0dc9bae622c8a
