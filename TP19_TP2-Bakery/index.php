@@ -6,16 +6,19 @@ error_reporting(E_ALL);
 
 session_start();
 
-// Web base for browser URLs (links/images/css)
+// Web base for browser URLs
 define('BASE_URL', '/public_/bake');
 
-// File base for includes on disk (index.php is in /public_html)
+// File base for includes on disk
 define('BASE_PATH', __DIR__ . '/public_');
 
-// DB connect is inside: public_html/public_/bake/dbconnect.php
+// DB connect
 require BASE_PATH . '/bake/dbconnect.php';
 
-// Header is inside: public_html/public_/components/header_unified.php
+// Optional page title for header
+$pageTitle = 'Bakes & Cakes | Your home for all your bakes and cakes';
+
+// Full page header
 include BASE_PATH . '/components/header_unified.php';
 
 if (isset($_SESSION['logout'])) {
@@ -54,7 +57,8 @@ try {
     $bakes = $query->fetchAll(PDO::FETCH_ASSOC);
 
 } catch (PDOException $e) {
-    echo "Error: " . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8');
+    echo "<main class='section'><p>Error: " . htmlspecialchars($e->getMessage(), ENT_QUOTES, 'UTF-8') . "</p></main>";
+    include BASE_PATH . '/components/footer.php';
     exit();
 }
 ?>
@@ -80,29 +84,36 @@ try {
         <h2>Featured Bakes</h2>
         <p>A small taste of what Bakes &amp; Cakes has to offer.</p>
       </div>
+
       <div class="featured-grid">
         <?php
         if (!empty($bakes)) {
-          foreach ($bakes as $bake) {
-            if (in_array((int)$bake['bakeID'], [1,2,3], true)) {
-              echo "<div class='featured-card'>";
-              echo "<div class='featured-card-img'>";
-              if (!empty($bake['imageFileName'])) {
-                $imagePath = BASE_URL . "/img/uploads/" . htmlspecialchars($bake['imageFileName'], ENT_QUOTES, 'UTF-8');
-                echo "<img src='{$imagePath}' alt='" . htmlspecialchars($bake['bakeName'], ENT_QUOTES, 'UTF-8') . "'>";
-              } else {
-                echo "🎂";
-              }
-              echo "</div>";
-              echo "<div class='featured-card-body'>";
-              echo "<h3>" . htmlspecialchars($bake['bakeName'], ENT_QUOTES, 'UTF-8') . "</h3>";
-              echo "<p>" . htmlspecialchars($bake['description'], ENT_QUOTES, 'UTF-8') . "</p>";
-              echo "<span class='featured-card-price'>£" . number_format((float)$bake['price'], 2, '.', '') . "</span>";
-              echo "</div></div>";
+            foreach ($bakes as $bake) {
+                if (in_array((int)$bake['bakeID'], [1, 2, 3], true)) {
+                    $detailUrl = BASE_URL . "/bake_details.php?bakeID=" . (int)$bake['bakeID'];
+                    echo "<a href='" . $detailUrl . "' style='text-decoration:none;color:inherit;'>";
+                    echo "<div class='featured-card'>";
+                    echo "<div class='featured-card-img'>";
+
+                    if (!empty($bake['imageFileName'])) {
+                        $imagePath = BASE_URL . "/img/uploads/" . htmlspecialchars($bake['imageFileName'], ENT_QUOTES, 'UTF-8');
+                        echo "<img src='{$imagePath}' alt='" . htmlspecialchars($bake['bakeName'], ENT_QUOTES, 'UTF-8') . "'>";
+                    } else {
+                        echo "<div class='featured-card-fallback'>Cake</div>";
+                    }
+
+                    echo "</div>";
+                    echo "<div class='featured-card-body'>";
+                    echo "<h3>" . htmlspecialchars($bake['bakeName'], ENT_QUOTES, 'UTF-8') . "</h3>";
+                    echo "<p>" . htmlspecialchars($bake['description'], ENT_QUOTES, 'UTF-8') . "</p>";
+                    echo "<span class='featured-card-price'>&pound;" . number_format((float)$bake['price'], 2, '.', '') . "</span>";
+                    echo "</div>";
+                    echo "</div>";
+                    echo "</a>";
+                }
             }
-          }
         } else {
-          echo "<p>No bakes found.</p>";
+            echo "<p>No bakes found.</p>";
         }
         ?>
       </div>
@@ -115,24 +126,28 @@ try {
         <span class="home-section-label">Explore</span>
         <h2>Browse by Category</h2>
       </div>
+
       <div class="categories-grid">
         <a href="<?= BASE_URL ?>/bakes.php?category=cakes" class="category-tile">
-          <span class="category-tile-icon">🎂</span>
+          <span class="category-tile-icon">ðŸŽ‚</span>
           <h3>Cakes</h3>
           <p>Celebration cakes, layer cakes, and loaf cakes for every event.</p>
         </a>
+
         <a href="<?= BASE_URL ?>/bakes.php?category=cookies" class="category-tile">
-          <span class="category-tile-icon">🍪</span>
+          <span class="category-tile-icon">ðŸ�ª</span>
           <h3>Cookies</h3>
           <p>Soft, chewy, or crunchy cookies baked fresh daily.</p>
         </a>
+
         <a href="<?= BASE_URL ?>/bakes.php?category=pastries" class="category-tile">
-          <span class="category-tile-icon">🥐</span>
+          <span class="category-tile-icon">ðŸ¥�</span>
           <h3>Pastries</h3>
           <p>Buttery croissants, danishes, and puff pastry delights.</p>
         </a>
+
         <a href="<?= BASE_URL ?>/bakes.php?category=bread" class="category-tile">
-          <span class="category-tile-icon">🍞</span>
+          <span class="category-tile-icon">ðŸ�ž</span>
           <h3>Bread</h3>
           <p>Fresh loaves, rolls, and specialty breads.</p>
         </a>
@@ -147,19 +162,25 @@ try {
         <h2>Allergy Friendly Options</h2>
         <p>We understand how important it is to feel safe when ordering baked goods.</p>
       </div>
+
       <div class="allergy-cards">
         <div class="allergy-card">
           <div class="allergy-card-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
           </div>
           <div>
             <h4>Gluten Free Range</h4>
             <p>Look for the <span class="badge gluten-free">Gluten free</span> badge when browsing. These items are baked with gluten free ingredients.</p>
           </div>
         </div>
+
         <div class="allergy-card">
           <div class="allergy-card-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+            </svg>
           </div>
           <div>
             <h4>More Tags Coming Soon</h4>
@@ -212,8 +233,5 @@ try {
 
 </main>
 
-<?php include BASE_PATH . '/components/footer.php'; ?>
 <?php include BASE_PATH . '/components/script.html'; ?>
-
-</body>
-</html>
+<?php include BASE_PATH . '/components/footer.php'; ?>

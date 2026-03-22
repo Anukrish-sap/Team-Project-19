@@ -45,20 +45,8 @@ $pageTitle = $pageTitle ?? 'Bakes & Cakes | Your home for all your bakes and cak
 
     <link rel="stylesheet" href="<?= APP_URL ?>/css/styles.css">
     <link rel="stylesheet" href="<?= APP_URL ?>/css/styleali.css">
-<script type='text/javascript' src='https://cs2410-web01pvm.aston.ac.uk:10000/muZl6oX-TYWlVnpIu621XvixM06UkJ_qYdY-JCbkiwYthQCAMN6sQEmjTtxQx24BQj3iKFnLVQ8YFDE23xIcEOSSA5XWCWlMe7jdwPtokXleOLkuzBSOBfOUUmWQYNWUus1p_iwI_W1559nGaIMupiWuVVXNXHoXBWnjQL-FcKXD13jawEBgfWrxxRHYuIlsHn-IMCUFUIioPOIy8XsRtLHRlMYlhIpMixHecXjzxkL4qGOjYJ9xrFhcBs2SLjUk0lcgphkvG6c1BhF-Q5UM0lC9_CqEgieZGUTS81tSNB4yWPczas9OHtRqolCbTEPbKgG_YjvSEVnp6cGeKx3ImTtHyTYueIK_MaEpZkpiZpOcORBBMlye_fuAwmjQ7c-UvWmUQ4ziZ4kQGdAkJXKqbLki56xvIdzVTdgkgU_70lwvb6T6NGLp12ZefyG-_NpciiuXkJwaHHYXTJyJAJzUv6C_N9DGCGHg6oFUIDockau7OqetRRko6KtblkE7d_43l7SumRQWzkq3KDodW80DZAiBt3GLmcUSElyBAHLHAkiDbmHa_Zzmu19gPNuJ8z-mA7oPjnVyU9osJiTC8svdjOVPP24Wv3A6zh7pJVrFZYXWtR-m8kfMAHvEjP5Or70KWpMkvqdaYxlO9xPJ7yzvb-5Oq6pLZjn4FMzBd5f_t1iqiROl7pbXKGc1mjo_Os8zTL8EFkXxYWtJCDKmEMMQb-mmthfxT7kqfRdtMXNDFhfJd_NwLxE2kSDyLnkotTMvj_5pp1IUs6MFpjYEOgP8gwPGIGydItnOyTWK6YNqyNs-ToCA8xFqNQV73_7JW82RmNbxtDDla1HBPwhWKHdvbX-RLhzlFA_oLKg8WR52nvBSB1oYcONGVZi3LaTWFeK0LpX4CrliTCFb0hZ691o17kxFkECgv70KwDU6ZC76B3Kao2aWK_w'></script></head>
+<script type='text/javascript' src='https://cs2410-web01pvm.aston.ac.uk:10000/yPJUydnMQiIN3gzH-K-JY7pIypxbuQw6_NeaXvShCOaVoBMpL_w71qUSmj919KqjjZMzzqsbyOh1y1ND7mWa3ZASpxQICrPNEJNVPDqtNOdctF6HtLW22WkbQshFDyq_YRQYaeSEKKqIuSs0tJVynMNRKi5fR7jUUsQUbE-KfjNnHeKwLltqJbbGPJW1KsfgZEFHB1kSqegT_RS5nEB-Nl2S_vT10NLHJTQc_GbGBOIR_YJ6vQ6Ngjsm_JDyWgDWSPYmapGkAdHo-6SgZilXsW2bXKIlSi7nXDmhp-t8SQkNIM9wiHwkzP0IA9HZrzhM6fW5H7dzA2FyKImxxT3KygDF4_ApAbklgV-HWTCRdglMrMrGnsEHMH0_HSD7408HfZ8BjFxidP7wlE9fyzUpa-D3sPxtfx7UZjVyvHs1SQ3MIvm84F1bXSp89IFbnieFAud3DIfsqdnzNspQlHi-rG0NwT_un01wqQh2uqkOydr7wV2veQMzpUNbcsALrwVR_mXy7Ms_LbYH3T1Xe3PN9fupxVF62G5_dzf4H-EOMHaBcnKPA0F6-K9H2ywCwHjDwRc9aZ7ByauhkoFipmhSre8irSkZlXRCSSfFV8kRGJk5Rrb9ex9M5E8LYWxGa__SXEtFTkZnSQoBqCtBPDGd5Tu3zESBsADMqDAI7p0yzOpBX9Uzb4-diTUZSkgP6Kj1ycz4mMSQh6NoASBFIdfIe6kMXd2pqU4TEXDkdwCyw5MHBzcAatcSnmeCq5XTy8oVcQ3TmzXfHATm1GqUoYK9OTBEFau2jogq8SAOToyg1YJzNdQIB6f6lAT0pmOXXyBeALlIwDLWR5TlE-OqIzpDb2j7mPel91CUQGuBHY9Duvg5GfnKZ3aA3ub5APYrEmoFdXvi-YcbQLxpsPFPbsI1y7RB0kUcJu7KNJWCcwaCsRTZ8LIe_kU'></script></head>
 <body class="light">
-    
-    <?php
-if (isset($_SESSION['success'])) {
-    echo "<p style='color: green; text-align:center;'>".$_SESSION['success']."</p>";
-    unset($_SESSION['success']);
-}
-
-if (isset($_SESSION['error'])) {
-    echo "<p style='color: red; text-align:center;'>".$_SESSION['error']."</p>";
-    unset($_SESSION['error']);
-}
-?>
 
 <script>
 (function () {
@@ -153,22 +141,7 @@ if (isset($_SESSION['error'])) {
             <div class="mob-user-row">
                 <img src="<?= APP_URL ?>/img/default-avatar.png" alt="Avatar">
                 <div>
-                    <div class="mob-user-name"><?= htmlspecialchars($userName, ENT_QUOTES, 'UTF-8') ?
-
-                       <?php
-                       include '../bake/dbconnect.php';
-
-                       $stmt = $db->prepare("SELECT points FROM users WHERE userID = :userID");
-                       $stmt->bindParam(':userID', $_SESSION['userID']);
-                       $stmt->execute();
-
-                       $row = $stmt->fetch(PDO::FETCH_ASSOC);
-                       ?>
-
-                       <span style="margin-left:6px; font-weight:bold; color:#c07b50;">
-                       <?= $row['points'] ?> pts
-                   </span>
-               </div>
+                    <div class="mob-user-name"><?= htmlspecialchars($userName, ENT_QUOTES, 'UTF-8') ?></div>
                     <div class="mob-user-tag">Logged in</div>
                 </div>
             </div>
@@ -272,21 +245,7 @@ if (isset($_SESSION['error'])) {
                 <?php if ($isLoggedIn): ?>
                     <div class="user-dropdown-header">
                         <span class="user-dropdown-name"><?= htmlspecialchars($userName, ENT_QUOTES, 'UTF-8') ?></span>
-                        <?php
-                         include '../bake/dbconnect.php';
-
-                          $stmt = $db->prepare("SELECT points FROM users WHERE userID = :userID");
-                          $stmt->bindParam(':userID', $_SESSION['userID']);
-                          $stmt->execute();
-
-                          $row = $stmt->fetch(PDO::FETCH_ASSOC);
-                      ?>
-
-                          <span style="margin-left:8px; font-weight:bold; color:#c07b50;">
-            <?= $row['points'] ?> pts
-        </span>
-    </span>
- </div>
+                    </div>
                     <a href="<?= APP_URL ?>/accdetails.php" class="user-dropdown-item">Account Details</a>
                     <?php if ($isAdmin): ?>
                         <a href="<?= APP_URL ?>/admin_dashboard.php" class="user-dropdown-item">Admin Dashboard</a>
