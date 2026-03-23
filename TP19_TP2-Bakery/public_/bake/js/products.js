@@ -112,7 +112,6 @@ document.addEventListener('DOMContentLoaded', function () {
     loadProducts(category, search, tag);
 });
 
-// ── Price filter ──────────────────────────────────────────────
 let priceMin = 0;
 let priceMax = 100;
 
