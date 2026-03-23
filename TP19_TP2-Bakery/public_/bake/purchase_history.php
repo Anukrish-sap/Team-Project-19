@@ -83,7 +83,7 @@ try {
 
             <?php if (empty($purchases)): ?>
                 <div class="purchase-empty">
-                    <div class="purchase-empty-icon">🛍️</div>
+                    <div class="purchase-empty-icon">ðŸ›?ï¸?</div>
                     <h3>No purchases yet</h3>
                     <p>You haven't placed any orders. Browse our range to get started.</p>
                     <a href="<?= APP_URL ?>/bakes.php" class="btn primary">Browse products</a>
@@ -114,14 +114,14 @@ try {
                     <!-- Order header -->
                     <div class="purchase-card-header">
                         <div class="purchase-card-meta">
-                            <span class="purchase-order-label">Order #<?= (int)$purchase['purchaseID'] ?></span>
+                            <span class="purchase-order-label">Order #<?= strtoupper(substr(md5($purchase['purchaseID'] . 'bakes19'), 0, 6)) ?></span>
                             <span class="purchase-order-date">
                                 <?= date('d M Y, H:i', strtotime($purchase['purchaseDate'])) ?>
                             </span>
                         </div>
                         <div class="purchase-card-total">
                             <span class="purchase-total-label">Order total</span>
-                            <span class="purchase-total-amount">£<?= number_format($orderTotal, 2) ?></span>
+                            <span class="purchase-total-amount">Â£<?= number_format($orderTotal, 2) ?></span>
                         </div>
                     </div>
 
@@ -136,7 +136,7 @@ try {
                                             alt="<?= htmlspecialchars($item['bakeName'], ENT_QUOTES, 'UTF-8') ?>"
                                             class="purchase-item-img">
                                     <?php else: ?>
-                                        <div class="purchase-item-img purchase-item-placeholder">🎂</div>
+                                        <div class="purchase-item-img purchase-item-placeholder">ðŸŽ‚</div>
                                     <?php endif; ?>
                                 </div>
                                 <div class="purchase-item-info">
@@ -144,8 +144,8 @@ try {
                                     <span class="purchase-item-qty">Qty: <?= (int)$item['quantity'] ?></span>
                                 </div>
                                 <div class="purchase-item-price">
-                                    <span>£<?= number_format((float)$item['unitPrice'], 2) ?> each</span>
-                                    <strong>£<?= number_format($item['unitPrice'] * $item['quantity'], 2) ?></strong>
+                                    <span>Â£<?= number_format((float)$item['unitPrice'], 2) ?> each</span>
+                                    <strong>Â£<?= number_format($item['unitPrice'] * $item['quantity'], 2) ?></strong>
                                 </div>
                             </div>
                         <?php endforeach; ?>

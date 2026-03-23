@@ -1,6 +1,32 @@
 <?php
 session_start();
 require_once 'dbconnect.php';
+
+// Must be logged in
+if (!isset($_SESSION['userID'])) {
+    header("Location: home.php?error=not_logged_in");
+    exit();
+}
+
+$userID = $_SESSION['userID'];
+
+// Check admin status
+$stmt = $db->prepare("
+    SELECT adminStatus
+    FROM adminStatus
+    WHERE userID = :userID
+");
+$stmt->bindParam(':userID', $userID, PDO::PARAM_INT);
+$stmt->execute();
+
+$admin = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// If no admin row OR adminStatus != 1 â†’ redirect
+if (!$admin || (int)$admin['adminStatus'] !== 1) {
+    header("Location: home.php?error=not_admin");
+    exit();
+}
+
 include '../components/header_unified.php';
 
 // Fetch most purchased products
@@ -55,7 +81,7 @@ $maxQty = !empty($results) ? max(array_column($results, 'totalQuantity')) : 1;
                                 class="stats-img"
                             >
                         <?php else: ?>
-                            <div class="stats-img stats-img-placeholder">🎂</div>
+                            <div class="stats-img stats-img-placeholder">ðŸŽ‚</div>
                         <?php endif; ?>
                     </div>
 

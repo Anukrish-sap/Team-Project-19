@@ -11,6 +11,7 @@ $matchedBakes  = [];
 $quizSubmitted = false;
 $resultHeading = '';
 $resultSubtext = '';
+$resultEmoji   = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['q_taste'])) {
     $quizSubmitted = true;
@@ -24,27 +25,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['q_taste'])) {
         $targetType    = 4;
         $resultHeading = 'Savoury Lover';
         $resultSubtext = 'You\'re all about bold, satisfying flavours. We\'ve matched you with our best savoury bakes.';
+        $resultEmoji   = '&#x1F9C0;';
     } elseif ($taste === 'sweet' && $texture === 'crunchy') {
         $targetType    = 2;
         $resultHeading = 'The Cookie Monster';
         $resultSubtext = 'Crisp edges, chewy centres — you know what you want. Here are your perfect cookies.';
+        $resultEmoji   = '&#x1F36A;';
     } elseif ($taste === 'sweet' && $texture === 'flaky') {
         $targetType    = 3;
         $resultHeading = 'Pastry Perfectionist';
         $resultSubtext = 'Buttery layers and delicate bakes are your thing. These pastries were made for you.';
+        $resultEmoji   = '&#x1F950;';
     } elseif ($taste === 'both' || $occasion === 'breakfast') {
         $targetType    = 3;
         $resultHeading = 'The Balanced Baker';
         $resultSubtext = 'Sweet or savoury, you want it all. Our pastries hit that perfect middle ground.';
+        $resultEmoji   = '&#x2696;&#xFE0F;';
     } elseif ($calorie === 'light') {
         $targetType    = 2;
         $resultHeading = 'Mindful Muncher';
         $resultSubtext = 'Treating yourself doesn\'t mean going overboard. These perfectly-sized bakes are just right.';
+        $resultEmoji   = '&#x1F957;';
     } else {
         $targetType    = 1;
         $resultHeading = 'Cake Connoisseur';
         $resultSubtext = 'Go big or go home. Life\'s too short for anything less than a proper cake.';
+        $resultEmoji   = '&#x1F370;';
     }
+
+    // Save to session so accdetails.php can display it
+    $_SESSION['quiz_result'] = [
+        'heading' => $resultHeading,
+        'subtext' => $resultSubtext,
+        'emoji'   => $resultEmoji,
+    ];
 
     try {
         $stmt = $db->prepare("
@@ -66,204 +80,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['q_taste'])) {
 }
 ?>
 
-<style>
-/* All variables match styles.css exactly:
-   --bg-color, --card-bg, --card-alt-bg, --text-color,
-   --accent, --accent-soft, --accent-dark, --border-color */
-
-.quiz-page {
-    max-width: 680px;
-    margin: 2.5rem auto 4rem;
-    padding: 0 1rem;
-}
-
-.quiz-page-hero {
-    text-align: center;
-    margin-bottom: 2rem;
-}
-.quiz-page-hero h2 {
-    font-size: clamp(1.6rem, 4vw, 2.2rem);
-    margin-bottom: 0.5rem;
-    color: var(--text-color);
-}
-.quiz-page-hero p {
-    color: var(--text-color);
-    opacity: 0.7;
-    font-size: 0.97rem;
-    line-height: 1.65;
-}
-
-.quiz-card {
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 1.1rem;
-    padding: 2rem 2rem 2.2rem;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.06);
-}
-
-.quiz-question-block {
-    margin-bottom: 2rem;
-}
-
-.quiz-q-label {
-    font-size: 0.72rem;
-    text-transform: uppercase;
-    letter-spacing: 0.13em;
-    color: var(--accent);
-    font-weight: 600;
-    margin-bottom: 0.3rem;
-}
-.quiz-q-text {
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: var(--text-color);
-    margin-bottom: 1rem;
-}
-
-.quiz-tiles {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.65rem;
-}
-.quiz-tile {
-    display: flex;
-    align-items: center;
-    gap: 0.7rem;
-    padding: 0.8rem 1rem;
-    background: var(--card-alt-bg);
-    border: 1.5px solid var(--border-color);
-    border-radius: 0.75rem;
-    cursor: pointer;
-    transition: all 0.18s ease;
-    font-family: inherit;
-    font-size: 0.91rem;
-    font-weight: 500;
-    color: var(--text-color);
-    text-align: left;
-    width: 100%;
-}
-.quiz-tile:hover {
-    border-color: var(--accent);
-    background: var(--card-bg);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-}
-.quiz-tile.selected {
-    border-color: var(--accent);
-    background: var(--card-bg);
-    box-shadow: 0 0 0 2px var(--accent-soft);
-}
-.quiz-tile-emoji { font-size: 1.3rem; flex-shrink: 0; }
-
-.quiz-divider {
-    border: none;
-    border-top: 1px solid var(--border-color);
-    margin: 1.8rem 0;
-}
-
-.quiz-submit-wrap { margin-top: 2rem; }
-.quiz-submit-btn {
-    width: 100%;
-    padding: 0.9rem;
-    font-size: 1rem;
-    font-weight: 600;
-    border-radius: 0.75rem;
-    cursor: pointer;
-    border: none;
-    background: var(--accent);
-    color: #fff;
-    transition: background-color 0.2s ease, transform 0.1s ease;
-    font-family: inherit;
-}
-.quiz-submit-btn:hover {
-    background: var(--accent-dark);
-    transform: translateY(-1px);
-}
-.quiz-error {
-    color: #b00020;
-    font-size: 0.85rem;
-    margin-top: 0.6rem;
-    display: none;
-    text-align: center;
-}
-
-/* Results */
-.result-hero {
-    text-align: center;
-    padding: 2.5rem 1rem 1.5rem;
-}
-.result-badge {
-    display: inline-block;
-    background: var(--accent);
-    color: #fff;
-    font-size: 0.72rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    padding: 0.3rem 0.9rem;
-    border-radius: 999px;
-    font-weight: 600;
-    margin-bottom: 0.75rem;
-}
-.result-hero h2 {
-    margin-bottom: 0.5rem;
-    color: var(--text-color);
-}
-.result-hero p {
-    color: var(--text-color);
-    opacity: 0.7;
-    max-width: 460px;
-    margin: 0 auto;
-    line-height: 1.7;
-}
-
-.result-products {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 0 1rem 3rem;
-}
-.result-products h3 {
-    margin-bottom: 1.2rem;
-    color: var(--text-color);
-}
-
-.retake-wrap { text-align: center; margin-top: 2rem; }
-.btn-retake {
-    display: inline-block;
-    background: none;
-    border: 1.5px solid var(--accent);
-    color: var(--accent);
-    border-radius: 999px;
-    padding: 0.65rem 1.8rem;
-    font-size: 0.92rem;
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.2s;
-}
-.btn-retake:hover {
-    background: var(--accent);
-    color: #fff;
-}
-
-/* Reuse existing card styles */
-.product-link { display:block; text-decoration:none; color:inherit; height:100%; }
-.product-card { cursor:pointer; transition:transform 0.12s ease; }
-.product-card:hover { transform:translateY(-2px); }
-.view-desc { margin-top:0.6rem; display:inline-block; font-weight:600; font-size:0.95rem; text-decoration:underline; opacity:0.9; }
-.stock-line { margin-top:0.35rem; font-size:0.9rem; opacity:0.9; }
-.out-stock  { margin-top:0.35rem; color:#b00020; font-weight:700; }
-
-@media (max-width: 480px) {
-    .quiz-tiles { grid-template-columns: 1fr; }
-    .quiz-card  { padding: 1.4rem 1.1rem; }
-}
-</style>
-
 <main>
 
 <?php if ($quizSubmitted): ?>
 
 <div class="result-hero">
-    <div class="result-badge">✦ Your Match</div>
+    <div class="result-badge">&#x2756; Your Match</div>
     <h2><?= htmlspecialchars($resultHeading, ENT_QUOTES, 'UTF-8') ?></h2>
     <p><?= htmlspecialchars($resultSubtext, ENT_QUOTES, 'UTF-8') ?></p>
 </div>
@@ -294,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['q_taste'])) {
                         <p><?= htmlspecialchars($row['description'], ENT_QUOTES, 'UTF-8') ?></p>
                     <?php endif; ?>
 
-                    <p class="price">From £<?= number_format((float)$row['price'], 2) ?></p>
+                    <p class="price">From &#xa3;<?= number_format((float)$row['price'], 2) ?></p>
                     <span class="view-desc">View details</span>
 
                     <?php if ((int)$row['stockAmount'] > 0): ?>
@@ -308,7 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['q_taste'])) {
     <?php endif; ?>
 
     <div class="retake-wrap">
-        <a href="<?= APP_URL ?>/quiz.php" class="btn-retake">🔄 Retake the quiz</a>
+        <a href="<?= APP_URL ?>/quiz.php" class="btn-retake">&#x1F504; Retake the quiz</a>
     </div>
 </div>
 
@@ -326,19 +148,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['q_taste'])) {
             <!-- Q1 -->
             <div class="quiz-question-block">
                 <div class="quiz-q-label">Question 1</div>
-                <div class="quiz-q-text">Sweet or savoury — where does your heart lie?</div>
+                <div class="quiz-q-text">Sweet or savoury &mdash; where does your heart lie?</div>
                 <div class="quiz-tiles">
                     <button type="button" class="quiz-tile" data-q="q_taste" data-val="sweet">
-                        <span class="quiz-tile-emoji">🍰</span> Definitely sweet
+                        <span class="quiz-tile-emoji">&#x1F370;</span> Definitely sweet
                     </button>
                     <button type="button" class="quiz-tile" data-q="q_taste" data-val="savoury">
-                        <span class="quiz-tile-emoji">🧀</span> Savoury all the way
+                        <span class="quiz-tile-emoji">&#x1F9C0;</span> Savoury all the way
                     </button>
                     <button type="button" class="quiz-tile" data-q="q_taste" data-val="both">
-                        <span class="quiz-tile-emoji">⚖️</span> I love both!
+                        <span class="quiz-tile-emoji">&#x2696;&#xFE0F;</span> I love both!
                     </button>
                     <button type="button" class="quiz-tile" data-q="q_taste" data-val="sweet">
-                        <span class="quiz-tile-emoji">🍫</span> Chocolate. Always.
+                        <span class="quiz-tile-emoji">&#x1F36B;</span> Chocolate. Always.
                     </button>
                 </div>
                 <input type="hidden" name="q_taste" id="input_q_taste">
@@ -352,16 +174,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['q_taste'])) {
                 <div class="quiz-q-text">How do you feel about calories?</div>
                 <div class="quiz-tiles">
                     <button type="button" class="quiz-tile" data-q="q_calorie" data-val="light">
-                        <span class="quiz-tile-emoji">🥗</span> Keeping it light
+                        <span class="quiz-tile-emoji">&#x1F957;</span> Keeping it light
                     </button>
                     <button type="button" class="quiz-tile" data-q="q_calorie" data-val="indulgent">
-                        <span class="quiz-tile-emoji">🎉</span> Treat yourself!
+                        <span class="quiz-tile-emoji">&#x1F389;</span> Treat yourself!
                     </button>
                     <button type="button" class="quiz-tile" data-q="q_calorie" data-val="dontmind">
-                        <span class="quiz-tile-emoji">🤷</span> I don't really mind
+                        <span class="quiz-tile-emoji">&#x1F937;</span> I don't really mind
                     </button>
                     <button type="button" class="quiz-tile" data-q="q_calorie" data-val="light">
-                        <span class="quiz-tile-emoji">🌿</span> Clean &amp; wholesome
+                        <span class="quiz-tile-emoji">&#x1F33F;</span> Clean &amp; wholesome
                     </button>
                 </div>
                 <input type="hidden" name="q_calorie" id="input_q_calorie">
@@ -375,16 +197,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['q_taste'])) {
                 <div class="quiz-q-text">What texture do you go for?</div>
                 <div class="quiz-tiles">
                     <button type="button" class="quiz-tile" data-q="q_texture" data-val="soft">
-                        <span class="quiz-tile-emoji">🍞</span> Soft &amp; fluffy
+                        <span class="quiz-tile-emoji">&#x1F35E;</span> Soft &amp; fluffy
                     </button>
                     <button type="button" class="quiz-tile" data-q="q_texture" data-val="crunchy">
-                        <span class="quiz-tile-emoji">🍪</span> Crunchy &amp; crisp
+                        <span class="quiz-tile-emoji">&#x1F36A;</span> Crunchy &amp; crisp
                     </button>
                     <button type="button" class="quiz-tile" data-q="q_texture" data-val="flaky">
-                        <span class="quiz-tile-emoji">🥐</span> Flaky &amp; buttery
+                        <span class="quiz-tile-emoji">&#x1F950;</span> Flaky &amp; buttery
                     </button>
                     <button type="button" class="quiz-tile" data-q="q_texture" data-val="hearty">
-                        <span class="quiz-tile-emoji">🫓</span> Dense &amp; hearty
+                        <span class="quiz-tile-emoji">&#x1FAD3;</span> Dense &amp; hearty
                     </button>
                 </div>
                 <input type="hidden" name="q_texture" id="input_q_texture">
@@ -398,16 +220,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['q_taste'])) {
                 <div class="quiz-q-text">What's the occasion?</div>
                 <div class="quiz-tiles">
                     <button type="button" class="quiz-tile" data-q="q_occasion" data-val="everyday">
-                        <span class="quiz-tile-emoji">☕</span> Everyday treat
+                        <span class="quiz-tile-emoji">&#x2615;</span> Everyday treat
                     </button>
                     <button type="button" class="quiz-tile" data-q="q_occasion" data-val="special">
-                        <span class="quiz-tile-emoji">🎂</span> Special occasion
+                        <span class="quiz-tile-emoji">&#x1F382;</span> Special occasion
                     </button>
                     <button type="button" class="quiz-tile" data-q="q_occasion" data-val="breakfast">
-                        <span class="quiz-tile-emoji">🌅</span> Weekend breakfast
+                        <span class="quiz-tile-emoji">&#x1F305;</span> Weekend breakfast
                     </button>
                     <button type="button" class="quiz-tile" data-q="q_occasion" data-val="snack">
-                        <span class="quiz-tile-emoji">⚡</span> Quick snack
+                        <span class="quiz-tile-emoji">&#x26A1;</span> Quick snack
                     </button>
                 </div>
                 <input type="hidden" name="q_occasion" id="input_q_occasion">
@@ -415,7 +237,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['q_taste'])) {
 
             <div class="quiz-submit-wrap">
                 <button type="button" class="quiz-submit-btn" onclick="submitQuiz()">
-                    Find My Perfect Bake 🎉
+                    Find My Perfect Bake &#x1F389;
                 </button>
                 <div class="quiz-error" id="quizError">
                     Please answer all questions before continuing.
