@@ -1,7 +1,6 @@
 <?php
 session_start();
 require_once __DIR__ . '/dbconnect.php';
-
 $bakeID      = isset($_POST['bakeID']) ? (int)$_POST['bakeID'] : 0;
 $qty         = isset($_POST['qty']) ? (int)$_POST['qty'] : 1;
 $size        = isset($_POST['size']) ? (int)$_POST['size'] : 0;
@@ -64,7 +63,6 @@ if ($stock <= 0) {
 }
 
 $qty = min(max(1, $qty), $stock);
-
 $key = $bakeID . ':' . $size;
 
 if (!isset($_SESSION['basket_items']) || !is_array($_SESSION['basket_items'])) {
@@ -88,5 +86,7 @@ if ($isCake) {
   $_SESSION['basket_items'][$key]['cakeMessage'] = $cakeMessage;
 }
 
-header("Location: " . $detailURL);
+
+$redirect = !empty($_POST['redirect']) ? $_POST['redirect'] : $fallbackURL;
+header("Location: " . $redirect);
 exit;

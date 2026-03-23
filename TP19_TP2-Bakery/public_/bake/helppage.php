@@ -1,12 +1,7 @@
-
-
-<?php 
+<?php
 session_start();
- if (isset($_SESSION['userID'])) {
-    include '../components/header_l.php';
-} else {
-    include '../components/header.php';
-}
+require_once  "dbconnect.php";
+include '../components/header_unified.php';
 ?>
 
 <main>
@@ -80,7 +75,7 @@ session_start();
         </div>
     </section>
 
-     <section class="section section-alt">
+    <section class="section section-alt">
         <h3>Allergies & Dietary Requirements</h3>
         <div class="faq-grid">
             <div class="faq-item">
@@ -146,7 +141,7 @@ session_start();
         </div>
     </section>
 
-      <section class="section section-alt">
+    <section class="section section-alt">
         <h3>Account & Registration</h3>
         <div class="faq-grid">
             <div class="faq-item">
@@ -183,7 +178,7 @@ session_start();
         </div>
     </section>
 
-        <section class="section">
+    <section class="section">
         <h3>Custom Orders & Special Occasions</h3>
         <div class="faq-grid">
             <div class="faq-item">
@@ -212,7 +207,7 @@ session_start();
         </div>
     </section>
 
-      <section class="section section-alt">
+    <section class="section section-alt">
         <h3>Returns & Quality</h3>
         <div class="faq-grid">
             <div class="faq-item">
@@ -268,77 +263,6 @@ session_start();
 
 <?php include '../components/footer.php'; ?>
 <?php include '../components/script.html'; ?>
-
-
-<style>
-.faq-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-    margin-top: 20px;
-}
-
-.faq-item {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    border: 1px solid #e9b88f;
-}
-
-.faq-item h4 {
-    color: #c97b4a;
-    margin-bottom: 10px;
-    font-size: 1.1em;
-}
-
-.faq-item p {
-    color: #555;
-    line-height: 1.6;
-}
-
-.faq-item a {
-    color: #3b271d;
-    font-weight: bold;
-}
-
-.faq-item a:hover {
-    text-decoration: underline;
-}
-
-.help-contact {
-    text-align: center;
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.contact-options {
-    margin-top: 20px;
-}
-
-.contact-info {
-    margin-top: 15px;
-    color: #555;
-}
-
-.contact-info a {
-    color: #3b271d;
-    font-weight: bold;
-}
-
-body.dark .faq-item {
-    background: #2a2a2a;
-    border-color: #444;
-}
-
-body.dark .faq-item h4 {
-    color: #e9b88f;
-}
-
-body.dark .faq-item p,
-body.dark .contact-info {
-    color: #ccc;
-}
-</style>
 
 </body>
 </html>

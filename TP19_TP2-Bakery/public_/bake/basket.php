@@ -80,25 +80,30 @@ if (!empty($basket)) {
         <?php endif; ?>
     </div>
 
-    <div class="basket-summary-card">
-        <div>
-            <h3>Summary</h3>
-            <p>Items: <strong><?= (int)$totalQty ?></strong></p>
-        </div>
-        <div class="basket-summary-right">
-            <p class="basket-total-label">Total cost:</p>
-            <p class="basket-total-amount">£<?= number_format($totalCost, 2) ?></p>
-            <p class="basket-selected-total" id="selectedSummary" style="display:none;">
-                Selected: <strong id="selectedAmount">£0.00</strong>
-            </p>
-        </div>
-    </div>
-
     <?php if (empty($items)): ?>
-        <p>Your basket is empty.</p>
-        <a href="bakes.php" class="btn primary">Browse products</a>
+
+        <div class="basket-empty">
+            <div class="basket-empty-icon">ðŸ›’</div>
+            <h3>Your basket is empty</h3>
+            <p>Looks like you haven't added anything yet.</p>
+            <a href="bakes.php" class="btn primary">Browse products</a>
+        </div>
 
     <?php else: ?>
+
+        <div class="basket-summary-card">
+            <div>
+                <h3>Summary</h3>
+                <p>Items: <strong><?= (int)$totalQty ?></strong></p>
+            </div>
+            <div class="basket-summary-right">
+                <p class="basket-total-label">Total cost:</p>
+                <p class="basket-total-amount">Â£<?= number_format($totalCost, 2) ?></p>
+                <p class="basket-selected-total" id="selectedSummary" style="display:none;">
+                    Selected: <strong id="selectedAmount">Â£0.00</strong>
+                </p>
+            </div>
+        </div>
 
         <div class="basket-select-all-row">
             <label class="basket-checkbox-label">
@@ -138,7 +143,7 @@ if (!empty($basket)) {
                     <div class="basket-item-middle">
                         <h4><?= htmlspecialchars($item['bakeName'], ENT_QUOTES, 'UTF-8') ?></h4>
                         <p class="basket-item-price">
-                            £<?= number_format((float)$item['unitPrice'], 2) ?>
+                            Â£<?= number_format((float)$item['unitPrice'], 2) ?>
                             <?php if ((int)$item['size'] > 0): ?>
                                 <span class="muted">(<?= (int)$item['size'] ?>")</span>
                             <?php endif; ?>
@@ -168,7 +173,7 @@ if (!empty($basket)) {
                         </div>
 
                         <p class="basket-line-total">
-                            Line total: <strong>£<?= number_format((float)$item['line'], 2) ?></strong>
+                            Line total: <strong>Â£<?= number_format((float)$item['line'], 2) ?></strong>
                         </p>
                     </div>
                 </div>
@@ -223,7 +228,7 @@ function updateCheckout() {
 
     if (count > 0) {
         selectedSummary.style.display = 'block';
-        selectedAmount.textContent    = '£' + total.toFixed(2);
+        selectedAmount.textContent    = 'Â£' + total.toFixed(2);
     } else {
         selectedSummary.style.display = 'none';
     }
@@ -232,13 +237,16 @@ function updateCheckout() {
     selectAll.indeterminate = count > 0 && count < checkboxes.length;
 }
 
-checkboxes.forEach(cb => cb.addEventListener('change', updateCheckout));
-selectAll.addEventListener('change', function () {
-    checkboxes.forEach(cb => cb.checked = this.checked);
+if (checkboxes.length > 0) {
+    checkboxes.forEach(cb => cb.addEventListener('change', updateCheckout));
+    if (selectAll) {
+        selectAll.addEventListener('change', function () {
+            checkboxes.forEach(cb => cb.checked = this.checked);
+            updateCheckout();
+        });
+    }
     updateCheckout();
-});
-
-updateCheckout();
+}
 </script>
 
 <?php include '../components/footer.php'; ?>

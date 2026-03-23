@@ -21,25 +21,7 @@ if (isset($_SESSION['adm_error'])) {
 
 <?php include '../components/header_unified.php'; ?>
 
-<style>
-.dual-form-wrapper {
-    display: flex;
-    gap: 3rem;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 2rem 0;
-    flex-wrap: wrap;
-}
-.form-container {
-    flex: 1;
-    min-width: 320px;
-    max-width: 420px;
-    background: var(--card-bg);
-    padding: 2rem;
-    border-radius: 1rem;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-}
-</style>
+
 
 <form action="verify_creds_adm.php" method="POST">
 

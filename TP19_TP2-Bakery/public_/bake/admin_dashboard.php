@@ -49,13 +49,13 @@ include '../components/header_unified.php';
 
         <!-- Card for Stock -->
         <a href="stock.php" class="dashboard-card" style="flex:1; min-width:220px; max-width:250px; background:#f4f4f4; padding:2rem; border-radius:1rem; text-align:center; text-decoration:none; color:#333; box-shadow:0 4px 12px rgba(0,0,0,0.08);">
-            <h2>inventory</h2>
+            <h2>Inventory</h2>
             <p>Manage bakery products and inventory.</p>
         </a>
 
         <!-- Card for Admin Account Update -->
         <a href="adminAccUpdate.php" class="dashboard-card" style="flex:1; min-width:220px; max-width:250px; background:#f4f4f4; padding:2rem; border-radius:1rem; text-align:center; text-decoration:none; color:#333; box-shadow:0 4px 12px rgba(0,0,0,0.08);">
-            <h2>account management </h2>
+            <h2>Account management </h2>
             <p>Update admin account details.</p>
         </a>
 

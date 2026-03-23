@@ -210,6 +210,7 @@ $desc  = !empty($bake['description']) ? $bake['description'] : '';
           <form action="<?= APP_URL ?>/basket_add.php" method="post" class="details-form">
 
             <input type="hidden" name="bakeID" value="<?= (int)$bakeID ?>">
+            <input type="hidden" name="redirect" value="<?= APP_URL ?>/bakes.php">
 
             <?php if ($isCake): ?>
               <input type="hidden" name="size" id="basketSize" value="<?= (int)$initialSize ?>">
@@ -457,7 +458,7 @@ $desc  = !empty($bake['description']) ? $bake['description'] : '';
         btn.textContent = 'Remove';
         return;
       }
-     
+
       const card = document.getElementById('review-' + reviewID);
       if (card) {
         card.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
@@ -469,7 +470,6 @@ $desc  = !empty($bake['description']) ? $bake['description'] : '';
       }, 350);
     })
     .catch(() => {
-      
       window.location.href = window.location.pathname + '?bakeID=<?= (int)$bakeID ?>#tab-reviews';
     });
   }

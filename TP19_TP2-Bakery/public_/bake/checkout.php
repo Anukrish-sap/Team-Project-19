@@ -1,6 +1,5 @@
 <?php
 session_start();
-unset($_SESSION['points_added']);
 require_once "dbconnect.php";
 
 if (empty($_SESSION['basket_items'])) {
@@ -161,7 +160,7 @@ include '../components/header_unified.php';
                                 <img src="<?= APP_URL ?>/img/pickup-icon.png" alt="Pick Up">
                                 <div>
                                     <strong>Pick Up</strong>
-                                    <span>Free — collect in store</span>
+                                    <span>Free collect in store</span>
                                 </div>
                             </div>
                         </label>

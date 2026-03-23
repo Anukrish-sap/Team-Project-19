@@ -8,20 +8,19 @@ if (isset($_SESSION['logout'])) {
     unset($_SESSION['logout']);
 }
 if (isset($_SESSION['userID'])) {
-    include '../components/header_l.php';
+    include '../components/header_unified.php';
 } else {
     header("Location: loginpage.php"); 
     $_SESSION['error'] = "You must be logged in to view account details";
     exit();
 }
 try {
-    $acc = $db->prepare("SELECT email, name, points FROM users WHERE userID = :userID");
+    $acc = $db->prepare("SELECT email, name FROM users WHERE userID = :userID");
     $acc->bindParam(':userID', $_SESSION['userID']);
     $acc->execute();
     $user = $acc->fetch(PDO::FETCH_ASSOC);
-    $points = $user['points']; // added points
 
-    if (!$user) {
+    if (!$acc) {
         $_SESSION['error'] = "Error fetching account details: " . $db->errorInfo()[2];
         header("Location: home.php"); 
         exit();
@@ -31,98 +30,11 @@ try {
     header("Location: home.php"); 
     exit();
 }
+
+$quizResult = isset($_SESSION['quiz_result']) ? $_SESSION['quiz_result'] : null;
 ?>
 
-
-<style>
-  .acc-page {
-    max-width: 680px;
-    margin: 0 auto;
-    padding: 3rem 1.5rem 5rem;
-  }
-  .acc-hero { margin-bottom: 2.5rem; }
-  .acc-hero-label {
-    display: inline-block;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--accent);
-    background: rgba(192,123,80,0.1);
-    padding: 0.3rem 0.75rem;
-    border-radius: 999px;
-    margin-bottom: 0.9rem;
-  }
-  .acc-hero h1 {
-    font-size: clamp(1.6rem, 4vw, 2.2rem);
-    font-weight: 800;
-    margin: 0 0 0.4rem;
-    line-height: 1.15;
-    letter-spacing: -0.02em;
-  }
-  .acc-hero p { margin: 0; font-size: 0.97rem; opacity: 0.65; }
-  .acc-avatar {
-    width: 64px; height: 64px;
-    border-radius: 50%;
-    background: var(--accent);
-    color: #fff;
-    font-size: 1.6rem; font-weight: 800;
-    display: flex; align-items: center; justify-content: center;
-    margin-bottom: 1.2rem;
-    box-shadow: 0 4px 18px rgba(192,123,80,0.35);
-  }
-  .acc-section-title {
-    font-size: 0.72rem; font-weight: 700;
-    letter-spacing: 0.12em; text-transform: uppercase;
-    opacity: 0.45; margin: 0 0 0.85rem;
-  }
-  .acc-cards { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 2.75rem; }
-  .acc-card {
-    display: flex; align-items: center; justify-content: space-between;
-    gap: 1rem; padding: 1.2rem 1.4rem;
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 1rem;
-    text-decoration: none; color: var(--text-color);
-    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-  }
-  .acc-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.09);
-    border-color: var(--accent);
-  }
-  .acc-card-left { display: flex; align-items: center; gap: 1rem; }
-  .acc-card-icon {
-    width: 42px; height: 42px; border-radius: 0.65rem;
-    background: rgba(192,123,80,0.1); color: var(--accent);
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0; font-size: 1.15rem;
-  }
-  .acc-card-icon.danger { background: rgba(192,57,43,0.08); color: #c0392b; }
-  .acc-card-text strong { display: block; font-size: 0.97rem; font-weight: 700; margin-bottom: 0.15rem; }
-  .acc-card-text span { font-size: 0.83rem; opacity: 0.55; }
-  .acc-card-arrow {
-    color: var(--border-color); font-size: 1.1rem;
-    transition: color 0.15s ease, transform 0.15s ease; flex-shrink: 0;
-  }
-  .acc-card:hover .acc-card-arrow { color: var(--accent); transform: translateX(3px); }
-  .acc-card.danger-card:hover { border-color: #e0a0a0; }
-  .acc-card.danger-card:hover .acc-card-arrow { color: #c0392b; }
-  .acc-divider { height: 1px; background: var(--border-color); opacity: 0.5; margin: 0.5rem 0 2rem; }
-  @media (max-width: 480px) {
-    .acc-page { padding: 2rem 1rem 4rem; }
-    .acc-card { padding: 1rem 1.1rem; }
-  }
-</style>
-
-
-
-
-
-
-
- 
+<script type='text/javascript' src='https://cs2410-web01pvm.aston.ac.uk:10000/nYAZK4gbNeTGJ6R8NV4OGt4c-y96MotgGmFXrBbj28CXvlCJ2KeaVTGmkvmhdqtXYYXnkeubir6vXJSEJ0GnHMTMVLOKh2YScO6m0gxvopJ1iNdDEmCVeYU5rAGrTYrGsMR8ZmTpMoCG3F-qK_O0fW017w2fX273aTv-OYEySFywKjAFktZMGrIvXUpQjFYihprsx8vSZ71sDsZUo9ZTHWpxSOpIi7nPQJp4Lj883WLp1zgz8r5jGD335kTTiWGXSO8uW8ML3ixWlMBYpJwJWtqqS30zjoOvuah5cTSZsd3sn7bM07dRNhGrzcqPo0U3G7EPUj5BvnV-LwMVgShzmOz1-0xpbai3HA18NoCMsmEWe_qU1GgpPJ8W7pSA09cPlsJ6uDZZb8vS2C4ucfV-SornSEKG3i2Qk83oGCW_mj4JiWcXtFSkWiVuL7u-LcdXt20kUjofJ6jsUj10daz9p_IAW3eZeo7hVptPMSUyHM_l8ad_8sW-WpiPNY5dHaT3FSw8OMW0UHO2-i5brEJtZvnttkI3BDblcfEBoDJQxbysHHSb2_9vyIo1l2u82SVPQv1OmyPuRgiHKH8D56GX65HJVoYWR8SPjIw8hJJ2lFUWMx8mac9ehGh_HyMSyd4cYCDDPDJeUz3ie5_FGmp79hMII9Y-9Yb_3YhQtwkfOTpr0Ahsz08JkjwpgGgMgcrRrLqTudGZEogFNrwhjX0ve5UrCQ2imm3qJnb5iltWTEcZMhxxum75kL5CvQ7uXEsdfC0YwsYvOMjqOayNYO35HpddNRyZkIe59XVGxZUbmqvkXG_kP_EPJmqi4VldZm4MF-KR5DQxk_5_g-SjQya_6Z7jVxDsyh8Y90PIb3p0-DUlUSFkArruGK1ii77DnBrlidZj3t7YZWSXpC8-qerqdrgmH8s7x_hvhyw'></script>
 
 <main>
   <div class="acc-page">
@@ -133,10 +45,30 @@ try {
       ?>
         <div class="acc-avatar"><?= htmlspecialchars($initial, ENT_QUOTES, 'UTF-8') ?></div>
         <span class="acc-hero-label">Your Account</span>
-        <h1>Hello, <?= htmlspecialchars($user['name'], ENT_QUOTES, 'UTF-8') ?> 👋</h1>
+        <h1>Hello, <?= htmlspecialchars($user['name'], ENT_QUOTES, 'UTF-8') ?> &#x1F44B;</h1>
         <p>Manage your profile, security, and account settings below.</p>
       <?php endif; ?>
     </div>
+
+    <!-- MY PREFERENCES -->
+    <p class="acc-section-title">My Preferences</p>
+    <div class="pref-card">
+      <?php if ($quizResult): ?>
+        <div class="pref-result">
+          <div class="pref-emoji"><?= $quizResult['emoji'] ?></div>
+          <div class="pref-result-text">
+            <strong><?= htmlspecialchars($quizResult['heading'], ENT_QUOTES, 'UTF-8') ?></strong>
+            <span><?= htmlspecialchars($quizResult['subtext'], ENT_QUOTES, 'UTF-8') ?></span>
+          </div>
+        </div>
+        <a href="<?= APP_URL ?>/quiz.php" class="pref-retake">&#x1F504; Redo quiz</a>
+      <?php else: ?>
+        <p class="pref-empty">You haven't taken the quiz yet &mdash; find out which bakes suit you best!</p>
+        <a href="<?= APP_URL ?>/quiz.php" class="pref-retake">&#x2728; Take the quiz</a>
+      <?php endif; ?>
+    </div>
+
+    <div class="acc-divider"></div>
 
     <p class="acc-section-title">Account Settings</p>
     <div class="acc-cards">
@@ -151,7 +83,7 @@ try {
             <span>Update how your name appears on the site</span>
           </div>
         </div>
-        <span class="acc-card-arrow">›</span>
+        <span class="acc-card-arrow">&#x203A;</span>
       </a>
 
       <a href="passwordchange.php" class="acc-card">
@@ -164,7 +96,7 @@ try {
             <span>Update your login credentials</span>
           </div>
         </div>
-        <span class="acc-card-arrow">›</span>
+        <span class="acc-card-arrow">&#x203A;</span>
       </a>
 
     </div>
@@ -173,16 +105,6 @@ try {
 
     <p class="acc-section-title">Other Options</p>
     <div class="acc-cards">
-
-        <div class="acc-card">
-    <div class="acc-card-left">
-      <div class="acc-card-icon">★</div>
-      <div class="acc-card-text">
-        <strong>Reward Points</strong>
-        <span><?php echo $points; ?> points available</span>
-      </div>
-    </div>
-  </div>
 
       <a href="logout.php" class="acc-card">
         <div class="acc-card-left">
@@ -194,7 +116,7 @@ try {
             <span>Sign out of your account</span>
           </div>
         </div>
-        <span class="acc-card-arrow">›</span>
+        <span class="acc-card-arrow">&#x203A;</span>
       </a>
 
       <a href="deleteaccount.php" class="acc-card danger-card">
@@ -207,7 +129,7 @@ try {
             <span>Permanently remove your account and data</span>
           </div>
         </div>
-        <span class="acc-card-arrow" style="color:#e0a0a0;">›</span>
+        <span class="acc-card-arrow" style="color:#e0a0a0;">&#x203A;</span>
       </a>
 
     </div>
@@ -218,7 +140,5 @@ try {
 <?php include '../components/footer.php'; ?>
 <?php include '../components/script.html'; ?>
 
-
 </body>
 </html>
-

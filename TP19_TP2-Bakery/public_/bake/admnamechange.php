@@ -81,35 +81,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 include '../components/header_unified.php';
 ?>
 
-<style>
-/* Simple styling consistent with your theme */
-.namechange-wrapper {
-    max-width: 600px;
-    margin: 3rem auto;
-    padding: 2rem;
-    background: var(--card-bg);
-    border-radius: 1rem;
-    border: 1px solid var(--border-color);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-}
-
-.namechange-wrapper h1 {
-    margin-bottom: 0.5rem;
-}
-
-.namechange-wrapper p {
-    opacity: 0.7;
-    margin-bottom: 1.5rem;
-}
-
-.form-group {
-    margin-bottom: 1.4rem;
-}
-
-.submit-btn {
-    margin-top: 1rem;
-}
-</style>
 
 <main>
     <div class="namechange-wrapper">
